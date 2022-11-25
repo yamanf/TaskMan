@@ -6,6 +6,7 @@ import android.os.Bundle
 import com.yamanf.taskman.MainActivity
 import com.yamanf.taskman.R
 import com.yamanf.taskman.databinding.ActivitySplashScreenBinding
+import com.yamanf.taskman.ui.auth.AuthActivity
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 
@@ -16,9 +17,9 @@ class SplashScreen : AppCompatActivity() {
         binding = ActivitySplashScreenBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.splashLogo.animate().setDuration(2500).alpha(1f).withEndAction(){
+        binding.splashLogo.animate().setDuration(500).alpha(1f).withEndAction(){
 
-            startActivity(Intent(this@SplashScreen,MainActivity::class.java))
+            startActivity(Intent(this@SplashScreen, AuthActivity::class.java))
 
         }
     }

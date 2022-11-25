@@ -1,3 +1,16 @@
 <resources>
     <string name="app_name">TaskMan</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="e_mail_address">E-mail address</string>
+    <string name="login">Login</string>
+    <string name="forgot_password">Forgot Password?</string>
+    <string name="remember_me">Remember me</string>
+    <string name="hello_welcome_back">Hello! Welcome back!</string>
+    <string name="create_account">Create Account</string>
+    <string name="i_agree_to_the_terms_and_conditions">I agree to the terms and conditions</string>
+    <string name="register">Register</string>
+    <string name="already_have_an_account">Already have an account?</string>
+    <string name="log_in">Log In</string>
+    <string name="don_t_have_an_account">Don’t have an account?</string>
 </resources>

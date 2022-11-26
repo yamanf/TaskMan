@@ -13,6 +13,13 @@
         android:theme="@style/Theme.TaskMan"
         tools:targetApi="31">
         <activity
+            android:name=".ui.onboarding.OnboardingActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".ui.auth.AuthActivity"
             android:exported="false"
             android:screenOrientation="fullSensor">

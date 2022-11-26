@@ -1,12 +1,14 @@
 package com.yamanf.taskman.ui
 
 import android.content.Intent
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.yamanf.taskman.MainActivity
 import com.yamanf.taskman.R
 import com.yamanf.taskman.databinding.ActivitySplashScreenBinding
 import com.yamanf.taskman.ui.auth.AuthActivity
+import com.yamanf.taskman.ui.onboarding.OnboardingActivity
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 
@@ -16,10 +18,20 @@ class SplashScreen : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivitySplashScreenBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        val onBoarding: SharedPreferences = getSharedPreferences("onBoardingScreen", MODE_PRIVATE)
+        val isFirstTime = onBoarding.getBoolean("firstTime",true)
 
         binding.splashLogo.animate().setDuration(500).alpha(1f).withEndAction(){
+            if (isFirstTime==true){
+                val editor = onBoarding.edit()
+                editor.putBoolean("firstTime",false)
+                editor.apply()
+                startActivity(Intent(this, OnboardingActivity::class.java))
+                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
+                finish()
+            } else startActivity(Intent(this@SplashScreen, AuthActivity::class.java))
 
-            startActivity(Intent(this@SplashScreen, AuthActivity::class.java))
+
 
         }
     }

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/onboarding_nav"
+    app:startDestination="@id/onboardingStartFragment">
+
+    <fragment
+        android:id="@+id/onboardingStartFragment"
+        android:name="com.yamanf.taskman.ui.onboarding.OnboardingStartFragment"
+        android:label="fragment_onboarding_start"
+        tools:layout="@layout/fragment_onboarding_start" >
+        <action
+            android:id="@+id/action_onboardingStartFragment_to_onboardingFinishFragment"
+            app:destination="@id/onboardingFinishFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/onboardingFinishFragment"
+        android:name="com.yamanf.taskman.ui.onboarding.OnboardingFinishFragment"
+        android:label="fragment_onboarding_finish"
+        tools:layout="@layout/fragment_onboarding_finish" />
+</navigation>

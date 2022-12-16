@@ -1,16 +1,13 @@
 package com.yamanf.taskman.utils
 
-import com.firebase.ui.auth.AuthUI
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
-import java.io.Serializable
+import com.yamanf.taskman.data.LoginModel
+import com.yamanf.taskman.data.RegisterModel
 
 
-data class UserModel(val uuid:String = "",val email:String = "",val username:String = "")
-data class RegisterModel(val eMail:String = "",val password:String = "",val passwordRepeat:String = "", val cbTerms:Boolean= false)
-data class LoginModel(val eMail:String= "",val password:String= "",val cbRemember: Boolean = false)
-class FirebaseManager {
+class FirebaseAuthManager {
 
     companion object{
 
@@ -28,7 +25,6 @@ class FirebaseManager {
                     }else failure ("Passwords should be same.")
                 }
             } else failure("You should accept the terms.")
-
         }
 
         fun logInWithEmail(loginModel: LoginModel, success: (AuthResult) -> Unit, failure: (String) -> Unit) {
@@ -43,7 +39,13 @@ class FirebaseManager {
             }
         }
 
+        fun isUserLoggedIn():Boolean{
+            return Firebase.auth.currentUser != null
+        }
+
+        fun getUserUid(uid: (String) -> Unit){
+            return uid(Firebase.auth.currentUser?.uid ?: "")
+        }
+
     }
-
-
 }

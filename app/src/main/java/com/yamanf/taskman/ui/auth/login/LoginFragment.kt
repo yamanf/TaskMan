@@ -13,10 +13,10 @@ import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import com.yamanf.taskman.MainActivity
 import com.yamanf.taskman.R
+import com.yamanf.taskman.data.LoginModel
 import com.yamanf.taskman.databinding.FragmentLoginBinding
 import com.yamanf.taskman.ui.auth.AuthViewModel
-import com.yamanf.taskman.utils.FirebaseManager
-import com.yamanf.taskman.utils.LoginModel
+
 
 
 class LoginFragment : Fragment(R.layout.fragment_login) {

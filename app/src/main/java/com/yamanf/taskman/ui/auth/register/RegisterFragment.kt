@@ -7,16 +7,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.activity.viewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
-import com.google.firebase.ktx.Firebase
 import com.yamanf.taskman.MainActivity
 import com.yamanf.taskman.R
+import com.yamanf.taskman.data.RegisterModel
 import com.yamanf.taskman.databinding.FragmentRegisterBinding
 import com.yamanf.taskman.ui.auth.AuthViewModel
-import com.yamanf.taskman.utils.FirebaseManager
-import com.yamanf.taskman.utils.RegisterModel
 
 
 class RegisterFragment : Fragment(R.layout.fragment_register) {
@@ -24,10 +21,8 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
     private val binding get() = _binding!!
     val authViewModel: AuthViewModel by viewModels()
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
     }
 
     override fun onCreateView(
@@ -48,13 +43,13 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
         return binding.root
     }
 
-    fun register(){
+    private fun register(){
         val eMail = binding.etEmail.text.toString()
         val password = binding.etPassword.text.toString()
         val passwordRepeat = binding.etPasswordRepeat.text.toString()
         val cbTerms = binding.cbTerms.isChecked
         val registerModel = RegisterModel(eMail, password , passwordRepeat, cbTerms)
-        FirebaseManager.registerWithEmail(registerModel,
+        authViewModel.registerWithEmail(registerModel,
             {
                 startActivity(Intent(requireContext(), MainActivity::class.java))
             },{

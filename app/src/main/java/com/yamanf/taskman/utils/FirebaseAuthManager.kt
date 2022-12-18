@@ -18,6 +18,7 @@ class FirebaseAuthManager {
                 }else{
                     if (registerModel.password == registerModel.passwordRepeat){
                         Firebase.auth.createUserWithEmailAndPassword(registerModel.eMail, registerModel.password).addOnSuccessListener {
+                            FirestoreManager.saveUserEmail(it.user!!.uid,registerModel.eMail)
                             success(it)
                         } .addOnFailureListener {
                             failure(it.localizedMessage!!.toString())
@@ -43,8 +44,8 @@ class FirebaseAuthManager {
             return Firebase.auth.currentUser != null
         }
 
-        fun getUserUid(uid: (String) -> Unit){
-            return uid(Firebase.auth.currentUser?.uid ?: "")
+        fun getUserUid(): String {
+            return Firebase.auth.currentUser?.uid.toString()
         }
 
     }

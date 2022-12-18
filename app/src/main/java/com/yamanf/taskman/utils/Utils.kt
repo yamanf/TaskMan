@@ -10,7 +10,6 @@ import com.yamanf.taskman.R
 
 class Utils {
     companion object{
-
         fun showEditTextDialog(
             title:String,
             hint:String,

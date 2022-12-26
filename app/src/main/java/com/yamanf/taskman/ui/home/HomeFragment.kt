@@ -7,10 +7,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.GridLayout
 import android.widget.Toast
+import androidx.appcompat.content.res.AppCompatResources
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.firebase.Timestamp
 import com.yamanf.taskman.R
+import com.yamanf.taskman.data.WorkspaceModel
 import com.yamanf.taskman.databinding.FragmentHomeBinding
 import com.yamanf.taskman.ui.adapters.MainRVAdapter
+import com.yamanf.taskman.utils.Constants
 import com.yamanf.taskman.utils.FirestoreManager
 import com.yamanf.taskman.utils.Utils
 
@@ -39,7 +45,11 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
     private fun createNewWorkspace(){
         Utils.showEditTextDialog("Create a new workspace", "Enter a workspace name", "Create", layoutInflater,requireContext()){
-            FirestoreManager.createNewWorkspace(it){ result ->
+            val timestamp = Timestamp.now()
+            val newWorkspace = WorkspaceModel(
+                title = it,
+                createdAt = timestamp)
+            FirestoreManager.createNewWorkspace(newWorkspace){ result ->
                 if (result){
                     Toast.makeText(requireContext(),"Workspace created successfully.",Toast.LENGTH_SHORT).show()
                     FirestoreManager.getUserWorkspaces {
@@ -53,6 +63,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     }
 
     private fun configureRecyclerView(){
+
         binding.rvMain.layoutManager = GridLayoutManager(context,2)
         FirestoreManager.getUserWorkspaces {
             binding.rvMain.adapter = MainRVAdapter(it)

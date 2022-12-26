@@ -31,7 +31,7 @@
             android:name=".ui.SplashScreen"
             android:exported="true"
             android:screenOrientation="fullSensor"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+            android:theme="@style/Theme.TaskMan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -46,7 +46,7 @@
             android:name=".MainActivity"
             android:exported="true"
             android:screenOrientation="fullSensor"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+            android:theme="@style/Theme.TaskMan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

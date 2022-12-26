@@ -9,5 +9,36 @@
         android:id="@+id/homeFragment"
         android:name="com.yamanf.taskman.ui.home.HomeFragment"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_workspaceFragment"
+            app:destination="@id/workspaceFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/workspaceFragment"
+        android:name="com.yamanf.taskman.ui.workspace.WorkspaceFragment"
+        android:label="fragment_workspace"
+        tools:layout="@layout/fragment_workspace" >
+        <argument
+            android:name="workspaceId"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_workspaceFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+        <action
+            android:id="@+id/action_workspaceFragment_to_newTaskFragment"
+            app:destination="@id/newTaskFragment" />
+    </fragment>
+    <dialog
+        android:id="@+id/newTaskFragment"
+        android:name="com.yamanf.taskman.ui.newtask.NewTaskFragment"
+        android:label="fragment_new_task"
+        tools:layout="@layout/fragment_new_task" >
+        <argument
+            android:name="workspaceId"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_newTaskFragment_to_workspaceFragment"
+            app:destination="@id/workspaceFragment" />
+    </dialog>
 </navigation>

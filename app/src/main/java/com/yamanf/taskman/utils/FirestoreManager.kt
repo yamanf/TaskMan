@@ -17,7 +17,7 @@ import java.util.EventListener
 class FirestoreManager {
     companion object{
         fun saveUserEmail(uid:String, eMail:String){
-            Firebase.firestore.collection(Constants.Firestore.USERDATA.collectionNames).document(uid).set(
+            Firebase.firestore.collection(Constants.USER_DATA).document(uid).set(
                 mapOf(
                     "eMail" to eMail
                 )
@@ -29,17 +29,17 @@ class FirestoreManager {
            val createdAt = newWorkSpace.createdAt
            var uid = FirebaseAuthManager.getUserUid()
            val uids: ArrayList<String> = arrayListOf(uid)
-            Firebase.firestore.collection(Constants.Firestore.WORKSPACE.collectionNames).add(
+            Firebase.firestore.collection(Constants.WORKSPACE).add(
                 mapOf(
-                    Constants.Firestore.TITLE.collectionNames to title,
+                    Constants.TITLE to title,
                 )
             ).addOnSuccessListener {
-                Firebase.firestore.collection(Constants.Firestore.WORKSPACE.collectionNames).document(it.id).set(
+                Firebase.firestore.collection(Constants.WORKSPACE).document(it.id).set(
                     hashMapOf(
-                        Constants.Firestore.WORKSPACEID.collectionNames to it.id,
-                        Constants.Firestore.CREATEDAT.collectionNames to createdAt,
-                        Constants.Firestore.TITLE.collectionNames to title,
-                        Constants.Firestore.UIDS.collectionNames to uids,
+                        Constants.WORKSPACE_ID to it.id,
+                        Constants.CREATED_AT to createdAt,
+                        Constants.TITLE to title,
+                        Constants.UIDS to uids,
                     )
                 )
                 result(true)
@@ -51,7 +51,7 @@ class FirestoreManager {
         fun getUserWorkspaces(workspaceList:(ArrayList<WorkspaceModel>) -> Unit){
             var uid = FirebaseAuthManager.getUserUid()
             val workspaceList = ArrayList<WorkspaceModel>()
-            Firebase.firestore.collection(Constants.Firestore.WORKSPACE.collectionNames)
+            Firebase.firestore.collection(Constants.WORKSPACE)
                 .whereArrayContains("uids",uid)
                 .get()
                 .addOnSuccessListener {
@@ -66,21 +66,21 @@ class FirestoreManager {
         }
 
         fun createNewTask(task:TaskModel, result: (Boolean) -> Unit){
-            Firebase.firestore.collection(Constants.Firestore.TASKS.collectionNames).add(
+            Firebase.firestore.collection(Constants.TASKS).add(
                 mapOf(
-                    Constants.Firestore.TITLE.collectionNames to task.title,
+                    Constants.TITLE to task.title,
                 )
             ).addOnSuccessListener {
-                Firebase.firestore.collection(Constants.Firestore.TASKS.collectionNames).document(it.id).set(
+                Firebase.firestore.collection(Constants.TASKS).document(it.id).set(
                     mapOf(
-                        Constants.Firestore.TASKID.collectionNames to it.id,
-                        Constants.Firestore.TITLE.collectionNames to task.title,
-                        Constants.Firestore.DESCRIPTION.collectionNames to task.description,
-                        Constants.Firestore.TASKTIME.collectionNames to task.taskTime,
-                        Constants.Firestore.CREATEDAT.collectionNames to task.createdAt,
-                        Constants.Firestore.ISDONE.collectionNames to task.isDone,
-                        Constants.Firestore.ISIMPORTANT.collectionNames to task.isImportant,
-                        Constants.Firestore.WORKSPACEID.collectionNames to task.workspaceId
+                        Constants.TASK_ID to it.id,
+                        Constants.TITLE to task.title,
+                        Constants.DESCRIPTION to task.description,
+                        Constants.TASK_TIME to task.taskTime,
+                        Constants.CREATED_AT to task.createdAt,
+                        Constants.IS_DONE to task.isDone,
+                        Constants.IS_IMPORTANT to task.isImportant,
+                        Constants.WORKSPACE_ID to task.workspaceId
                     )
                 )
                 result(true)
@@ -90,7 +90,7 @@ class FirestoreManager {
         }
 
         fun getWorkspaceNameFromId(workspaceId: String, workspaceName:(String)->Unit) {
-            Firebase.firestore.collection(Constants.Firestore.WORKSPACE.collectionNames).document(workspaceId)
+            Firebase.firestore.collection(Constants.WORKSPACE).document(workspaceId)
                 .get()
                 .addOnSuccessListener {
                     val workspaceModel = it.toObject<WorkspaceModel>()
@@ -125,8 +125,8 @@ class FirestoreManager {
         fun getUnDoneTasksFromWorkspace(workspaceId:String, undoneTaskList:(ArrayList<TaskModel>) -> Unit){
             val undoneTaskList = ArrayList<TaskModel>()
             Firebase.firestore.collection("tasks")
-                .whereEqualTo(Constants.Firestore.WORKSPACEID.collectionNames,workspaceId)
-                .whereEqualTo(Constants.Firestore.ISDONE.collectionNames,false)
+                .whereEqualTo(Constants.WORKSPACE_ID,workspaceId)
+                .whereEqualTo(Constants.IS_DONE,false)
                 .get()
                 .addOnSuccessListener {
                     for (document in it){
@@ -140,16 +140,16 @@ class FirestoreManager {
         }
 
         fun changeTaskDoneStatus(task:TaskModel, result: (Boolean) -> Unit){
-            Firebase.firestore.collection(Constants.Firestore.TASKS.collectionNames).document(task.taskId).set(
+            Firebase.firestore.collection(Constants.TASKS).document(task.taskId).set(
                 mapOf(
-                    Constants.Firestore.TASKID.collectionNames to task.taskId,
-                    Constants.Firestore.TITLE.collectionNames to task.title,
-                    Constants.Firestore.DESCRIPTION.collectionNames to task.description,
-                    Constants.Firestore.TASKTIME.collectionNames to task.taskTime,
-                    Constants.Firestore.CREATEDAT.collectionNames to task.createdAt,
-                    Constants.Firestore.ISDONE.collectionNames to true,
-                    Constants.Firestore.ISIMPORTANT.collectionNames to task.isImportant,
-                    Constants.Firestore.WORKSPACEID.collectionNames to task.workspaceId
+                    Constants.TASK_ID to task.taskId,
+                    Constants.TITLE to task.title,
+                    Constants.DESCRIPTION to task.description,
+                    Constants.TASK_TIME to task.taskTime,
+                    Constants.CREATED_AT to task.createdAt,
+                    Constants.IS_DONE to true,
+                    Constants.IS_IMPORTANT to task.isImportant,
+                    Constants.WORKSPACE_ID to task.workspaceId
                 )
             ).addOnSuccessListener {
                 result(true)

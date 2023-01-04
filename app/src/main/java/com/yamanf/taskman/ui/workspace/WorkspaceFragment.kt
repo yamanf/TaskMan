@@ -5,30 +5,25 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.get
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.yamanf.taskman.R
 import com.yamanf.taskman.data.TaskModel
-import com.yamanf.taskman.data.repository.workspace.WorkspaceRepository
 import com.yamanf.taskman.databinding.FragmentWorkspaceBinding
-import com.yamanf.taskman.ui.adapters.UndoneTaskRVAdapter
-import com.yamanf.taskman.ui.home.HomeFragmentDirections
-import com.yamanf.taskman.ui.newtask.NewTaskFragment
-import com.yamanf.taskman.utils.Constants
 import com.yamanf.taskman.utils.FirestoreManager
-import com.yamanf.taskman.utils.Utils
 
 class WorkspaceFragment() : Fragment(R.layout.fragment_workspace) {
     private var _binding : FragmentWorkspaceBinding? = null
     private val binding get() = _binding!!
     private val args: WorkspaceFragmentArgs by navArgs()
     private lateinit var workspaceId : String
-  //  val viewModel: WorkspaceViewModel by viewModels()
+    private val workspaceViewModel: WorkspaceViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,14 +42,21 @@ class WorkspaceFragment() : Fragment(R.layout.fragment_workspace) {
         binding.fabCreateTask.setOnClickListener{
             it.findNavController().navigate(
                 WorkspaceFragmentDirections.actionWorkspaceFragmentToNewTaskFragment(workspaceId))
-            configureUnDoneRecyclerView()
+
         }
         configureFragmentTitle()
-        configureUnDoneRecyclerView()
+        var unDoneTaskList = arrayListOf<TaskModel>()
+
+        workspaceViewModel.getUnDoneTasksFromWorkspace(workspaceId){
+            unDoneTaskList = it
+
+        }
+        configureUnDoneRecyclerView(unDoneTaskList)
         return binding.root
     }
 
-    private fun configureUnDoneRecyclerView(){
+
+    private fun configureUnDoneRecyclerView(unDoneTaskList: ArrayList<TaskModel>){
         binding.rvUndoneTask.apply {
             layoutManager = LinearLayoutManager(context)
             val divider = DividerItemDecoration(
@@ -65,9 +67,6 @@ class WorkspaceFragment() : Fragment(R.layout.fragment_workspace) {
             addItemDecoration(divider)
         }
 
-        FirestoreManager.getUnDoneTasksFromWorkspace(workspaceId){
-            binding.rvUndoneTask.adapter = UndoneTaskRVAdapter(it)
-        }
     }
     private fun configureFragmentTitle(){
         FirestoreManager.getWorkspaceNameFromId(workspaceId){

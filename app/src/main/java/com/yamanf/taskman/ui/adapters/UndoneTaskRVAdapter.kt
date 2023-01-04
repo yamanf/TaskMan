@@ -9,15 +9,13 @@ import android.widget.CheckBox
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
-import com.google.firebase.Timestamp
 import com.yamanf.taskman.R
 import com.yamanf.taskman.data.TaskModel
 import com.yamanf.taskman.utils.Extensions.dateFormatter
 import com.yamanf.taskman.utils.FirestoreManager
-import java.text.SimpleDateFormat
 import java.util.*
 
-class UndoneTaskRVAdapter(private val undoneTaskList: List<TaskModel>) :
+class UndoneTaskRVAdapter(private var undoneTaskList: List<TaskModel>) :
     RecyclerView.Adapter<UndoneTaskRVAdapter.UndoneTaskListViewHolder>() {
 
     class UndoneTaskListViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -52,9 +50,17 @@ class UndoneTaskRVAdapter(private val undoneTaskList: List<TaskModel>) :
         }
     }
 
+    fun MyAdapter(data: List<TaskModel>) {
+        undoneTaskList = data
+    }
+
+    fun refreshData(newData: List<TaskModel>) {
+        this.undoneTaskList = newData
+        notifyDataSetChanged()
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UndoneTaskListViewHolder {
-        val view =
-            LayoutInflater.from(parent.context).inflate(R.layout.rv_undone_task_item, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.rv_undone_task_item, parent, false)
         return UndoneTaskListViewHolder(view)
     }
 

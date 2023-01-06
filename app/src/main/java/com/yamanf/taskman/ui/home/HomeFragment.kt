@@ -64,22 +64,26 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             "Create",
             layoutInflater,
             requireContext()
-        ) {
-            val timestamp = Timestamp.now()
-            val newWorkspace = WorkspaceModel(
-                title = it, createdAt = timestamp
-            )
-            homeViewModel.createNewWorkspace(newWorkspace) { result ->
-                if (result) {
-                    Toast.makeText(
-                        requireContext(), "Workspace created successfully.", Toast.LENGTH_SHORT
+        ) {Title ->
+            if(Title.isNotBlank()){
+                val timestamp = Timestamp.now()
+                val newWorkspace = WorkspaceModel(
+                    title = Title, createdAt = timestamp
+                )
+                homeViewModel.createNewWorkspace(newWorkspace) { result ->
+                    if (result) {
+                        Toast.makeText(
+                            requireContext(), "Workspace created successfully.", Toast.LENGTH_SHORT
+                        ).show()
+                        observeWorkspaceListAndFillRecyclerview()
+                        binding.rvMain.adapter?.notifyDataSetChanged()
+                    } else Toast.makeText(
+                        requireContext(), "Workspace cannot created.", Toast.LENGTH_SHORT
                     ).show()
-                    observeWorkspaceListAndFillRecyclerview()
-                    binding.rvMain.adapter?.notifyDataSetChanged()
-                } else Toast.makeText(
-                    requireContext(), "Workspace cannot created.", Toast.LENGTH_SHORT
-                ).show()
-            }
+                }
+            }else Toast.makeText(requireContext(), "Workspace title cannot be empty!", Toast.LENGTH_SHORT)
+                .show()
+
         }
     }
 

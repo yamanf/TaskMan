@@ -58,7 +58,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvUndoneTask"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="420dp"
         android:layout_gravity="center"
         android:layout_marginTop="16dp"
         android:paddingHorizontal="10dp"
@@ -67,6 +67,57 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/topBarWorkspace"
         tools:listitem="@layout/rv_undone_task_item" />
+
+    <View
+        android:id="@+id/doneDivider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:backgroundTint="@color/md_grey_400"
+        android:background="@color/md_grey_400"
+        android:layout_marginVertical="4dp"
+        android:layout_marginHorizontal="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/rvUndoneTask"
+        />
+
+    <TextView
+        android:id="@+id/tvDone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="4dp"
+        android:layout_marginStart="16dp"
+        android:fontFamily="@font/montserrat_semibold"
+        android:text="Done(0)"
+        android:textColor="@color/md_grey_800"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/doneDivider" />
+
+    <ImageView
+        android:id="@+id/ivDoneRVDrawer"
+        android:paddingVertical="4dp"
+        android:paddingStart="4dp"
+        android:paddingEnd="12dp"
+        android:layout_marginEnd="18dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_baseline_arrow_drop_down_24"
+        app:layout_constraintTop_toTopOf="@+id/tvDone"
+        app:layout_constraintBottom_toBottomOf="@+id/tvDone"
+        app:layout_constraintStart_toEndOf="@id/tvDone"/>
+
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvDoneTask"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_gravity="center"
+        android:paddingHorizontal="10dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvDone"
+        tools:listitem="@layout/rv_done_task_item" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -13,4 +13,6 @@
     <string name="log_in">Log In</string>
     <string name="don_t_have_an_account">Don’t have an account?</string>
     <string name="lorem_ipsum_5words">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas fringilla ligula lorem, id aliquam lorem lacinia nec. Curabitur ullamcorper risus.</string>
+    <string name="update">Update</string>
+    <string name="delete">Delete</string>
 </resources>

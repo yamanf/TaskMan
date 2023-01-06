@@ -72,8 +72,20 @@ class FirebaseRepositoryImpl: FirebaseRepository {
         }
     }
 
-    override fun deleteWorkspace(documentSnapshot: DocumentSnapshot): Boolean {
-        TODO("Not yet implemented")
+    override fun deleteWorkspace(workspaceId:String,result:(Boolean) -> Unit) {
+        firestore.collection(Constants.WORKSPACE).document(workspaceId).delete()
+        firestore.collection(Constants.TASKS)
+            .whereEqualTo(Constants.WORKSPACE_ID,workspaceId)
+            .get()
+            .addOnSuccessListener { documents->
+                for (document in documents){
+                    document.reference.delete()
+                }
+                return@addOnSuccessListener result(true)
+            }.addOnFailureListener{
+                return@addOnFailureListener result(false)
+            }
+        TODO("Workspace ile ilgili tasklarin silinmesi kismi dogru calismiyor")
     }
 
     override fun getAllTasks(): CollectionReference {

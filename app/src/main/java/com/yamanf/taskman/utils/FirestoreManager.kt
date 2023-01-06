@@ -118,7 +118,7 @@ class FirestoreManager {
                 }
         }
 
-        fun changeTaskDoneStatus(task:TaskModel, result: (Boolean) -> Unit){
+        fun changeTaskDoneStatus(task:TaskModel,isDone:Boolean, result: (Boolean) -> Unit){
             Firebase.firestore.collection(Constants.TASKS).document(task.taskId).set(
                 mapOf(
                     Constants.TASK_ID to task.taskId,
@@ -126,7 +126,7 @@ class FirestoreManager {
                     Constants.DESCRIPTION to task.description,
                     Constants.TASK_TIME to task.taskTime,
                     Constants.CREATED_AT to task.createdAt,
-                    Constants.IS_DONE to true,
+                    Constants.IS_DONE to isDone,
                     Constants.IS_IMPORTANT to task.isImportant,
                     Constants.WORKSPACE_ID to task.workspaceId
                 )

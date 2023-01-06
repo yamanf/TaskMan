@@ -17,7 +17,7 @@ interface FirebaseRepository {
 
     fun createWorkspace(workspace: WorkspaceModel, result:(Boolean) -> Unit)
     fun updateWorkspace(workspace: WorkspaceModel, result:(Boolean) -> Unit)
-    fun deleteWorkspace(documentSnapshot: DocumentSnapshot): Boolean
+    fun deleteWorkspace(workspaceId:String,result:(Boolean) -> Unit)
     fun getAllWorkspaces(): CollectionReference
 
     fun getAllTasks(): CollectionReference

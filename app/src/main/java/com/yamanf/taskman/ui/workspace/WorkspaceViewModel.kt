@@ -1,6 +1,7 @@
 package com.yamanf.taskman.ui.workspace
 
-import android.content.ContentValues.TAG
+
+
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -16,15 +17,29 @@ class WorkspaceViewModel(private val firebaseRepository: FirebaseRepository) : V
 
     private val TAG = "[DEBUG] WorkspaceViewModel"
 
+    private var _workspaceDetailsLiveData = MutableLiveData<WorkspaceModel?>()
+    val workspaceDetailsLiveData: MutableLiveData<WorkspaceModel?>
+        get() = _workspaceDetailsLiveData
+
     private var _unDoneTaskLiveData = MutableLiveData<ArrayList<TaskModel>>()
     val unDoneTaskLiveData: MutableLiveData<ArrayList<TaskModel>>
         get() = _unDoneTaskLiveData
 
-    private var _workspaceDetailsLiveData = MutableLiveData<WorkspaceModel>()
-    val workspaceDetailsLiveData: MutableLiveData<WorkspaceModel>
-        get() = _workspaceDetailsLiveData
+    private var _doneTaskLiveData = MutableLiveData<ArrayList<TaskModel>>()
+    val doneTaskLiveData: MutableLiveData<ArrayList<TaskModel>>
+        get() = _doneTaskLiveData
 
+    private var _isDoneRVExpandedLiveData = MutableLiveData<Boolean>()
+    val isDoneRVExpandedLiveData: MutableLiveData<Boolean>
+        get() = _isDoneRVExpandedLiveData
 
+    init {
+        _isDoneRVExpandedLiveData.value = false
+    }
+
+    fun changeIsDoneRVExpand(){
+       _isDoneRVExpandedLiveData.value = !_isDoneRVExpandedLiveData.value!!
+    }
 
     fun getUnDoneTasksFromWorkspace(workspaceId:String) {
         firebaseRepository.getAllTasks()
@@ -47,6 +62,28 @@ class WorkspaceViewModel(private val firebaseRepository: FirebaseRepository) : V
             }
     }
 
+    fun getDoneTasksFromWorkspace(workspaceId:String) {
+        firebaseRepository.getAllTasks()
+            .whereEqualTo(Constants.WORKSPACE_ID,workspaceId)
+            .whereEqualTo(Constants.IS_DONE,true)
+            .addSnapshotListener {snapshot, e ->
+                if (e != null){
+                    Log.w(TAG,"Listen failed",e)
+                    return@addSnapshotListener
+                }
+                if (snapshot != null){
+                    val doneTaskList = ArrayList<TaskModel>()
+                    val documents = snapshot.documents
+                    documents.forEach{
+                        val doneTask =  it.toObject(TaskModel::class.java)
+                        doneTaskList.add(doneTask!!)
+                    }
+                    _doneTaskLiveData.value = doneTaskList
+                }
+            }
+    }
+
+
     fun addTaskToWorkspace(task: TaskModel, result:(Boolean) -> Unit) {
         firebaseRepository.addTaskToWorkspace(task){
             return@addTaskToWorkspace result(it)
@@ -63,7 +100,7 @@ class WorkspaceViewModel(private val firebaseRepository: FirebaseRepository) : V
                 }
                 if (snapshot != null){
                     val workspaceModel = snapshot.toObject<WorkspaceModel>()
-                    _workspaceDetailsLiveData.value = workspaceModel!!
+                    _workspaceDetailsLiveData.value = workspaceModel
                 }
             }
     }
@@ -72,6 +109,13 @@ class WorkspaceViewModel(private val firebaseRepository: FirebaseRepository) : V
         firebaseRepository.updateWorkspace(workspaceModel){
             Log.d(TAG, "updateWorkspace")
             return@updateWorkspace result(it)
+        }
+    }
+
+    fun deleteWorkspace(workspaceId: String,result:(Boolean)->Unit){
+        firebaseRepository.deleteWorkspace(workspaceId){
+            Log.d(TAG, "deleteWorkspace")
+            return@deleteWorkspace result(it)
         }
     }
 

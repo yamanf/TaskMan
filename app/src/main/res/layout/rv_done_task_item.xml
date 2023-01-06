@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/doneTaskContainer"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <CheckBox
+        android:id="@+id/cbTaskUnDone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:checked="true"/>
+
+    <TextView
+        android:id="@+id/tvDoneTaskTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="3"
+        android:background="@drawable/strikethrough"
+        android:fontFamily="@font/montserrat"
+        android:maxLength="30"
+        android:paddingHorizontal="8dp"
+        android:textColor="@color/md_grey_500"
+        android:textSize="18sp"
+        android:textStyle="italic"
+        app:layout_constraintBottom_toBottomOf="@+id/cbTaskUnDone"
+        app:layout_constraintStart_toEndOf="@+id/cbTaskUnDone"
+        app:layout_constraintTop_toTopOf="@+id/cbTaskUnDone" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

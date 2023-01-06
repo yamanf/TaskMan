@@ -3,7 +3,6 @@ package com.yamanf.taskman.ui.newtask
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
-import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,35 +10,36 @@ import android.view.ViewGroup
 import android.widget.DatePicker
 import android.widget.TimePicker
 import android.widget.Toast
-import androidx.annotation.RequiresApi
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import androidx.recyclerview.widget.RecyclerView
-import com.google.android.gms.tasks.Task
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.firebase.Timestamp
 import com.yamanf.taskman.R
 import com.yamanf.taskman.data.TaskModel
 import com.yamanf.taskman.databinding.FragmentNewTaskBinding
-import com.yamanf.taskman.ui.adapters.UndoneTaskRVAdapter
-import com.yamanf.taskman.ui.workspace.WorkspaceFragmentArgs
+import com.yamanf.taskman.firebase.FirebaseRepositoryImpl
+import com.yamanf.taskman.ui.adapters.TaskRVAdapter
+import com.yamanf.taskman.ui.workspace.WorkspaceViewModel
+import com.yamanf.taskman.ui.workspace.WorkspaceViewModelFactory
 import com.yamanf.taskman.utils.FirestoreManager
-import com.yamanf.taskman.utils.Utils
-import java.sql.Time
 import java.text.SimpleDateFormat
-import java.time.Instant.now
-import java.time.Month
 import java.util.*
 
 
-class NewTaskFragment : BottomSheetDialogFragment(R.layout.fragment_new_task),
-    DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
+class NewTaskFragment : Fragment(R.layout.fragment_new_task), DatePickerDialog.OnDateSetListener,
+    TimePickerDialog.OnTimeSetListener {
     private var _binding: FragmentNewTaskBinding? = null
     private val binding get() = _binding!!
     private val args: NewTaskFragmentArgs by navArgs()
     private lateinit var workspaceId: String
-    private lateinit var rvAdapter: UndoneTaskRVAdapter
+    private lateinit var rvAdapter: TaskRVAdapter
+    private val workspaceViewModel: WorkspaceViewModel by viewModels() {
+        WorkspaceViewModelFactory(
+            FirebaseRepositoryImpl()
+        )
+    }
 
     private var day = 0
     private var month = 0
@@ -53,14 +53,9 @@ class NewTaskFragment : BottomSheetDialogFragment(R.layout.fragment_new_task),
     private var savedMinute = 0
     private var dateString: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         _binding = FragmentNewTaskBinding.inflate(inflater, container, false)
         workspaceId = args.workspaceId
@@ -71,9 +66,9 @@ class NewTaskFragment : BottomSheetDialogFragment(R.layout.fragment_new_task),
             pickDate()
         }
 
-        binding.btnCreateTask.setOnClickListener() {
+        binding.btnCreateTask.setOnClickListener() { view ->
             prepareNewTaskModel { newTaskModel ->
-                createNewTask(newTaskModel)
+                addTaskToWorkspace(newTaskModel,view)
             }
         }
         return binding.root
@@ -87,7 +82,7 @@ class NewTaskFragment : BottomSheetDialogFragment(R.layout.fragment_new_task),
         val dateFormat = SimpleDateFormat("dd-MM-yyyy HH:mm")
         var newTaskModel = TaskModel()
 
-        if (taskTitle.isNotBlank()){
+        if (taskTitle.isNotBlank()) {
             if (dateString != null) {
                 val date = dateFormat.parse(dateString)
                 val timestamp = Timestamp(date)
@@ -109,22 +104,26 @@ class NewTaskFragment : BottomSheetDialogFragment(R.layout.fragment_new_task),
                 )
             }
             return newTaskModel(newTaskModel)
-        }else Toast.makeText(requireContext(),"Task title cannot be empty!",Toast.LENGTH_SHORT).show()
+        } else Toast.makeText(requireContext(), "Task title cannot be empty!", Toast.LENGTH_SHORT)
+            .show()
 
     }
 
-    private fun createNewTask(task: TaskModel) {
-
-        FirestoreManager.createNewTask(task) { result ->
+    private fun addTaskToWorkspace(newTaskModel:TaskModel,view: View){
+        workspaceViewModel.addTaskToWorkspace(newTaskModel) { result ->
             if (result) {
-                Toast.makeText(requireContext(), "Task created successfully.", Toast.LENGTH_SHORT)
-                    .show()
-                FirestoreManager.getUnDoneTasksFromWorkspace(workspaceId) {}
-                dismiss()
-            } else Toast.makeText(requireContext(), "Task cannot created.", Toast.LENGTH_SHORT)
-                .show()
+                Toast.makeText(
+                    requireContext(), "Task created successfully.", Toast.LENGTH_SHORT
+                ).show()
+                view.findNavController().navigate(
+                    NewTaskFragmentDirections.actionNewTaskFragmentToWorkspaceFragment(
+                        workspaceId
+                    )
+                )
+            } else Toast.makeText(
+                requireContext(), "Task cannot created.", Toast.LENGTH_SHORT
+            ).show()
         }
-
     }
 
     private fun pickDate() {

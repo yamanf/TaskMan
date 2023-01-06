@@ -29,7 +29,7 @@
             android:id="@+id/action_workspaceFragment_to_newTaskFragment"
             app:destination="@id/newTaskFragment" />
     </fragment>
-    <dialog
+    <fragment
         android:id="@+id/newTaskFragment"
         android:name="com.yamanf.taskman.ui.newtask.NewTaskFragment"
         android:label="fragment_new_task"
@@ -40,5 +40,5 @@
         <action
             android:id="@+id/action_newTaskFragment_to_workspaceFragment"
             app:destination="@id/workspaceFragment" />
-    </dialog>
+    </fragment>
 </navigation>

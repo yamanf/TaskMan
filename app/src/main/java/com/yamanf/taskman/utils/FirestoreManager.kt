@@ -100,27 +100,6 @@ class FirestoreManager {
                     println("fail")
                 }
         }
-/*
-        fun getUnDoneTasksFromWorkspaceLive(workspaceId:String undoneTaskList:(ArrayList<TaskModel>)->Unit){
-            val undoneTaskList = ArrayList<TaskModel>()
-            Firebase.firestore.collection("tasks")
-                .whereEqualTo(Constants.Firestore.WORKSPACEID.collectionNames,workspaceId)
-                .whereEqualTo(Constants.Firestore.ISDONE.collectionNames,false)
-                .get()
-                .addOnSuccessListener {
-                    for (document in it){
-                        val undoneTask =  document.toObject(TaskModel::class.java)
-                        undoneTaskList.add(undoneTask)
-                    }
-                    return@addOnSuccessListener undoneTaskList(undoneTaskList)
-                }.addOnFailureListener{
-                    println("fail")
-                }
-        }
-
- */
-
-
 
         fun getUnDoneTasksFromWorkspace(workspaceId:String, undoneTaskList:(ArrayList<TaskModel>) -> Unit){
             val undoneTaskList = ArrayList<TaskModel>()

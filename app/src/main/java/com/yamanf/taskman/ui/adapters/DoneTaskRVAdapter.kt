@@ -4,16 +4,14 @@ import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.CheckBox
 import android.widget.TextView
 import androidx.annotation.RequiresApi
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.yamanf.taskman.R
 import com.yamanf.taskman.data.TaskModel
 import com.yamanf.taskman.utils.FirestoreManager
-import com.yamanf.taskman.utils.dateFormatter
+
 
 class DoneTaskRVAdapter(private var doneTaskList: List<TaskModel>) :
     RecyclerView.Adapter<DoneTaskRVAdapter.DoneTaskListViewHolder>() {
@@ -27,11 +25,7 @@ class DoneTaskRVAdapter(private var doneTaskList: List<TaskModel>) :
             tvTaskTitle.text = doneTask.title
             cbIsUnDone.setOnCheckedChangeListener { buttonView, isUnChecked ->
                 if (!isUnChecked) {
-                    FirestoreManager.changeTaskDoneStatus(doneTask,false) {
-                        if (it) {
-
-                        }
-                    }
+                    FirestoreManager.changeTaskDoneStatus(doneTask,false) {}
                 }
             }
         }

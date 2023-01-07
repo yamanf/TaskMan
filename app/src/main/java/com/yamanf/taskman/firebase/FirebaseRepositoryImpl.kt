@@ -30,11 +30,11 @@ class FirebaseRepositoryImpl: FirebaseRepository {
     }
 
     override fun createWorkspace(workspace: WorkspaceModel,result:(Boolean) -> Unit) {
-        var uid = FirebaseAuthManager.getUserUid()
-        val uids: ArrayList<String> = arrayListOf(uid)
         firestore.collection(Constants.WORKSPACE).add(
             mapOf(Constants.TITLE to workspace.title)
         ).addOnSuccessListener {
+            var uid = FirebaseAuthManager.getUserUid()
+            val uids: ArrayList<String> = arrayListOf(uid)
             Firebase.firestore.collection(Constants.WORKSPACE).document(it.id).set(
                 hashMapOf(
                     Constants.WORKSPACE_ID to it.id,
@@ -52,8 +52,6 @@ class FirebaseRepositoryImpl: FirebaseRepository {
     }
 
     override fun updateWorkspace(workspace: WorkspaceModel,result:(Boolean) -> Unit) {
-        var uid = FirebaseAuthManager.getUserUid()
-        val uids: ArrayList<String> = arrayListOf(uid)
         firestore.collection(Constants.WORKSPACE)
             .document(workspace.workspaceId)
             .set(
@@ -61,7 +59,7 @@ class FirebaseRepositoryImpl: FirebaseRepository {
                 Constants.WORKSPACE_ID to workspace.workspaceId,
                 Constants.CREATED_AT to workspace.createdAt,
                 Constants.TITLE to workspace.title,
-                Constants.UIDS to uids,
+                Constants.UIDS to workspace.uids,
             )
         ).addOnSuccessListener {
             Log.d(TAG, "createWorkspace: successfully")
@@ -96,6 +94,8 @@ class FirebaseRepositoryImpl: FirebaseRepository {
         firestore.collection(Constants.TASKS).add(
             mapOf(Constants.TITLE to task.title)
         ).addOnSuccessListener {
+            var uid = FirebaseAuthManager.getUserUid()
+            val uids: ArrayList<String> = arrayListOf(uid)
             firestore.collection(Constants.TASKS).document(it.id).set(
                 mapOf(
                     Constants.TASK_ID to it.id,
@@ -105,7 +105,8 @@ class FirebaseRepositoryImpl: FirebaseRepository {
                     Constants.CREATED_AT to task.createdAt,
                     Constants.IS_DONE to task.isDone,
                     Constants.IS_IMPORTANT to task.isImportant,
-                    Constants.WORKSPACE_ID to task.workspaceId
+                    Constants.WORKSPACE_ID to task.workspaceId,
+                    Constants.UIDS to uids
                 )
             )
             Log.d(TAG, "addTaskToWorkspace: successfully")

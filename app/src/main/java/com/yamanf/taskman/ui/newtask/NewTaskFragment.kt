@@ -34,7 +34,6 @@ class NewTaskFragment : Fragment(R.layout.fragment_new_task), DatePickerDialog.O
     private val binding get() = _binding!!
     private val args: NewTaskFragmentArgs by navArgs()
     private lateinit var workspaceId: String
-    private lateinit var rvAdapter: TaskRVAdapter
     private val workspaceViewModel: WorkspaceViewModel by viewModels() {
         WorkspaceViewModelFactory(
             FirebaseRepositoryImpl()

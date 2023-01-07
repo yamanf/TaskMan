@@ -17,7 +17,8 @@ data class TaskModel(
     val createdAt: Timestamp = Timestamp(Date()),
     val isDone: Boolean = false,
     val isImportant: Boolean = false,
-    val workspaceId: String = ""
+    val workspaceId: String = "",
+    val uids:ArrayList<String> = arrayListOf()
 ) : Parcelable {
 
     @IgnoredOnParcel

@@ -44,6 +44,7 @@ class TaskRVAdapter(private var undoneTaskList: List<TaskModel>) :
             } else tvTaskDescription.gone()
 
             tvTaskTitle.text = undoneTask.title
+
             cbIsDone.setOnCheckedChangeListener { buttonView, isChecked ->
                 if (isChecked) {
                     FirestoreManager.changeTaskDoneStatus(undoneTask,true) {
@@ -52,14 +53,22 @@ class TaskRVAdapter(private var undoneTaskList: List<TaskModel>) :
                     }
                 }
             }
+
+            if (undoneTask.description.isNotEmpty()){
+                btnDrawer.visible()
+                btnDrawer.setOnClickListener(){
+                    onItemClicked(undoneTask)
+                }
+            }else if (undoneTask.description.isEmpty()){
+                btnDrawer.gone()
+            }
+
             if (undoneTask.isExpanded){
                 btnDrawer.setImageResource(R.drawable.ic_baseline_arrow_drop_up_24)
             }else if (!undoneTask.isExpanded){
                 btnDrawer.setImageResource(R.drawable.ic_baseline_arrow_drop_down_24)
             }
-            btnDrawer.setOnClickListener(){
-                onItemClicked(undoneTask)
-            }
+
         }
          private fun onItemClicked(item:TaskModel){
             item.isExpanded = !item.isExpanded

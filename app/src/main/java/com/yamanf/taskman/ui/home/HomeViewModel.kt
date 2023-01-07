@@ -6,9 +6,12 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.yamanf.taskman.data.TaskModel
 import com.yamanf.taskman.data.WorkspaceModel
 import com.yamanf.taskman.firebase.FirebaseRepository
 import com.yamanf.taskman.utils.Constants
+import java.util.*
+import kotlin.collections.ArrayList
 
 class HomeViewModel(private val firebaseRepository: FirebaseRepository) : ViewModel() {
 
@@ -16,21 +19,37 @@ class HomeViewModel(private val firebaseRepository: FirebaseRepository) : ViewMo
 
     private lateinit var userUid: String
 
-    var workspaceList = mutableListOf<WorkspaceModel>()
     private var _workspaceListLiveData = MutableLiveData<List<WorkspaceModel>?>()
     val workspaceListLiveData: LiveData<List<WorkspaceModel>?>
         get() = _workspaceListLiveData
 
+    private var _isSearchActiveLiveData = MutableLiveData<Boolean>()
+    val isSearchActiveLiveData: MutableLiveData<Boolean>
+        get() = _isSearchActiveLiveData
+
+    private var _searchTaskLiveData = MutableLiveData<ArrayList<TaskModel>>()
+    val searchTaskLiveData: MutableLiveData<ArrayList<TaskModel>>
+        get() = _searchTaskLiveData
+
     init {
         getUserUid()
         getUserWorkspaces()
+        _isSearchActiveLiveData.value = false
+    }
+
+    fun changeIsSearchActive() {
+        _isSearchActiveLiveData.value = true
+    }
+
+    fun changeIsSearchInActive() {
+        _isSearchActiveLiveData.value = false
     }
 
     private fun getUserUid() {
         userUid = firebaseRepository.getCurrentUserId().toString()
     }
 
-     fun getUserWorkspaces() {
+    fun getUserWorkspaces() {
         val workspaceList = ArrayList<WorkspaceModel>()
         firebaseRepository.getAllWorkspaces()
             .whereArrayContains("uids", userUid)
@@ -47,20 +66,36 @@ class HomeViewModel(private val firebaseRepository: FirebaseRepository) : ViewMo
             }
     }
 
-    fun createNewWorkspace(newWorkspace: WorkspaceModel, result:(Boolean)->Unit) {
-        firebaseRepository.createWorkspace(newWorkspace){
-            if (it){
+    fun createNewWorkspace(newWorkspace: WorkspaceModel, result: (Boolean) -> Unit) {
+        firebaseRepository.createWorkspace(newWorkspace) {
+            if (it) {
                 Log.d(TAG, "createNewWorkspace: success")
                 return@createWorkspace result(true)
-            }
-            else{
+            } else {
                 Log.d(TAG, "createNewWorkspace: failed")
                 return@createWorkspace result(false)
             }
         }
     }
 
-
-
-
+    fun getSearchTasks() {
+        val taskList = ArrayList<TaskModel>()
+        firebaseRepository.getAllTasks()
+            .whereArrayContains("uids", userUid)
+            .addSnapshotListener { snapshot, e ->
+                if (e != null) {
+                    Log.w(TAG, "Listen failed", e)
+                    return@addSnapshotListener
+                }
+                if (snapshot != null) {
+                    val documents = snapshot.documents
+                    documents.forEach {
+                        val searchTask = it.toObject(TaskModel::class.java)
+                        taskList.add(searchTask!!)
+                    }
+                }
+                println(taskList)
+                _searchTaskLiveData.value = taskList
+            }
+    }
 }

@@ -49,12 +49,6 @@ class WorkspaceFragment() : Fragment(R.layout.fragment_workspace) {
     ): View? {
         _binding = FragmentWorkspaceBinding.inflate(inflater, container, false)
         workspaceId = args.workspaceId
-
-        /*
-        val inflater = TransitionInflater.from(requireContext())
-        enterTransition = inflater.inflateTransition(R.transition.slide_right)
-        */
-
         workspaceViewModel.getWorkspaceDetails(workspaceId)
         workspaceViewModel.workspaceDetailsLiveData.observe(viewLifecycleOwner) {
             if (it != null) {
@@ -71,6 +65,11 @@ class WorkspaceFragment() : Fragment(R.layout.fragment_workspace) {
             configureTaskRecyclerView(it)
         }
 
+        workspaceViewModel.getDoneTasksFromWorkspace(workspaceId)
+        workspaceViewModel.doneTaskLiveData.observe(viewLifecycleOwner) {
+            configureDoneTaskRecyclerView(it)
+        }
+
         binding.ivDoneRVDrawer.setOnClickListener {
             workspaceViewModel.changeIsDoneRVExpand()
         }
@@ -85,10 +84,7 @@ class WorkspaceFragment() : Fragment(R.layout.fragment_workspace) {
             }
         }
 
-        workspaceViewModel.getDoneTasksFromWorkspace(workspaceId)
-        workspaceViewModel.doneTaskLiveData.observe(viewLifecycleOwner) {
-            configureDoneTaskRecyclerView(it)
-        }
+
 
         binding.ivBackButton.setOnClickListener() {
             it.findNavController()

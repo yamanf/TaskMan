@@ -34,8 +34,8 @@ class NewTaskFragment : Fragment(R.layout.fragment_new_task), DatePickerDialog.O
     private val binding get() = _binding!!
     private val args: NewTaskFragmentArgs by navArgs()
     private lateinit var workspaceId: String
-    private val workspaceViewModel: WorkspaceViewModel by viewModels() {
-        WorkspaceViewModelFactory(
+    private val newTaskViewModel: NewTaskViewModel by viewModels() {
+        NewTaskViewModelFactory(
             FirebaseRepositoryImpl()
         )
     }
@@ -109,7 +109,7 @@ class NewTaskFragment : Fragment(R.layout.fragment_new_task), DatePickerDialog.O
     }
 
     private fun addTaskToWorkspace(newTaskModel:TaskModel,view: View){
-        workspaceViewModel.addTaskToWorkspace(newTaskModel) { result ->
+        newTaskViewModel.addTaskToWorkspace(newTaskModel) { result ->
             if (result) {
                 Toast.makeText(
                     requireContext(), "Task created successfully.", Toast.LENGTH_SHORT

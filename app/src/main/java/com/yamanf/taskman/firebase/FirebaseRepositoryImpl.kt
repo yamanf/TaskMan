@@ -71,7 +71,6 @@ class FirebaseRepositoryImpl: FirebaseRepository {
     }
 
     override fun deleteWorkspace(workspaceId:String,result:(Boolean) -> Unit) {
-        firestore.collection(Constants.WORKSPACE).document(workspaceId).delete()
         firestore.collection(Constants.TASKS)
             .whereEqualTo(Constants.WORKSPACE_ID,workspaceId)
             .get()
@@ -79,11 +78,11 @@ class FirebaseRepositoryImpl: FirebaseRepository {
                 for (document in documents){
                     document.reference.delete()
                 }
+                firestore.collection(Constants.WORKSPACE).document(workspaceId).delete()
                 return@addOnSuccessListener result(true)
             }.addOnFailureListener{
                 return@addOnFailureListener result(false)
             }
-        TODO("Workspace ile ilgili tasklarin silinmesi kismi dogru calismiyor")
     }
 
     override fun getAllTasks(): CollectionReference {
@@ -125,12 +124,32 @@ class FirebaseRepositoryImpl: FirebaseRepository {
         TODO("Not yet implemented")
     }
 
-    override fun updateTask(task: TaskModel, documentSnapshot: DocumentSnapshot): Boolean {
-        TODO("Not yet implemented")
+    override fun updateTask(task: TaskModel,result:(Boolean) -> Unit) {
+        firestore.collection(Constants.TASKS).document(task.taskId)
+            .set(
+                mapOf(
+                Constants.TASK_ID to task.taskId,
+                Constants.TITLE to task.title,
+                Constants.DESCRIPTION to task.description,
+                Constants.TASK_TIME to task.taskTime,
+                Constants.CREATED_AT to task.createdAt,
+                Constants.IS_DONE to task.isDone,
+                Constants.IS_IMPORTANT to task.isImportant,
+                Constants.WORKSPACE_ID to task.workspaceId,
+                Constants.UIDS to task.uids
+            )).addOnSuccessListener {
+                return@addOnSuccessListener result(true)
+            }.addOnFailureListener{
+                return@addOnFailureListener result(false)
+            }
     }
 
-    override fun deleteTask(documentSnapshot: DocumentSnapshot): Boolean {
-        TODO("Not yet implemented")
+    override fun deleteTask(taskId: String,result:(Boolean) -> Unit) {
+        firestore.collection(Constants.TASKS).document(taskId).delete().addOnSuccessListener {
+            return@addOnSuccessListener result (true)
+        }.addOnFailureListener {
+            return@addOnFailureListener result (false)
+        }
     }
 
     override fun undoDelete(documentSnapshot: DocumentSnapshot): Boolean {

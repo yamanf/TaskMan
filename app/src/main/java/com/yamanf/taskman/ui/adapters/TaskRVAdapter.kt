@@ -10,9 +10,12 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.yamanf.taskman.R
 import com.yamanf.taskman.data.TaskModel
+import com.yamanf.taskman.ui.home.HomeFragmentDirections
+import com.yamanf.taskman.ui.workspace.WorkspaceFragmentDirections
 import com.yamanf.taskman.utils.FirestoreManager
 import com.yamanf.taskman.utils.dateFormatter
 import com.yamanf.taskman.utils.gone
@@ -28,7 +31,6 @@ class TaskRVAdapter(private var undoneTaskList: List<TaskModel>) :
         private val btnDrawer = view.findViewById<ImageView>(R.id.ivTaskDrawer)
         private val tvTaskTime = view.findViewById<TextView>(R.id.tvUndoneTaskTime)
         private val tvTaskDescription = view.findViewById<TextView>(R.id.tvUndoneTaskDescription)
-        private val container = view.findViewById<ConstraintLayout>(R.id.taskContainer)
 
         @RequiresApi(Build.VERSION_CODES.O)
         fun bindItems(undoneTask: TaskModel) {
@@ -44,6 +46,9 @@ class TaskRVAdapter(private var undoneTaskList: List<TaskModel>) :
             } else tvTaskDescription.gone()
 
             tvTaskTitle.text = undoneTask.title
+            tvTaskTitle.setOnClickListener(){
+                it.findNavController().navigate(WorkspaceFragmentDirections.actionWorkspaceFragmentToTaskDetailFragment(undoneTask.taskId,undoneTask.workspaceId))
+            }
 
             cbIsDone.setOnCheckedChangeListener { buttonView, isChecked ->
                 if (isChecked) {

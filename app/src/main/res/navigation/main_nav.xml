@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_homeFragment_to_workspaceFragment"
             app:destination="@id/workspaceFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_taskDetailFragment"
+            app:destination="@id/taskDetailFragment" />
     </fragment>
     <fragment
         android:id="@+id/workspaceFragment"
@@ -28,6 +31,9 @@
         <action
             android:id="@+id/action_workspaceFragment_to_newTaskFragment"
             app:destination="@id/newTaskFragment" />
+        <action
+            android:id="@+id/action_workspaceFragment_to_taskDetailFragment"
+            app:destination="@id/taskDetailFragment" />
     </fragment>
     <fragment
         android:id="@+id/newTaskFragment"
@@ -40,5 +46,26 @@
         <action
             android:id="@+id/action_newTaskFragment_to_workspaceFragment"
             app:destination="@id/workspaceFragment" />
+        <action
+            android:id="@+id/action_newTaskFragment_to_taskDetailFragment"
+            app:destination="@id/taskDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/taskDetailFragment"
+        android:name="com.yamanf.taskman.ui.taskdetail.TaskDetailFragment"
+        android:label="fragment_task_detail"
+        tools:layout="@layout/fragment_task_detail" >
+        <argument
+            android:name="taskId"
+            app:argType="string" />
+        <argument
+            android:name="workspaceId"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_taskDetailFragment_to_workspaceFragment"
+            app:destination="@id/workspaceFragment" />
+        <action
+            android:id="@+id/action_taskDetailFragment_to_newTaskFragment"
+            app:destination="@id/newTaskFragment" />
     </fragment>
 </navigation>

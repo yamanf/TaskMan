@@ -1,5 +1,6 @@
 package com.yamanf.taskman.utils
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.view.View
 import android.widget.ImageView
@@ -11,10 +12,11 @@ import java.util.Date
 
 
 
+@SuppressLint("SimpleDateFormat")
 fun Timestamp?.dateFormatter(): String {
     val date = Date(this!!.seconds * 1000)
     val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
-    val outputFormat = SimpleDateFormat("HH:mm dd/MM/yyyy")
+    val outputFormat = SimpleDateFormat("HH:mm | dd/MM/yyyy")
     val inputDateString = inputFormat.format(date)
     val outputDate = inputFormat.parse(inputDateString)
     return outputFormat.format(outputDate)

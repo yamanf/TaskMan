@@ -8,9 +8,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.annotation.RequiresApi
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.yamanf.taskman.R
 import com.yamanf.taskman.data.TaskModel
+import com.yamanf.taskman.ui.home.HomeFragmentDirections
+import com.yamanf.taskman.ui.workspace.WorkspaceFragmentDirections
 
 
 class SearchRVAdapter(private var searchList: List<TaskModel>) :
@@ -18,24 +22,12 @@ class SearchRVAdapter(private var searchList: List<TaskModel>) :
 
     inner class SearchListViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         private val tvTaskTitle = view.findViewById<TextView>(R.id.tvSearchTaskTitle)
+        private val container = view.findViewById<ConstraintLayout>(R.id.searchItemContainer)
         fun bindItems(task: TaskModel) {
             tvTaskTitle.text = task.title
-            /*
-            TODO("Changing between done and undone is not working")
-            if(!task.isDone){
-                tvTaskTitle.apply {
-                    background = null
-                    setTextColor(Color.parseColor("#000000"))
-                }
-            }else if(task.isDone){
-                tvTaskTitle.apply {
-                    setBackgroundResource(R.drawable.strikethrough)
-                    setTextColor(Color.parseColor("#9E9E9E"))
-                }
+            container.setOnClickListener(){
+                it.findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToTaskDetailFragment(task.taskId,task.workspaceId))
             }
-
-             */
-
         }
     }
 

@@ -15,8 +15,6 @@ import com.yamanf.taskman.utils.Constants
 
 class WorkspaceViewModel(private val firebaseRepository: FirebaseRepository) : ViewModel() {
 
-    private val TAG = "[DEBUG] WorkspaceViewModel"
-
     private var _workspaceDetailsLiveData = MutableLiveData<WorkspaceModel?>()
     val workspaceDetailsLiveData: MutableLiveData<WorkspaceModel?>
         get() = _workspaceDetailsLiveData
@@ -47,7 +45,6 @@ class WorkspaceViewModel(private val firebaseRepository: FirebaseRepository) : V
             .whereEqualTo(Constants.IS_DONE,false)
             .addSnapshotListener {snapshot, e ->
                 if (e != null){
-                    Log.w(TAG,"Listen failed",e)
                     return@addSnapshotListener
                 }
                 if (snapshot != null){
@@ -68,7 +65,6 @@ class WorkspaceViewModel(private val firebaseRepository: FirebaseRepository) : V
             .whereEqualTo(Constants.IS_DONE,true)
             .addSnapshotListener {snapshot, e ->
                 if (e != null){
-                    Log.w(TAG,"Listen failed",e)
                     return@addSnapshotListener
                 }
                 if (snapshot != null){
@@ -83,19 +79,11 @@ class WorkspaceViewModel(private val firebaseRepository: FirebaseRepository) : V
             }
     }
 
-
-    fun addTaskToWorkspace(task: TaskModel, result:(Boolean) -> Unit) {
-        firebaseRepository.addTaskToWorkspace(task){
-            return@addTaskToWorkspace result(it)
-        }
-    }
-
     fun getWorkspaceDetails(workspaceId: String){
         firebaseRepository.getAllWorkspaces()
             .document(workspaceId)
             .addSnapshotListener{ snapshot, e ->
                 if (e != null){
-                    Log.w(TAG,"Listen failed",e)
                     return@addSnapshotListener
                 }
                 if (snapshot != null){
@@ -107,18 +95,14 @@ class WorkspaceViewModel(private val firebaseRepository: FirebaseRepository) : V
 
     fun updateWorkspace(workspaceModel: WorkspaceModel, result:(Boolean)->Unit){
         firebaseRepository.updateWorkspace(workspaceModel){
-            Log.d(TAG, "updateWorkspace")
             return@updateWorkspace result(it)
         }
     }
 
     fun deleteWorkspace(workspaceId: String,result:(Boolean)->Unit){
         firebaseRepository.deleteWorkspace(workspaceId){
-            Log.d(TAG, "deleteWorkspace")
             return@deleteWorkspace result(it)
         }
     }
-
-
 
 }

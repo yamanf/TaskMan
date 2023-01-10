@@ -15,22 +15,4 @@ class Constants {
         const val WORKSPACE_ID = "workspaceId"
         const val TASK_ID = "taskId"
     }
-
-    /*
-    enum class Firestore(val collectionNames:String) {
-        WORKSPACE("workspace"),
-        TASKS("tasks"),
-        USERDATA("userdata"),
-        UIDS("uids"),
-        TITLE("title"),
-        DESCRIPTION("description"),
-        TASKTIME("taskTime"),
-        CREATEDAT("createdAt"),
-        ISDONE("isDone"),
-        ISIMPORTANT("isImportant"),
-        WORKSPACEID("workspaceId"),
-        TASKID("taskId")
-    }
-
-     */
 }

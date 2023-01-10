@@ -15,17 +15,18 @@ import com.yamanf.taskman.MainActivity
 import com.yamanf.taskman.R
 import com.yamanf.taskman.data.LoginModel
 import com.yamanf.taskman.databinding.FragmentLoginBinding
+import com.yamanf.taskman.firebase.FirebaseRepositoryImpl
 import com.yamanf.taskman.ui.auth.AuthViewModel
-
+import com.yamanf.taskman.ui.auth.AuthViewModelFactory
 
 
 class LoginFragment : Fragment(R.layout.fragment_login) {
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
-    val authViewModel: AuthViewModel by viewModels()
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    private val authViewModel: AuthViewModel by viewModels(){
+        AuthViewModelFactory(
+            FirebaseRepositoryImpl()
+        )
     }
 
     override fun onCreateView(

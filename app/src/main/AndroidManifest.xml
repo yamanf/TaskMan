@@ -28,7 +28,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".ui.SplashScreen"
+            android:name=".ui.splash.SplashScreen"
             android:exported="true"
             android:screenOrientation="fullSensor"
             android:theme="@style/Theme.TaskMan">

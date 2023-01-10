@@ -16,13 +16,6 @@ import java.util.EventListener
 
 class FirestoreManager {
     companion object{
-        fun saveUserEmail(uid:String, eMail:String){
-            Firebase.firestore.collection(Constants.USER_DATA).document(uid).set(
-                mapOf(
-                    "eMail" to eMail
-                )
-            )
-        }
 
         fun changeTaskDoneStatus(task:TaskModel,isDone:Boolean, result: (Boolean) -> Unit){
             Firebase.firestore.collection(Constants.TASKS).document(task.taskId).set(

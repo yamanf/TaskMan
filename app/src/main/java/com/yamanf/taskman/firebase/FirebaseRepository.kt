@@ -1,17 +1,25 @@
 package com.yamanf.taskman.firebase
 
+import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
+import com.yamanf.taskman.data.LoginModel
+import com.yamanf.taskman.data.RegisterModel
 import com.yamanf.taskman.data.TaskModel
 import com.yamanf.taskman.data.WorkspaceModel
 
 interface FirebaseRepository {
 
+    fun registerWithEmail(registerModel: RegisterModel, success: (AuthResult) -> Unit, failure: (String) -> Unit)
+    fun logInWithEmail(loginModel: LoginModel, success: (AuthResult) -> Unit, failure: (String) -> Unit)
+    fun isUserLoggedIn():Boolean
     fun getCurrentUserId(): String?
     fun getCurrentUser(): FirebaseUser?
+    fun saveUserEmail(uid:String, eMail:String)
+
     fun getFirebaseAuthInstance(): FirebaseAuth
     fun getFirestoreInstance(): FirebaseFirestore
 

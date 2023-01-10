@@ -24,6 +24,7 @@ import com.yamanf.taskman.ui.adapters.TaskRVAdapter
 import com.yamanf.taskman.ui.workspace.WorkspaceViewModel
 import com.yamanf.taskman.ui.workspace.WorkspaceViewModelFactory
 import com.yamanf.taskman.utils.FirestoreManager
+import com.yamanf.taskman.utils.gone
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -58,6 +59,9 @@ class NewTaskFragment : Fragment(R.layout.fragment_new_task), DatePickerDialog.O
     ): View {
         _binding = FragmentNewTaskBinding.inflate(inflater, container, false)
         workspaceId = args.workspaceId
+
+        binding.cbImportant.gone()// isImportant feature is gonna add later.
+
         binding.btnCalendar.setOnClickListener() {
             pickDate()
         }
@@ -70,6 +74,11 @@ class NewTaskFragment : Fragment(R.layout.fragment_new_task), DatePickerDialog.O
                 addTaskToWorkspace(newTaskModel,view)
             }
         }
+
+        binding.ivBackToWorkspaceButton.setOnClickListener(){
+            it.findNavController().navigate(NewTaskFragmentDirections.actionNewTaskFragmentToWorkspaceFragment(workspaceId))
+        }
+
         return binding.root
     }
 

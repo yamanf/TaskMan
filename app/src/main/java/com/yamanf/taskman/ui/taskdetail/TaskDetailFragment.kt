@@ -73,7 +73,9 @@ class TaskDetailFragment : Fragment() {
             binding.tvTaskTime.text = taskModel.taskTime?.dateFormatter()
         }else binding.tvTaskTime.gone()
 
-
+        binding.ivUpdateButton.setOnClickListener {
+            it.findNavController().navigate(TaskDetailFragmentDirections.actionTaskDetailFragmentToUpdateTaskFragment(taskModel.taskId,taskModel.workspaceId))
+        }
 
         binding.tvTaskCreatedTime.text ="Created at " + taskModel.createdAt?.dateFormatter()
     }

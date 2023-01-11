@@ -18,6 +18,7 @@ import com.yamanf.taskman.databinding.FragmentLoginBinding
 import com.yamanf.taskman.firebase.FirebaseRepositoryImpl
 import com.yamanf.taskman.ui.auth.AuthViewModel
 import com.yamanf.taskman.ui.auth.AuthViewModelFactory
+import com.yamanf.taskman.utils.gone
 
 
 class LoginFragment : Fragment(R.layout.fragment_login) {
@@ -34,6 +35,9 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentLoginBinding.inflate(inflater, container, false)
+
+        binding.llOrLoginWith.gone()// Login with google is gonna add later
+
         binding.btnLogin.setOnClickListener(){
             val eMail = binding.etEmail.text.toString()
             val password = binding.etPassword.text.toString()

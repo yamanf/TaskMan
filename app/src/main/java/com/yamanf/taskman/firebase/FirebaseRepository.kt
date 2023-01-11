@@ -19,11 +19,13 @@ interface FirebaseRepository {
     fun getCurrentUserId(): String?
     fun getCurrentUser(): FirebaseUser?
     fun saveUserEmail(uid:String, eMail:String)
+    fun logOut()
 
     fun getFirebaseAuthInstance(): FirebaseAuth
     fun getFirestoreInstance(): FirebaseFirestore
 
     fun createWorkspace(workspace: WorkspaceModel, result:(Boolean) -> Unit)
+    fun createFirstWorkspace(result:(Boolean) -> Unit)
     fun updateWorkspace(workspace: WorkspaceModel, result:(Boolean) -> Unit)
     fun deleteWorkspace(workspaceId:String,result:(Boolean) -> Unit)
     fun getAllWorkspaces(): CollectionReference

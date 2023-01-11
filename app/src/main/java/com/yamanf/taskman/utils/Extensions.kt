@@ -10,8 +10,6 @@ import com.google.firebase.Timestamp
 import java.text.SimpleDateFormat
 import java.util.Date
 
-
-
 @SuppressLint("SimpleDateFormat")
 fun Timestamp?.dateFormatter(): String {
     val date = Date(this!!.seconds * 1000)

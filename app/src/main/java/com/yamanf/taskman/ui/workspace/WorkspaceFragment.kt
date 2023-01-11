@@ -17,6 +17,8 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.MobileAds
 import com.google.firebase.Timestamp
 import com.yamanf.taskman.R
 import com.yamanf.taskman.data.TaskModel
@@ -49,6 +51,12 @@ class WorkspaceFragment() : Fragment(R.layout.fragment_workspace) {
     ): View? {
         _binding = FragmentWorkspaceBinding.inflate(inflater, container, false)
         workspaceId = args.workspaceId
+        configureView()
+        configureAdMob()
+        return binding.root
+    }
+
+    private fun configureView(){
         workspaceViewModel.getWorkspaceDetails(workspaceId)
         workspaceViewModel.workspaceDetailsLiveData.observe(viewLifecycleOwner) {
             if (it != null) {
@@ -109,7 +117,13 @@ class WorkspaceFragment() : Fragment(R.layout.fragment_workspace) {
             showMenu(it)
         }
 
-        return binding.root
+    }
+
+
+    private fun configureAdMob() {
+        MobileAds.initialize(requireContext()) {}
+        val adRequest = AdRequest.Builder().build()
+        binding.adView.loadAd(adRequest)
     }
 
     private fun showMenu(view: View) {

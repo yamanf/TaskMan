@@ -16,6 +16,7 @@ import com.yamanf.taskman.databinding.FragmentRegisterBinding
 import com.yamanf.taskman.firebase.FirebaseRepositoryImpl
 import com.yamanf.taskman.ui.auth.AuthViewModel
 import com.yamanf.taskman.ui.auth.AuthViewModelFactory
+import com.yamanf.taskman.utils.gone
 
 
 class RegisterFragment : Fragment(R.layout.fragment_register) {
@@ -36,6 +37,8 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentRegisterBinding.inflate(inflater, container, false)
+
+        binding.llOrLoginWith.gone()// Login with google is gonna add later
 
         binding.btnRegister.setOnClickListener(){
            register()

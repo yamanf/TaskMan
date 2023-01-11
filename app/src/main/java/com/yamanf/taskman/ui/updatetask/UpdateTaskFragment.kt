@@ -14,6 +14,8 @@ import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.MobileAds
 import com.google.firebase.Timestamp
 import com.yamanf.taskman.R
 import com.yamanf.taskman.data.TaskModel
@@ -63,6 +65,8 @@ class UpdateTaskFragment : Fragment(R.layout.fragment_update_task), DatePickerDi
             configureView(taskModel)
         }
 
+        configureAdMob()
+
 
         return binding.root
     }
@@ -108,6 +112,12 @@ class UpdateTaskFragment : Fragment(R.layout.fragment_update_task), DatePickerDi
 
         }
 
+    }
+
+    private fun configureAdMob() {
+        MobileAds.initialize(requireContext()) {}
+        val adRequest = AdRequest.Builder().build()
+        binding.adView.loadAd(adRequest)
     }
 
     private fun deleteTaskDialog() {

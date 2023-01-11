@@ -1,6 +1,7 @@
 package com.yamanf.taskman.firebase
 
 import android.util.Log
+import com.google.firebase.Timestamp
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -41,16 +42,20 @@ class FirebaseRepositoryImpl : FirebaseRepository {
                     firebaseAuth.createUserWithEmailAndPassword(
                         registerModel.eMail,
                         registerModel.password
-                    ).addOnSuccessListener {
-                        saveUserEmail(it.user!!.uid, registerModel.eMail)
-                        success(it)
+                    ).addOnSuccessListener {authResult->
+                        saveUserEmail(authResult.user!!.uid, registerModel.eMail)
+                        createFirstWorkspace {
+                            if (it){
+                                success(authResult)
+                            }else failure("First workspace couldn't created.")
+                        }
+
                     }.addOnFailureListener {
                         failure(it.localizedMessage!!.toString())
                     }
                 } else failure("You should accept the terms.")
             } else failure("Passwords should be same.")
         }
-
     }
 
     override fun logInWithEmail(
@@ -61,7 +66,7 @@ class FirebaseRepositoryImpl : FirebaseRepository {
         if(loginModel.eMail== ""||loginModel.password== ""){
             failure("Please fill the areas.")
         }else{
-            Firebase.auth.signInWithEmailAndPassword(loginModel.eMail, loginModel.password).addOnSuccessListener {
+            firebaseAuth.signInWithEmailAndPassword(loginModel.eMail, loginModel.password).addOnSuccessListener {
                 success(it)
             } .addOnFailureListener {
                 failure(it.localizedMessage!!.toString())
@@ -70,7 +75,7 @@ class FirebaseRepositoryImpl : FirebaseRepository {
     }
 
     override fun saveUserEmail(uid:String, eMail:String){
-        Firebase.firestore.collection(Constants.USER_DATA).document(uid).set(
+        firestore.collection(Constants.USER_DATA).document(uid).set(
             mapOf(
                 "eMail" to eMail
             )
@@ -79,6 +84,10 @@ class FirebaseRepositoryImpl : FirebaseRepository {
 
     override fun isUserLoggedIn():Boolean{
         return Firebase.auth.currentUser != null
+    }
+
+    override fun logOut() {
+        Firebase.auth.signOut()
     }
 
 
@@ -104,6 +113,28 @@ class FirebaseRepositoryImpl : FirebaseRepository {
             return@addOnSuccessListener result(true)
         }.addOnFailureListener {
             Log.d(TAG, "createWorkspace: failed " + it.message)
+            return@addOnFailureListener result(false)
+        }
+    }
+
+    override fun createFirstWorkspace(result: (Boolean) -> Unit) {
+        firestore.collection(Constants.WORKSPACE).add(
+            mapOf(Constants.TITLE to Constants.DAILY_TASKS)
+        ).addOnSuccessListener {
+            var uid = getCurrentUserId()
+            val uids: ArrayList<String> = arrayListOf(uid)
+            Firebase.firestore.collection(Constants.WORKSPACE).document(it.id).set(
+                hashMapOf(
+                    Constants.WORKSPACE_ID to it.id,
+                    Constants.CREATED_AT to Timestamp.now(),
+                    Constants.TITLE to Constants.DAILY_TASKS,
+                    Constants.UIDS to uids,
+                )
+            )
+            Log.d(TAG, "createFirstWorkspace: successfully")
+            return@addOnSuccessListener result(true)
+        }.addOnFailureListener {
+            Log.d(TAG, "createFirstWorkspace: failed " + it.message)
             return@addOnFailureListener result(false)
         }
     }

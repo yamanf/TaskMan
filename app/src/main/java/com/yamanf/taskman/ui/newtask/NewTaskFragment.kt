@@ -15,6 +15,8 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.MobileAds
 import com.google.firebase.Timestamp
 import com.yamanf.taskman.R
 import com.yamanf.taskman.data.TaskModel
@@ -58,8 +60,15 @@ class NewTaskFragment : Fragment(R.layout.fragment_new_task), DatePickerDialog.O
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         _binding = FragmentNewTaskBinding.inflate(inflater, container, false)
-        workspaceId = args.workspaceId
 
+        workspaceId = args.workspaceId
+        configureView()
+        configureAdMob()
+
+        return binding.root
+    }
+
+    private fun configureView() {
         binding.cbImportant.gone()// isImportant feature is gonna add later.
 
         binding.btnCalendar.setOnClickListener() {
@@ -71,15 +80,22 @@ class NewTaskFragment : Fragment(R.layout.fragment_new_task), DatePickerDialog.O
 
         binding.btnCreateTask.setOnClickListener() { view ->
             prepareNewTaskModel { newTaskModel ->
-                addTaskToWorkspace(newTaskModel,view)
+                addTaskToWorkspace(newTaskModel, view)
             }
         }
 
-        binding.ivBackToWorkspaceButton.setOnClickListener(){
-            it.findNavController().navigate(NewTaskFragmentDirections.actionNewTaskFragmentToWorkspaceFragment(workspaceId))
+        binding.ivBackToWorkspaceButton.setOnClickListener() {
+            it.findNavController().navigate(
+                NewTaskFragmentDirections.actionNewTaskFragmentToWorkspaceFragment(workspaceId)
+            )
         }
 
-        return binding.root
+    }
+
+    private fun configureAdMob() {
+        MobileAds.initialize(requireContext()) {}
+        val adRequest = AdRequest.Builder().build()
+        binding.adView.loadAd(adRequest)
     }
 
     private fun prepareNewTaskModel(newTaskModel: (TaskModel) -> Unit) {
@@ -117,7 +133,7 @@ class NewTaskFragment : Fragment(R.layout.fragment_new_task), DatePickerDialog.O
 
     }
 
-    private fun addTaskToWorkspace(newTaskModel:TaskModel,view: View){
+    private fun addTaskToWorkspace(newTaskModel: TaskModel, view: View) {
         newTaskViewModel.addTaskToWorkspace(newTaskModel) { result ->
             if (result) {
                 Toast.makeText(

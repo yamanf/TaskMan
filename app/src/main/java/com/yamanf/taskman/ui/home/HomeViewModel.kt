@@ -98,4 +98,8 @@ class HomeViewModel(private val firebaseRepository: FirebaseRepository) : ViewMo
                 _searchTaskLiveData.value = taskList
             }
     }
+
+    fun logOut(){
+        firebaseRepository.logOut()
+    }
 }

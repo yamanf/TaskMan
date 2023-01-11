@@ -12,6 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TaskMan"
         tools:targetApi="31">
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-9880735483105969~7754604034"/>
         <activity
             android:name=".ui.onboarding.OnboardingActivity"
             android:exported="false">

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/menuCreateWorkspace"
+        android:menuCategory="container"
+        android:icon="@drawable/ic_baseline_logout_24"
+        android:title="@string/create_workspace" />
+
+    <item
+        android:id="@+id/menuLogOut"
+        android:menuCategory="container"
+        android:icon="@drawable/ic_baseline_logout_24"
+        android:title="@string/log_out" />
+
+</menu>

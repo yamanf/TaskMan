@@ -14,5 +14,9 @@ class Constants {
         const val IS_IMPORTANT = "isImportant"
         const val WORKSPACE_ID = "workspaceId"
         const val TASK_ID = "taskId"
+
+        const val DAILY_TASKS = "Daily Tasks"
+
+        const val BANNER_TEST_ID = "ca-app-pub-3940256099942544/6300978111"
     }
 }

@@ -19,6 +19,7 @@ interface FirebaseRepository {
     fun getCurrentUserId(): String?
     fun getCurrentUser(): FirebaseUser?
     fun saveUserEmail(uid:String, eMail:String)
+    fun updateDisplayName(username:String,result:(Boolean) -> Unit)
     fun logOut()
 
     fun getFirebaseAuthInstance(): FirebaseAuth

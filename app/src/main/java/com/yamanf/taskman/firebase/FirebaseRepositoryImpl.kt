@@ -6,6 +6,7 @@ import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.auth.ktx.userProfileChangeRequest
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
@@ -44,12 +45,15 @@ class FirebaseRepositoryImpl : FirebaseRepository {
                         registerModel.password
                     ).addOnSuccessListener {authResult->
                         saveUserEmail(authResult.user!!.uid, registerModel.eMail)
-                        createFirstWorkspace {
-                            if (it){
-                                success(authResult)
-                            }else failure("First workspace couldn't created.")
+                        val user = getCurrentUser()
+                        user!!.sendEmailVerification()
+                            .addOnCompleteListener {
+                            createFirstWorkspace {
+                                if (it){
+                                    success(authResult)
+                                }else failure("First workspace couldn't created.")
+                            }
                         }
-
                     }.addOnFailureListener {
                         failure(it.localizedMessage!!.toString())
                     }
@@ -80,6 +84,18 @@ class FirebaseRepositoryImpl : FirebaseRepository {
                 "eMail" to eMail
             )
         )
+    }
+
+    override fun updateDisplayName(username: String, result: (Boolean) -> Unit) {
+        val user = getCurrentUser()
+        val profileUpdates = userProfileChangeRequest {
+            displayName = username
+        }
+        user!!.updateProfile(profileUpdates).addOnSuccessListener{
+            return@addOnSuccessListener result(true)
+        }.addOnFailureListener {
+            return@addOnFailureListener result(false)
+        }
     }
 
     override fun isUserLoggedIn():Boolean{

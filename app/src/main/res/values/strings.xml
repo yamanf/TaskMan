@@ -28,4 +28,13 @@
     <string name="delete_workspace">Delete workspace</string>
     <string name="log_out">Log out</string>
     <string name="create_workspace">Create workspace</string>
+    <string name="there_is_nothing_to_see">There is nothing to see.</string>
+    <string name="create_a_new_workspace">Create a new workspace.</string>
+    <string name="create_a_new_task">Create a new task</string>
+    <string name="description">Description:</string>
+    <string name="title">Title:</string>
+    <string name="password">Password</string>
+    <string name="open">Open</string>
+    <string name="close">Close</string>
+    <string name="delete_account">Delete account</string>
 </resources>

@@ -61,6 +61,7 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
         authViewModel.registerWithEmail(registerModel,
             {
                 startActivity(Intent(requireContext(), MainActivity::class.java))
+                activity?.finish()
             },{
                 Toast.makeText(requireContext(),it,Toast.LENGTH_SHORT).show()
             })

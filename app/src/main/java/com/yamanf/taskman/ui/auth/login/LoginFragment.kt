@@ -46,6 +46,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
             authViewModel.loginWithEmail(loginModel,
                 {
                     startActivity(Intent(requireContext(), MainActivity::class.java))
+                    activity?.finish()
                 },{
                     Toast.makeText(requireContext(),it, Toast.LENGTH_SHORT).show()
                 })

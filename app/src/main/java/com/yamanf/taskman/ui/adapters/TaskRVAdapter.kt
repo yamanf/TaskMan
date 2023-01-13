@@ -16,10 +16,7 @@ import com.yamanf.taskman.R
 import com.yamanf.taskman.data.TaskModel
 import com.yamanf.taskman.ui.home.HomeFragmentDirections
 import com.yamanf.taskman.ui.workspace.WorkspaceFragmentDirections
-import com.yamanf.taskman.utils.FirestoreManager
-import com.yamanf.taskman.utils.dateFormatter
-import com.yamanf.taskman.utils.gone
-import com.yamanf.taskman.utils.visible
+import com.yamanf.taskman.utils.*
 import java.util.*
 
 class TaskRVAdapter(private var undoneTaskList: List<TaskModel>) :
@@ -40,12 +37,16 @@ class TaskRVAdapter(private var undoneTaskList: List<TaskModel>) :
                 tvTaskTime.text = undoneTask.taskTime?.dateFormatter()
             } else tvTaskTime.visibility = View.GONE
 
+            tvTaskTitle.text = undoneTask.title
             if (undoneTask.isExpanded && undoneTask.description.isNotBlank()) {
                 tvTaskDescription.visible()
+                tvTaskTitle.maxLines = Constants.MAX_TASK_TITLE_LINE
                 tvTaskDescription.text = undoneTask.description
-            } else tvTaskDescription.gone()
+            } else {
+                tvTaskDescription.gone()
+                tvTaskTitle.maxLines = Constants.MIN_TASK_TITLE_LINE
+            }
 
-            tvTaskTitle.text = undoneTask.title
             tvTaskTitle.setOnClickListener(){
                 it.findNavController().navigate(WorkspaceFragmentDirections.actionWorkspaceFragmentToTaskDetailFragment(undoneTask.taskId,undoneTask.workspaceId))
             }

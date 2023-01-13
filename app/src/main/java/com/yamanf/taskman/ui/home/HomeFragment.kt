@@ -10,8 +10,13 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.PopupMenu
+import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
@@ -56,6 +61,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     }
 
     private fun configureView() {
+        binding.llNothing.gone()
         binding.searchEditText.addTextChangedListener(textWatcher)
 
         binding.ivMenuButton.setOnClickListener {
@@ -71,13 +77,16 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 binding.rvSearch.gone()
                 binding.fabCreateWorkSpace.visible()
                 binding.rvMain.visible()
+                observeWorkspaceListAndFillWorkspaceRV()
             }
         }
 
         homeViewModel.getUserWorkspaces()
-        observeWorkspaceListAndFillWorkspaceRV()
 
         binding.fabCreateWorkSpace.setOnClickListener {
+            createNewWorkspace()
+        }
+        binding.tvCreateNewWorkspace.setOnClickListener(){
             createNewWorkspace()
         }
     }
@@ -89,22 +98,79 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     }
 
     private fun showMenu(view: View) {
-        val popupMenu = PopupMenu(requireContext(), view)
-        popupMenu.inflate(R.menu.home_menu)
-        popupMenu.setOnMenuItemClickListener { item: MenuItem? ->
+        val toggle =  ActionBarDrawerToggle(requireActivity(), binding.homeDrawer,R.string.open, R.string.close)
+        binding.homeDrawer.addDrawerListener(toggle)
+        toggle.syncState()
+        binding.homeDrawer.openDrawer(GravityCompat.START)
+        val btnCreateWorkspace = binding.navView.rootView.findViewById<Button>(R.id.btnCreateWorkspace)
+        val btnLogout = binding.navView.rootView.findViewById<Button>(R.id.btnLogOut)
+        val tvDeleteAccount = binding.navView.rootView.findViewById<TextView>(R.id.tvDeleteAccount)
+        btnCreateWorkspace.setOnClickListener {
+            createNewWorkspace()
+        }
+        btnLogout.setOnClickListener {
+            homeViewModel.logOut()
+            startActivity(Intent(requireContext(),AuthActivity::class.java))
+            activity?.finish()
+        }
+        updateUserdata()
+    }
 
-            when (item!!.itemId) {
-                R.id.menuCreateWorkspace -> {
-                    createNewWorkspace()
-                }
-                R.id.menuLogOut -> {
-                    homeViewModel.logOut()
-                    startActivity(Intent(requireContext(), AuthActivity::class.java))
+    private fun updateUserdata(){
+        val tvUsername = binding.navView.rootView.findViewById<TextView>(R.id.tvUsername)
+        val tvEmail = binding.navView.rootView.findViewById<TextView>(R.id.tvEmail)
+        val btnChangeUsername = binding.navView.rootView.findViewById<Button>(R.id.btnChangeUsername)
+        homeViewModel.getCurrentUser()?.let { user ->
+            if (user.displayName.isNullOrBlank()){
+                tvUsername.text = user.email!!.split("@")[0]
+            }else tvUsername.text = user.displayName
+            tvEmail.text = user.email
+        }
+        btnChangeUsername.setOnClickListener {
+            changeUsernameDialog {
+                if (it){
+                    homeViewModel.getCurrentUser()?.let { user ->
+                        if (user.displayName.isNullOrBlank()){
+                            tvUsername.text = user.email!!.split("@")[0]
+                        }else tvUsername.text = user.displayName
+                        tvEmail.text = user.email
+                    }
                 }
             }
-            true
         }
-        popupMenu.show()
+        tvUsername.setOnLongClickListener {
+            changeUsernameDialog {
+                if (it){
+                    homeViewModel.getCurrentUser()?.let { user ->
+                        if (user.displayName.isNullOrBlank()){
+                            tvUsername.text = user.email!!.split("@")[0]
+                        }else tvUsername.text = user.displayName
+                        tvEmail.text = user.email
+                    }
+                }
+            }
+            return@setOnLongClickListener true
+        }
+    }
+
+    private fun changeUsernameDialog(result:(Boolean)->Unit){
+        Utils.showEditTextDialog(
+            "Change username",
+            "Enter a new username",
+            "Change",
+            layoutInflater,
+            requireContext()
+        ) { username ->
+            if (username.isNotBlank()&&username.length<= Constants.MAX_USERNAME_LENGTH) {
+                homeViewModel.updateUsername(username){
+                     return@updateUsername result(it)
+                }
+            } else if (username.isBlank()){
+                Toast.makeText(requireContext(), "Username cannot be empty!", Toast.LENGTH_SHORT).show()
+            } else if (username.length> Constants.MAX_WORKSPACE_TITLE_LENGTH){
+                Toast.makeText(requireContext(), "Username cannot be longer than ${Constants.MAX_WORKSPACE_TITLE_LENGTH} characters!", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     private val textWatcher: TextWatcher = object : TextWatcher {
@@ -136,7 +202,13 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                         filteredList.add(currentItem)
                     }
                 }
-                configureSearchRecyclerView(filteredList)
+                if(filteredList.isNotEmpty()){
+                    configureSearchRecyclerView(filteredList)
+                    binding.llNothing.gone()
+                }else{
+                    binding.llNothing.visible()
+                    binding.tvCreateNewWorkspace.gone()
+                }
             }
         }
     }
@@ -145,7 +217,13 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         homeViewModel.getUserWorkspaces()
         homeViewModel.workspaceListLiveData.observe(viewLifecycleOwner) { workspaceList ->
             if (workspaceList != null) {
-                configureWorkspaceRecyclerView(workspaceList as ArrayList<WorkspaceModel>)
+                if (workspaceList.isNotEmpty()){
+                    binding.llNothing.gone()
+                    configureWorkspaceRecyclerView(workspaceList as ArrayList<WorkspaceModel>)
+                }else{
+                    binding.llNothing.visible()
+                    binding.tvCreateNewWorkspace.visible()
+                }
             }
         }
     }
@@ -159,28 +237,23 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             layoutInflater,
             requireContext()
         ) { Title ->
-            if (Title.isNotBlank()) {
+            if (Title.isNotBlank()&&Title.length<= Constants.MAX_WORKSPACE_TITLE_LENGTH) {
                 val timestamp = Timestamp.now()
                 val newWorkspace = WorkspaceModel(
                     title = Title, createdAt = timestamp
                 )
                 homeViewModel.createNewWorkspace(newWorkspace) { result ->
                     if (result) {
-                        Toast.makeText(
-                            requireContext(), "Workspace created successfully.", Toast.LENGTH_SHORT
-                        ).show()
+                        Toast.makeText(requireContext(), "Workspace created successfully.", Toast.LENGTH_SHORT).show()
                         observeWorkspaceListAndFillWorkspaceRV()
                         binding.rvMain.adapter?.notifyDataSetChanged()
-                    } else Toast.makeText(
-                        requireContext(), "Workspace cannot created.", Toast.LENGTH_SHORT
-                    ).show()
+                    } else Toast.makeText(requireContext(), "Workspace cannot created.", Toast.LENGTH_SHORT).show()
                 }
-            } else Toast.makeText(
-                requireContext(),
-                "Workspace title cannot be empty!",
-                Toast.LENGTH_SHORT
-            )
-                .show()
+            } else if (Title.isBlank()){
+                Toast.makeText(requireContext(), "Workspace title cannot be empty!", Toast.LENGTH_SHORT).show()
+            } else if (Title.length> Constants.MAX_WORKSPACE_TITLE_LENGTH){
+                Toast.makeText(requireContext(), "Workspace title cannot be longer than ${Constants.MAX_WORKSPACE_TITLE_LENGTH} characters!", Toast.LENGTH_SHORT).show()
+            }
 
         }
     }

@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.newtask.NewTaskFragment">
+    tools:context=".ui.newtask.NewTaskFragment"
+    android:background="@color/cream">
 
     <LinearLayout
         android:id="@+id/topBarNewTask"
@@ -37,56 +38,74 @@
 
     </LinearLayout>
 
-    <EditText
-        android:id="@+id/etTaskTitle"
+    <LinearLayout
+        android:id="@+id/llEditTexts"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="16dp"
+        android:layout_height="0dp"
         android:layout_marginTop="16dp"
-        android:hint="@string/task_title"
-        app:layout_constraintTop_toBottomOf="@id/topBarNewTask" />
-
-    <EditText
-        android:id="@+id/etTaskDescription"
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
         android:layout_marginHorizontal="16dp"
-        android:layout_marginTop="8dp"
-        android:ems="10"
-        android:gravity="start|top"
-        android:hint="@string/task_description"
-        android:inputType="textMultiLine"
-        android:minHeight="150dp"
-        app:layout_constraintTop_toBottomOf="@id/etTaskTitle" />
+        app:layout_constraintTop_toBottomOf="@id/topBarNewTask"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/title"
+            android:fontFamily="@font/montserrat"/>
+        <EditText
+            android:id="@+id/etTaskTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLines="5"
+            app:layout_constraintTop_toBottomOf="@id/topBarUpdateTask"
+            android:hint="@string/task_title"
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/description"
+            android:fontFamily="@font/montserrat"/>
+
+        <EditText
+            android:id="@+id/etTaskDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxHeight="350dp"
+            app:layout_constraintTop_toBottomOf="@id/etTaskTitle"
+            android:ems="10"
+            android:gravity="start|top"
+            android:inputType="textMultiLine"
+            android:hint="@string/task_description"/>
+
+    </LinearLayout>
 
     <CheckBox
         android:id="@+id/cbImportant"
+        android:button="@drawable/important_selector"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:button="@drawable/important_selector"
-        app:layout_constraintStart_toStartOf="@+id/etTaskDescription"
-        app:layout_constraintTop_toBottomOf="@+id/etTaskDescription" />
+        app:layout_constraintTop_toBottomOf="@+id/llEditTexts"
+        app:layout_constraintStart_toStartOf="@+id/llEditTexts"
+        />
 
     <ImageView
         android:id="@+id/btnCalendar"
+        android:src="@drawable/ic_baseline_edit_calendar_24"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingVertical="12dp"
         android:paddingStart="12dp"
         android:paddingEnd="6dp"
-        android:src="@drawable/ic_baseline_edit_calendar_24"
-        app:layout_constraintStart_toEndOf="@+id/cbImportant"
-        app:layout_constraintTop_toBottomOf="@+id/etTaskDescription"
-        app:layout_constraintTop_toTopOf="@+id/cbImportant" />
+        app:layout_constraintTop_toBottomOf="@+id/llEditTexts"
+        app:layout_constraintStart_toEndOf="@+id/cbImportant"/>
 
     <TextView
         android:id="@+id/tvTaskTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/select_date"
+        app:layout_constraintTop_toTopOf="@+id/btnCalendar"
         app:layout_constraintBottom_toBottomOf="@id/btnCalendar"
-        app:layout_constraintStart_toEndOf="@+id/btnCalendar"
-        app:layout_constraintTop_toTopOf="@+id/btnCalendar" />
+        app:layout_constraintStart_toEndOf="@+id/btnCalendar" />
 
     <Button
         android:id="@+id/btnCreateTask"
@@ -96,14 +115,11 @@
         android:fontFamily="@font/montserrat"
         android:text="@string/create"
         android:textSize="12sp"
+        android:backgroundTint="@color/green"
         app:layout_constraintBottom_toBottomOf="@id/btnCalendar"
-        app:layout_constraintEnd_toEndOf="@+id/etTaskDescription"
+        app:layout_constraintEnd_toEndOf="@+id/llEditTexts"
         app:layout_constraintTop_toTopOf="@+id/btnCalendar" />
 
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="20dp"
-        app:layout_constraintTop_toBottomOf="@id/cbImportant" />
 
     <com.google.android.gms.ads.AdView
         android:id="@+id/adView"

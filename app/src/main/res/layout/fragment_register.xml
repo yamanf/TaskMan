@@ -38,6 +38,8 @@
         android:hint="@string/e_mail_address"
         app:layout_constraintTop_toBottomOf="@+id/tvCreate"
         app:layout_constraintStart_toStartOf="@id/tvCreate"
+        app:boxCornerRadiusTopStart="15dp"
+        app:boxCornerRadiusBottomEnd="15dp"
         android:layout_marginTop="30dp"
         android:layout_marginHorizontal="20dp">
 
@@ -45,7 +47,6 @@
             android:id="@+id/etEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/etcustom"
             android:inputType="textEmailAddress"
             android:textSize="15sp"
             android:fontFamily="@font/poppins"/>
@@ -58,9 +59,11 @@
         android:id="@+id/passwordTextField"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Password"
+        android:hint="@string/password"
         app:passwordToggleEnabled="true"
         app:passwordToggleTint="#B4B4B4"
+        app:boxCornerRadiusTopStart="15dp"
+        app:boxCornerRadiusBottomEnd="15dp"
         app:layout_constraintTop_toBottomOf="@+id/emailTextField"
         android:layout_marginTop="20dp"
         android:layout_marginHorizontal="20dp">
@@ -69,7 +72,6 @@
             android:id="@+id/etPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/etcustom"
             android:inputType="textPassword"
             android:fontFamily="@font/poppins"
             android:textSize="15sp"/>
@@ -84,6 +86,8 @@
         app:passwordToggleEnabled="true"
         app:passwordToggleTint="#B4B4B4"
         app:layout_constraintTop_toBottomOf="@+id/passwordTextField"
+        app:boxCornerRadiusTopStart="15dp"
+        app:boxCornerRadiusBottomEnd="15dp"
         android:layout_marginTop="20dp"
         android:layout_marginHorizontal="20dp">
 
@@ -91,7 +95,6 @@
             android:id="@+id/etPasswordRepeat"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/etcustom"
             android:inputType="textPassword"
             android:fontFamily="@font/poppins"
             android:textSize="15sp"/>
@@ -121,7 +124,7 @@
     <Button
         android:id="@+id/btnRegister"
         style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-        android:backgroundTint="@color/orange"
+        android:backgroundTint="@color/green"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/register"
@@ -194,7 +197,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins"
             android:textSize="15sp"
-            android:textColor="@color/orange"
+            android:textColor="@color/green"
             android:text="@string/log_in"/>
     </LinearLayout>
 

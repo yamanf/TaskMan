@@ -86,6 +86,9 @@ class WorkspaceFragment() : Fragment(R.layout.fragment_workspace) {
         binding.ivDoneRVDrawer.setOnClickListener {
             workspaceViewModel.changeIsDoneRVExpand()
         }
+        binding.tvDone.setOnClickListener{
+            workspaceViewModel.changeIsDoneRVExpand()
+        }
 
         workspaceViewModel.isDoneRVExpandedLiveData.observe(viewLifecycleOwner){
             if (it) {
@@ -113,7 +116,7 @@ class WorkspaceFragment() : Fragment(R.layout.fragment_workspace) {
                 )
         }
 
-        binding.tvCreateNewTask.setOnClickListener(){
+        binding.llNothing.setOnClickListener(){
             it.findNavController()
                 .navigate(
                     WorkspaceFragmentDirections.actionWorkspaceFragmentToNewTaskFragment(

@@ -20,12 +20,6 @@ fun Timestamp?.dateFormatter(): String {
     return outputFormat.format(outputDate)
 }
 
-fun ImageView.loadImage(url: String) {
-    Glide.with(this)
-        .load(url)
-        .into(this)
-}
-
 fun View.visible() {
     this.visibility = View.VISIBLE
 }

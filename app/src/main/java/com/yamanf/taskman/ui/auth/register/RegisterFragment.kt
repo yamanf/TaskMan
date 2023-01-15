@@ -43,11 +43,13 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
         binding.btnRegister.setOnClickListener(){
            register()
         }
-
+/*
         binding.tvLogin.setOnClickListener(){
             val navController= Navigation.findNavController(requireActivity(),R.id.fragmentContainerView)
             navController.navigate(R.id.loginFragment)
         }
+
+ */
 
         return binding.root
     }

@@ -48,7 +48,7 @@ class FirebaseRepositoryImpl : FirebaseRepository {
                         val user = getCurrentUser()
                         user!!.sendEmailVerification()
                             .addOnCompleteListener {
-                            createFirstWorkspace {
+                            createFirstWorkspace() {
                                 if (it){
                                     success(authResult)
                                 }else failure("First workspace couldn't created.")
@@ -85,6 +85,7 @@ class FirebaseRepositoryImpl : FirebaseRepository {
             )
         )
     }
+
 
     override fun updateDisplayName(username: String, result: (Boolean) -> Unit) {
         val user = getCurrentUser()
@@ -137,7 +138,7 @@ class FirebaseRepositoryImpl : FirebaseRepository {
         firestore.collection(Constants.WORKSPACE).add(
             mapOf(Constants.TITLE to Constants.DAILY_TASKS)
         ).addOnSuccessListener {
-            var uid = getCurrentUserId()
+            val uid = getCurrentUserId()
             val uids: ArrayList<String> = arrayListOf(uid)
             Firebase.firestore.collection(Constants.WORKSPACE).document(it.id).set(
                 hashMapOf(

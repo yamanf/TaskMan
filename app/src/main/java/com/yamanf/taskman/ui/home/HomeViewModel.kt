@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.yamanf.taskman.data.TaskModel
@@ -110,5 +111,15 @@ class HomeViewModel(private val firebaseRepository: FirebaseRepository) : ViewMo
     }
     fun logOut(){
         firebaseRepository.logOut()
+    }
+
+    fun deleteUser(result: (Boolean) -> Unit){
+        val user = firebaseRepository.getCurrentUser()
+        user!!.delete()
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    return@addOnCompleteListener result(true)
+                }
+            }
     }
 }

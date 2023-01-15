@@ -28,7 +28,7 @@ class SplashScreen : AppCompatActivity() {
         val onBoarding: SharedPreferences = getSharedPreferences("onBoardingScreen", MODE_PRIVATE)
         val isFirstTime = onBoarding.getBoolean("firstTime",true)
 
-        binding.splashLogo.animate().setDuration(1000).alpha(1f).withEndAction(){
+        binding.splashLoadingBar.animate().setDuration(1000).alpha(1f).withEndAction(){
             if (splashScreenViewModel.isUserLoggedIn() && !isFirstTime){
                 startActivity(Intent(this@SplashScreen,MainActivity::class.java))
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)

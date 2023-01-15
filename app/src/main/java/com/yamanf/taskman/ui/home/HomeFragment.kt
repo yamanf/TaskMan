@@ -1,6 +1,7 @@
 package com.yamanf.taskman.ui.home
 
 import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
@@ -25,6 +26,8 @@ import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
 import com.google.android.gms.ads.MobileAds
 import com.google.firebase.Timestamp
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import com.yamanf.taskman.MainActivity
 import com.yamanf.taskman.R
 import com.yamanf.taskman.data.TaskModel
@@ -34,6 +37,7 @@ import com.yamanf.taskman.firebase.FirebaseRepositoryImpl
 import com.yamanf.taskman.ui.adapters.MainRVAdapter
 import com.yamanf.taskman.ui.adapters.SearchRVAdapter
 import com.yamanf.taskman.ui.auth.AuthActivity
+import com.yamanf.taskman.ui.workspace.WorkspaceFragmentDirections
 import com.yamanf.taskman.utils.*
 import java.util.*
 import kotlin.collections.ArrayList
@@ -73,12 +77,19 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 binding.rvSearch.visible()
                 binding.fabCreateWorkSpace.gone()
                 binding.rvMain.gone()
+                binding.searchCancel.visible()
             } else {
                 binding.rvSearch.gone()
                 binding.fabCreateWorkSpace.visible()
                 binding.rvMain.visible()
+                binding.searchCancel.gone()
                 observeWorkspaceListAndFillWorkspaceRV()
             }
+        }
+
+        binding.searchCancel.setOnClickListener {
+            homeViewModel.changeIsSearchInActive()
+            binding.searchEditText.text = null
         }
 
         homeViewModel.getUserWorkspaces()
@@ -86,7 +97,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         binding.fabCreateWorkSpace.setOnClickListener {
             createNewWorkspace()
         }
-        binding.tvCreateNewWorkspace.setOnClickListener(){
+        binding.llNothing.setOnClickListener() {
             createNewWorkspace()
         }
     }
@@ -98,11 +109,17 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     }
 
     private fun showMenu(view: View) {
-        val toggle =  ActionBarDrawerToggle(requireActivity(), binding.homeDrawer,R.string.open, R.string.close)
+        val toggle = ActionBarDrawerToggle(
+            requireActivity(),
+            binding.homeDrawer,
+            R.string.open,
+            R.string.close
+        )
         binding.homeDrawer.addDrawerListener(toggle)
         toggle.syncState()
         binding.homeDrawer.openDrawer(GravityCompat.START)
-        val btnCreateWorkspace = binding.navView.rootView.findViewById<Button>(R.id.btnCreateWorkspace)
+        val btnCreateWorkspace =
+            binding.navView.rootView.findViewById<Button>(R.id.btnCreateWorkspace)
         val btnLogout = binding.navView.rootView.findViewById<Button>(R.id.btnLogOut)
         val tvDeleteAccount = binding.navView.rootView.findViewById<TextView>(R.id.tvDeleteAccount)
         btnCreateWorkspace.setOnClickListener {
@@ -110,29 +127,34 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         }
         btnLogout.setOnClickListener {
             homeViewModel.logOut()
-            startActivity(Intent(requireContext(),AuthActivity::class.java))
+            startActivity(Intent(requireContext(), AuthActivity::class.java))
             activity?.finish()
         }
         updateUserdata()
+
+        tvDeleteAccount.setOnClickListener {
+            deleteAccount()
+        }
     }
 
-    private fun updateUserdata(){
+    private fun updateUserdata() {
         val tvUsername = binding.navView.rootView.findViewById<TextView>(R.id.tvUsername)
         val tvEmail = binding.navView.rootView.findViewById<TextView>(R.id.tvEmail)
-        val btnChangeUsername = binding.navView.rootView.findViewById<Button>(R.id.btnChangeUsername)
+        val btnChangeUsername =
+            binding.navView.rootView.findViewById<Button>(R.id.btnChangeUsername)
         homeViewModel.getCurrentUser()?.let { user ->
-            if (user.displayName.isNullOrBlank()){
+            if (user.displayName.isNullOrBlank()) {
                 tvUsername.text = user.email!!.split("@")[0]
-            }else tvUsername.text = user.displayName
+            } else tvUsername.text = user.displayName
             tvEmail.text = user.email
         }
         btnChangeUsername.setOnClickListener {
             changeUsernameDialog {
-                if (it){
+                if (it) {
                     homeViewModel.getCurrentUser()?.let { user ->
-                        if (user.displayName.isNullOrBlank()){
+                        if (user.displayName.isNullOrBlank()) {
                             tvUsername.text = user.email!!.split("@")[0]
-                        }else tvUsername.text = user.displayName
+                        } else tvUsername.text = user.displayName
                         tvEmail.text = user.email
                     }
                 }
@@ -140,11 +162,11 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         }
         tvUsername.setOnLongClickListener {
             changeUsernameDialog {
-                if (it){
+                if (it) {
                     homeViewModel.getCurrentUser()?.let { user ->
-                        if (user.displayName.isNullOrBlank()){
+                        if (user.displayName.isNullOrBlank()) {
                             tvUsername.text = user.email!!.split("@")[0]
-                        }else tvUsername.text = user.displayName
+                        } else tvUsername.text = user.displayName
                         tvEmail.text = user.email
                     }
                 }
@@ -153,7 +175,38 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         }
     }
 
-    private fun changeUsernameDialog(result:(Boolean)->Unit){
+    private fun deleteAccount() {
+        val builder = AlertDialog.Builder(requireContext())
+        with(builder) {
+            setTitle("Delete user")
+            setMessage("Are you sure you want to delete your account?")
+            setNegativeButton("Cancel") { _, _ ->
+                Toast.makeText(context, "You cancelled.", Toast.LENGTH_SHORT).show()
+            }
+            setPositiveButton("OK") { dialog, which ->
+                homeViewModel.deleteUser {
+                    if (it) {
+                        Toast.makeText(
+                            requireContext(),
+                            "Account deleted successfully!",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        startActivity(Intent(requireContext(), AuthActivity::class.java))
+                    }else{
+                        Toast.makeText(
+                            requireContext(),
+                            "Account couldn't deleted!",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+            }
+        }
+        val dialog: AlertDialog = builder.create()
+        dialog.show()
+    }
+
+    private fun changeUsernameDialog(result: (Boolean) -> Unit) {
         Utils.showEditTextDialog(
             "Change username",
             "Enter a new username",
@@ -161,14 +214,19 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             layoutInflater,
             requireContext()
         ) { username ->
-            if (username.isNotBlank()&&username.length<= Constants.MAX_USERNAME_LENGTH) {
-                homeViewModel.updateUsername(username){
-                     return@updateUsername result(it)
+            if (username.isNotBlank() && username.length <= Constants.MAX_USERNAME_LENGTH) {
+                homeViewModel.updateUsername(username) {
+                    return@updateUsername result(it)
                 }
-            } else if (username.isBlank()){
-                Toast.makeText(requireContext(), "Username cannot be empty!", Toast.LENGTH_SHORT).show()
-            } else if (username.length> Constants.MAX_WORKSPACE_TITLE_LENGTH){
-                Toast.makeText(requireContext(), "Username cannot be longer than ${Constants.MAX_WORKSPACE_TITLE_LENGTH} characters!", Toast.LENGTH_SHORT).show()
+            } else if (username.isBlank()) {
+                Toast.makeText(requireContext(), "Username cannot be empty!", Toast.LENGTH_SHORT)
+                    .show()
+            } else if (username.length > Constants.MAX_WORKSPACE_TITLE_LENGTH) {
+                Toast.makeText(
+                    requireContext(),
+                    "Username cannot be longer than ${Constants.MAX_WORKSPACE_TITLE_LENGTH} characters!",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
     }
@@ -202,10 +260,11 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                         filteredList.add(currentItem)
                     }
                 }
-                if(filteredList.isNotEmpty()){
+                if (filteredList.isNotEmpty()) {
                     configureSearchRecyclerView(filteredList)
                     binding.llNothing.gone()
-                }else{
+                } else {
+                    configureSearchRecyclerView(filteredList)
                     binding.llNothing.visible()
                     binding.tvCreateNewWorkspace.gone()
                 }
@@ -217,10 +276,10 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         homeViewModel.getUserWorkspaces()
         homeViewModel.workspaceListLiveData.observe(viewLifecycleOwner) { workspaceList ->
             if (workspaceList != null) {
-                if (workspaceList.isNotEmpty()){
+                if (workspaceList.isNotEmpty()) {
                     binding.llNothing.gone()
                     configureWorkspaceRecyclerView(workspaceList as ArrayList<WorkspaceModel>)
-                }else{
+                } else {
                     binding.llNothing.visible()
                     binding.tvCreateNewWorkspace.visible()
                 }
@@ -237,22 +296,38 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             layoutInflater,
             requireContext()
         ) { Title ->
-            if (Title.isNotBlank()&&Title.length<= Constants.MAX_WORKSPACE_TITLE_LENGTH) {
+            if (Title.isNotBlank() && Title.length <= Constants.MAX_WORKSPACE_TITLE_LENGTH) {
                 val timestamp = Timestamp.now()
                 val newWorkspace = WorkspaceModel(
                     title = Title, createdAt = timestamp
                 )
                 homeViewModel.createNewWorkspace(newWorkspace) { result ->
                     if (result) {
-                        Toast.makeText(requireContext(), "Workspace created successfully.", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            requireContext(),
+                            "Workspace created successfully.",
+                            Toast.LENGTH_SHORT
+                        ).show()
                         observeWorkspaceListAndFillWorkspaceRV()
                         binding.rvMain.adapter?.notifyDataSetChanged()
-                    } else Toast.makeText(requireContext(), "Workspace cannot created.", Toast.LENGTH_SHORT).show()
+                    } else Toast.makeText(
+                        requireContext(),
+                        "Workspace cannot created.",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
-            } else if (Title.isBlank()){
-                Toast.makeText(requireContext(), "Workspace title cannot be empty!", Toast.LENGTH_SHORT).show()
-            } else if (Title.length> Constants.MAX_WORKSPACE_TITLE_LENGTH){
-                Toast.makeText(requireContext(), "Workspace title cannot be longer than ${Constants.MAX_WORKSPACE_TITLE_LENGTH} characters!", Toast.LENGTH_SHORT).show()
+            } else if (Title.isBlank()) {
+                Toast.makeText(
+                    requireContext(),
+                    "Workspace title cannot be empty!",
+                    Toast.LENGTH_SHORT
+                ).show()
+            } else if (Title.length > Constants.MAX_WORKSPACE_TITLE_LENGTH) {
+                Toast.makeText(
+                    requireContext(),
+                    "Workspace title cannot be longer than ${Constants.MAX_WORKSPACE_TITLE_LENGTH} characters!",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
 
         }

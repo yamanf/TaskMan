@@ -32,4 +32,6 @@ class AuthViewModel(private val firebaseRepository: FirebaseRepository) : ViewMo
         })
     }
 
+
+
 }

@@ -23,7 +23,7 @@
     <string name="update_task">Update Task</string>
     <string name="home">Home</string>
     <string name="search_task">Search task</string>
-    <string name="test_admob_id">ca-app-pub-3940256099942544/6300978111</string>
+
     <string name="change_title">Change title</string>
     <string name="delete_workspace">Delete workspace</string>
     <string name="log_out">Log out</string>
@@ -37,4 +37,21 @@
     <string name="open">Open</string>
     <string name="close">Close</string>
     <string name="delete_account">Delete account</string>
+    <string name="create_task">Create task</string>
+
+
+    <string name="auth_client_id">835884800119-i9e49gerb5bsen7n40c6i3b13h7ckos6.apps.googleusercontent.com</string>
+    <string name="create_new_workspace">Create new workspace</string>
+    <string name="change_display_name">Change display name</string>
+
+    <string name="test_admob_id">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="home_admob_id">ca-app-pub-9880735483105969/3864843370</string>
+    <string name="task_detail_admob_id">ca-app-pub-9880735483105969/8423035482</string>
+    <string name="workspace_fragment_admob_id">ca-app-pub-9880735483105969/8385460742</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="account">Account</string>
+    <string name="change_username">Change username</string>
+
+    <string name="term_link">https://doc-hosting.flycricket.io/taskman-terms-of-use/7a44b8d1-988d-484b-a214-62674347abc5/terms</string>
+    <string name="privacy_link">https://doc-hosting.flycricket.io/taskman-terms-of-use/7a44b8d1-988d-484b-a214-62674347abc5/terms</string>
 </resources>

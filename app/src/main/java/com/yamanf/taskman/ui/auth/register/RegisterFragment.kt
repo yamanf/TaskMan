@@ -37,37 +37,9 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentRegisterBinding.inflate(inflater, container, false)
-
-        binding.llOrLoginWith.gone()// Login with google is gonna add later
-
-        binding.btnRegister.setOnClickListener(){
-           register()
-        }
-/*
-        binding.tvLogin.setOnClickListener(){
-            val navController= Navigation.findNavController(requireActivity(),R.id.fragmentContainerView)
-            navController.navigate(R.id.loginFragment)
-        }
-
- */
-
         return binding.root
     }
 
-    private fun register(){
-        val eMail = binding.etEmail.text.toString()
-        val password = binding.etPassword.text.toString()
-        val passwordRepeat = binding.etPasswordRepeat.text.toString()
-        val cbTerms = binding.cbTerms.isChecked
-        val registerModel = RegisterModel(eMail, password , passwordRepeat, cbTerms)
-        authViewModel.registerWithEmail(registerModel,
-            {
-                startActivity(Intent(requireContext(), MainActivity::class.java))
-                activity?.finish()
-            },{
-                Toast.makeText(requireContext(),it,Toast.LENGTH_SHORT).show()
-            })
-    }
 
 
 }

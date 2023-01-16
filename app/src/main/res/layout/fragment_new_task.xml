@@ -103,6 +103,7 @@
         android:id="@+id/tvTaskTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="@string/select_date"
         app:layout_constraintTop_toTopOf="@+id/btnCalendar"
         app:layout_constraintBottom_toBottomOf="@id/btnCalendar"
         app:layout_constraintStart_toEndOf="@+id/btnCalendar" />
@@ -128,7 +129,7 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         app:adSize="LARGE_BANNER"
-        app:adUnitId="@string/test_admob_id"
+        app:adUnitId="@string/task_detail_admob_id"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.494"

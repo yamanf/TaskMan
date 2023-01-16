@@ -43,17 +43,17 @@ class FirebaseRepositoryImpl : FirebaseRepository {
                     firebaseAuth.createUserWithEmailAndPassword(
                         registerModel.eMail,
                         registerModel.password
-                    ).addOnSuccessListener {authResult->
+                    ).addOnSuccessListener { authResult ->
                         saveUserEmail(authResult.user!!.uid, registerModel.eMail)
                         val user = getCurrentUser()
                         user!!.sendEmailVerification()
                             .addOnCompleteListener {
-                            createFirstWorkspace() {
-                                if (it){
-                                    success(authResult)
-                                }else failure("First workspace couldn't created.")
+                                createFirstWorkspace() {
+                                    if (it) {
+                                        success(authResult)
+                                    } else failure("First workspace couldn't created.")
+                                }
                             }
-                        }
                     }.addOnFailureListener {
                         failure(it.localizedMessage!!.toString())
                     }
@@ -67,18 +67,19 @@ class FirebaseRepositoryImpl : FirebaseRepository {
         success: (AuthResult) -> Unit,
         failure: (String) -> Unit
     ) {
-        if(loginModel.eMail== ""||loginModel.password== ""){
+        if (loginModel.eMail == "" || loginModel.password == "") {
             failure("Please fill the areas.")
-        }else{
-            firebaseAuth.signInWithEmailAndPassword(loginModel.eMail, loginModel.password).addOnSuccessListener {
-                success(it)
-            } .addOnFailureListener {
-                failure(it.localizedMessage!!.toString())
-            }
+        } else {
+            firebaseAuth.signInWithEmailAndPassword(loginModel.eMail, loginModel.password)
+                .addOnSuccessListener {
+                    success(it)
+                }.addOnFailureListener {
+                    failure(it.localizedMessage!!.toString())
+                }
         }
     }
 
-    override fun saveUserEmail(uid:String, eMail:String){
+    override fun saveUserEmail(uid: String, eMail: String) {
         firestore.collection(Constants.USER_DATA).document(uid).set(
             mapOf(
                 "eMail" to eMail
@@ -92,15 +93,70 @@ class FirebaseRepositoryImpl : FirebaseRepository {
         val profileUpdates = userProfileChangeRequest {
             displayName = username
         }
-        user!!.updateProfile(profileUpdates).addOnSuccessListener{
+        user!!.updateProfile(profileUpdates).addOnSuccessListener {
             return@addOnSuccessListener result(true)
         }.addOnFailureListener {
             return@addOnFailureListener result(false)
         }
     }
 
-    override fun isUserLoggedIn():Boolean{
+    override fun isUserLoggedIn(): Boolean {
         return Firebase.auth.currentUser != null
+    }
+
+    override fun deleteUser(result: (Boolean) -> Unit) {
+        val user = getCurrentUser()
+        deleteWorkspaces(user!!.uid){ isWorkspacesDeleted ->
+            if (isWorkspacesDeleted){
+                user!!.delete().addOnSuccessListener{
+                    return@addOnSuccessListener result(true)
+                }.addOnFailureListener {
+                    return@addOnFailureListener result(false)
+                }
+            } else return@deleteWorkspaces result(false)
+        }
+
+    }
+
+    private fun deleteWorkspaces(uid: String, result: (Boolean) -> Unit) {
+        getAllWorkspaces()
+            .whereArrayContains("uids", uid)
+            .get()
+            .addOnSuccessListener {
+                for (document in it) {
+                    val workspace = document.toObject(WorkspaceModel::class.java)
+                    deleteTasks(workspace.workspaceId) { isTasksDeleted ->
+                        if (isTasksDeleted) {
+                            getAllWorkspaces().document(workspace.workspaceId).delete()
+                                .addOnSuccessListener {
+                                    return@addOnSuccessListener result(true)
+                                }.addOnFailureListener {
+                                    return@addOnFailureListener result(false)
+                                }
+                        }
+                    }
+                }
+            }.addOnFailureListener {
+
+            }
+    }
+
+    private fun deleteTasks(workspaceId: String, result: (Boolean) -> Unit) {
+        getAllTasks()
+            .whereEqualTo(Constants.WORKSPACE_ID, workspaceId)
+            .addSnapshotListener { snapshot, e ->
+                if (e != null) {
+                    return@addSnapshotListener
+                }
+                if (snapshot != null) {
+                    val documents = snapshot.documents
+                    documents.forEach {
+                        val task = it.toObject(TaskModel::class.java)
+                        getAllTasks().document(task!!.taskId).delete()
+                    }
+                }
+            }
+        return result(true)
     }
 
     override fun logOut() {

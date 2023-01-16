@@ -58,7 +58,12 @@ class AuthActivity : AppCompatActivity() {
         }
         val webViewDialog = PrivacyFragment()
         binding.tvTerms.setOnClickListener(){
-            webViewDialog.show(supportFragmentManager, "web_view_dialog")
+
+            webViewDialog.show(supportFragmentManager, "Terms")
+        }
+        binding.tvPrivacy.setOnClickListener(){
+
+            webViewDialog.show(supportFragmentManager, "Privacy")
         }
 
 

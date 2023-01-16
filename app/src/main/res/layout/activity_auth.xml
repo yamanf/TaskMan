@@ -58,21 +58,63 @@
         app:layout_constraintTop_toBottomOf="@+id/tvWelcome" />
 
     <TextView
-        android:id="@+id/tvTerms"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="By continuing, you are indicating that you accept our Terms of Service and Privacy Policy."
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="8dp"
+        android:text="@string/by_continuing_you_are_indicating_that_you_accept_our"
+        app:layout_constraintBottom_toTopOf="@+id/llTermsAndPrivacy"
         android:layout_marginHorizontal="16dp"
         />
 
-    <View
-        android:id="@+id/progress_bar_background"
+    <LinearLayout
+        android:id="@+id/llTermsAndPrivacy"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="parent">
+        <TextView
+            android:id="@+id/tvTerms"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/terms_of_service"
+            android:textStyle="italic"
+            android:textColor="@color/blue"
+            app:layout_constraintBottom_toBottomOf="parent"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/and"
+            android:layout_marginHorizontal="4dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            />
+        <TextView
+            android:id="@+id/tvPrivacy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/privacy_policy"
+            android:textStyle="italic"
+            android:textColor="@color/blue"
+            app:layout_constraintBottom_toBottomOf="parent"
+            />
+
+
+
+    </LinearLayout>
+
+    <View
+        android:id="@+id/progressBarBackground"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
         android:background="@color/black"/>
+
+
 
     <ProgressBar
         android:id="@+id/indeterminateBar"

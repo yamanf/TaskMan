@@ -54,4 +54,11 @@
 
     <string name="term_link">https://doc-hosting.flycricket.io/taskman-terms-of-use/7a44b8d1-988d-484b-a214-62674347abc5/terms</string>
     <string name="privacy_link">https://doc-hosting.flycricket.io/taskman-terms-of-use/7a44b8d1-988d-484b-a214-62674347abc5/terms</string>
+    <string name="app_email">app.taskman@gmail.com</string>
+    <string name="contact_us">Contact us</string>
+    <string name="buy_me_a_coffee">Buy me a coffee</string>
+    <string name="terms_of_service">Terms of Service</string>
+    <string name="and"> and </string>
+    <string name="privacy_policy">Privacy Policy.</string>
+    <string name="by_continuing_you_are_indicating_that_you_accept_our">By continuing, you are indicating that you accept our</string>
 </resources>

@@ -3,32 +3,25 @@ package com.yamanf.taskman.ui.home
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.PopupMenu
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
-import androidx.drawerlayout.widget.DrawerLayout
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.gms.ads.AdRequest
-import com.google.android.gms.ads.AdView
 import com.google.android.gms.ads.MobileAds
 import com.google.firebase.Timestamp
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
-import com.yamanf.taskman.MainActivity
 import com.yamanf.taskman.R
 import com.yamanf.taskman.data.TaskModel
 import com.yamanf.taskman.data.WorkspaceModel
@@ -37,10 +30,8 @@ import com.yamanf.taskman.firebase.FirebaseRepositoryImpl
 import com.yamanf.taskman.ui.adapters.MainRVAdapter
 import com.yamanf.taskman.ui.adapters.SearchRVAdapter
 import com.yamanf.taskman.ui.auth.AuthActivity
-import com.yamanf.taskman.ui.workspace.WorkspaceFragmentDirections
 import com.yamanf.taskman.utils.*
 import java.util.*
-import kotlin.collections.ArrayList
 
 
 class HomeFragment : Fragment(R.layout.fragment_home) {
@@ -121,6 +112,8 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         val btnCreateWorkspace =
             binding.navView.rootView.findViewById<Button>(R.id.btnCreateWorkspace)
         val btnLogout = binding.navView.rootView.findViewById<Button>(R.id.btnLogOut)
+        val btnBuyMeCoffee = binding.navView.rootView.findViewById<Button>(R.id.btnBuyMeCoffee)
+        val btnSendEmail = binding.navView.rootView.findViewById<Button>(R.id.btnSendEmail)
         val tvDeleteAccount = binding.navView.rootView.findViewById<TextView>(R.id.tvDeleteAccount)
         btnCreateWorkspace.setOnClickListener {
             createNewWorkspace()
@@ -129,6 +122,17 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             homeViewModel.logOut()
             startActivity(Intent(requireContext(), AuthActivity::class.java))
             activity?.finish()
+        }
+        btnBuyMeCoffee.setOnClickListener {
+            startActivity(
+                Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse("https://www.buymeacoffee.com/furkanyaaman")
+                )
+            )
+        }
+        btnSendEmail.setOnClickListener {
+            sendEmail()
         }
         updateUserdata()
 
@@ -184,28 +188,31 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 Toast.makeText(context, "You cancelled.", Toast.LENGTH_SHORT).show()
             }
             setPositiveButton("OK") { dialog, which ->
-                homeViewModel.deleteUser {
-                    if (it) {
-                        Toast.makeText(
-                            requireContext(),
-                            "Account deleted successfully!",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                        startActivity(Intent(requireContext(), AuthActivity::class.java))
-                    }else{
-                        Toast.makeText(
-                            requireContext(),
-                            "Account couldn't deleted!",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
-                }
+                deleteUser()
             }
         }
         val dialog: AlertDialog = builder.create()
         dialog.show()
     }
 
+    private fun deleteUser(){
+        homeViewModel.deleteUser {
+            if (it) {
+                Toast.makeText(
+                    requireContext(),
+                    "Account deleted successfully!",
+                    Toast.LENGTH_SHORT
+                ).show()
+                startActivity(Intent(requireContext(), AuthActivity::class.java))
+            } else {
+                Toast.makeText(
+                    requireContext(),
+                    "Account couldn't deleted!",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
+    }
     private fun changeUsernameDialog(result: (Boolean) -> Unit) {
         Utils.showEditTextDialog(
             "Change username",
@@ -230,6 +237,17 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             }
         }
     }
+
+    @SuppressLint("IntentReset")
+    private fun sendEmail() {
+        val emailIntent = Intent(Intent.ACTION_SEND)
+        emailIntent.type = "text/plain"
+        emailIntent.putExtra(Intent.EXTRA_EMAIL,  arrayOf("app.taskman@gmail.com"))
+        emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Contact Us")
+        startActivity(Intent.createChooser(emailIntent, "Send email..."))
+
+    }
+
 
     private val textWatcher: TextWatcher = object : TextWatcher {
         override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}

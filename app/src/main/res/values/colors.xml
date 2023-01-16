@@ -15,6 +15,7 @@
     <color name="green">#5F8D4E</color>
     <color name="dark_green">#285430</color>
     <color name="red">#FF0000</color>
+    <color name="blue">#1F51FF</color>
     <!--grey-->
     <color name="md_grey_50">#FAFAFA</color>
     <color name="md_grey_100">#F5F5F5</color>

@@ -277,21 +277,9 @@ class FirebaseRepositoryImpl : FirebaseRepository {
         }
     }
 
-    override fun changeIsCompleted(
-        documentSnapshot: DocumentSnapshot,
-        isCompleted: Boolean
-    ): Boolean {
-        TODO("Not yet implemented")
-    }
-
-    override fun changeIsImportant(
-        documentSnapshot: DocumentSnapshot,
-        isImportant: Boolean
-    ): Boolean {
-        TODO("Not yet implemented")
-    }
-
     override fun updateTask(task: TaskModel, result: (Boolean) -> Unit) {
+        var uid = getCurrentUserId()
+        val uids: ArrayList<String> = arrayListOf(uid)
         firestore.collection(Constants.TASKS).document(task.taskId)
             .set(
                 mapOf(
@@ -303,7 +291,7 @@ class FirebaseRepositoryImpl : FirebaseRepository {
                     Constants.IS_DONE to task.isDone,
                     Constants.IS_IMPORTANT to task.isImportant,
                     Constants.WORKSPACE_ID to task.workspaceId,
-                    Constants.UIDS to task.uids
+                    Constants.UIDS to uids
                 )
             ).addOnSuccessListener {
                 return@addOnSuccessListener result(true)
@@ -320,7 +308,4 @@ class FirebaseRepositoryImpl : FirebaseRepository {
         }
     }
 
-    override fun undoDelete(documentSnapshot: DocumentSnapshot): Boolean {
-        TODO("Not yet implemented")
-    }
 }

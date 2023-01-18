@@ -27,7 +27,7 @@
         android:layout_marginTop="280dp"
         android:fontFamily="@font/poppins"
         android:gravity="center"
-        android:text="Hello!"
+        android:text="@string/hello"
         android:textColor="@color/black"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -41,7 +41,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/poppins"
         android:gravity="center"
-        android:text="Welcome to the TaskMan."
+        android:text="@string/welcome_to_the_taskman"
         android:textColor="@color/black"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -111,7 +111,7 @@
     <View
         android:id="@+id/progressBarBackground"
         android:layout_width="match_parent"
-        android:layout_height="1dp"
+        android:layout_height="match_parent"
         android:background="@color/black"/>
 
 

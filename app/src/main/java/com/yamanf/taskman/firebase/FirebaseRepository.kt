@@ -34,10 +34,7 @@ interface FirebaseRepository {
 
     fun getAllTasks(): CollectionReference
     fun addTaskToWorkspace(task: TaskModel, result:(Boolean) -> Unit)
-    fun changeIsCompleted(documentSnapshot: DocumentSnapshot, isCompleted: Boolean): Boolean
-    fun changeIsImportant(documentSnapshot: DocumentSnapshot, isImportant: Boolean): Boolean
     fun updateTask(task: TaskModel, result:(Boolean) -> Unit)
     fun deleteTask(taskId: String,result:(Boolean) -> Unit)
-    fun undoDelete(documentSnapshot: DocumentSnapshot): Boolean
 
 }

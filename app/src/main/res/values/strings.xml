@@ -61,4 +61,19 @@
     <string name="and"> and </string>
     <string name="privacy_policy">Privacy Policy.</string>
     <string name="by_continuing_you_are_indicating_that_you_accept_our">By continuing, you are indicating that you accept our</string>
+    <string name="workspace_name">Workspace Name</string>
+    <string name="hello">Hello!</string>
+    <string name="welcome_to_the_taskman">Welcome to the TaskMan.</string>
+    <string name="hello_again_you_ve_been_missed">Hello again, You’ve been missed!</string>
+    <string name="or_login_with">Or login with</string>
+    <string name="login_with_google">Login with Google!</string>
+    <string name="hi_welcome_to">Hi! Welcome to</string>
+    <string name="taskman">TaskMan</string>
+    <string name="explore_the_app_let_s_manage_your_tasks_with_taskman">Explore the app, Let\'s manage your tasks with TaskMan.</string>
+    <string name="get_started">GET STARTED</string>
+    <string name="what_are_what_we_do">What are what we do</string>
+    <string name="we_increase_your_productivity_while_protecting_you_from_forgetfulness_at_work_and_in_daily_life">We increase your productivity while protecting you from forgetfulness at work and in daily life.</string>
+    <string name="start">Start</string>
+    <string name="done_0">Done(0)</string>
+    <string name="send_us_an_e_mail">Send us an e-mail</string>
 </resources>

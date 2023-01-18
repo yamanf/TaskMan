@@ -14,9 +14,11 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.gms.ads.AdRequest
@@ -363,6 +365,15 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             println(searchList)
             adapter = SearchRVAdapter(searchList)
             layoutManager = LinearLayoutManager(context)
+            val divider = DividerItemDecoration(
+                context, (layoutManager as LinearLayoutManager).orientation
+            )
+            divider.setDrawable(
+                AppCompatResources.getDrawable(
+                    requireContext(), R.drawable.divider
+                )!!
+            )
+            addItemDecoration(divider)
         }
     }
 

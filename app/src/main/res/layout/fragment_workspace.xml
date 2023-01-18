@@ -101,7 +101,7 @@
                 android:layout_marginVertical="4dp"
                 android:layout_marginStart="16dp"
                 android:fontFamily="@font/montserrat_semibold"
-                android:text="Done(0)"
+                android:text="@string/done_0"
                 android:textColor="@color/md_grey_800"
                 android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="parent"

@@ -84,7 +84,7 @@
         style="@style/Widget.MaterialComponents.Button.TextButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Send us an e-mail"
+        android:text="@string/send_us_an_e_mail"
         android:textAlignment="textStart"
         android:textColor="@color/black"
         android:textSize="13sp"

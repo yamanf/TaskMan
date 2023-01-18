@@ -154,7 +154,6 @@ class UpdateTaskFragment : Fragment(R.layout.fragment_update_task), DatePickerDi
         val taskTitle = binding.etTaskTitle.text.toString()
         val taskDescription = binding.etTaskDescription.text.toString()
         val isImportant = binding.cbImportant.isChecked
-        val createdAt = oldTaskModel!!.createdAt
         val dateFormat = SimpleDateFormat("dd-MM-yyyy HH:mm")
         var newTaskModel = TaskModel()
 
@@ -167,18 +166,20 @@ class UpdateTaskFragment : Fragment(R.layout.fragment_update_task), DatePickerDi
                     title = taskTitle,
                     description = taskDescription,
                     taskTime = timestamp,
-                    createdAt = createdAt,
+                    createdAt = oldTaskModel!!.createdAt,
                     workspaceId = workspaceId,
-                    isImportant = isImportant
+                    isImportant = isImportant,
+                    uids = oldTaskModel.uids
                 )
             } else {
                 newTaskModel = TaskModel(
                     taskId = taskId,
                     title = taskTitle,
                     description = taskDescription,
-                    createdAt = createdAt,
+                    createdAt = oldTaskModel!!.createdAt,
                     workspaceId = workspaceId,
-                    isImportant = isImportant
+                    isImportant = isImportant,
+                    uids = oldTaskModel.uids
                 )
             }
             return newTaskModel(newTaskModel)

@@ -20,7 +20,7 @@
         android:fontFamily="@font/montserrat"
         android:gravity="center"
         android:textSize="24sp"
-        android:text="Workspace Name"
+        android:text="@string/workspace_name"
         android:layout_gravity="center"
         android:textColor="@color/white" />
 

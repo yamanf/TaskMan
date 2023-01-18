@@ -17,6 +17,8 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.MobileAds
 import com.google.firebase.Timestamp
 import com.yamanf.taskman.R
 import com.yamanf.taskman.data.TaskModel
@@ -25,10 +27,7 @@ import com.yamanf.taskman.databinding.FragmentWorkspaceBinding
 import com.yamanf.taskman.firebase.FirebaseRepositoryImpl
 import com.yamanf.taskman.ui.adapters.DoneTaskRVAdapter
 import com.yamanf.taskman.ui.adapters.TaskRVAdapter
-import com.yamanf.taskman.utils.FirestoreManager
-import com.yamanf.taskman.utils.Utils
-import com.yamanf.taskman.utils.gone
-import com.yamanf.taskman.utils.visible
+import com.yamanf.taskman.utils.*
 
 class WorkspaceFragment() : Fragment(R.layout.fragment_workspace) {
     private var _binding: FragmentWorkspaceBinding? = null
@@ -36,6 +35,7 @@ class WorkspaceFragment() : Fragment(R.layout.fragment_workspace) {
     private val args: WorkspaceFragmentArgs by navArgs()
     private lateinit var workspaceId: String
     private lateinit var workspaceTitle: String
+    private lateinit var uids : ArrayList<String>
     private lateinit var createdAt: Timestamp
 
     private val workspaceViewModel: WorkspaceViewModel by viewModels() {
@@ -49,20 +49,33 @@ class WorkspaceFragment() : Fragment(R.layout.fragment_workspace) {
     ): View? {
         _binding = FragmentWorkspaceBinding.inflate(inflater, container, false)
         workspaceId = args.workspaceId
+        configureView()
+        configureAdMob()
+        return binding.root
+    }
+
+    private fun configureView(){
+        binding.llNothing.gone()
         workspaceViewModel.getWorkspaceDetails(workspaceId)
         workspaceViewModel.workspaceDetailsLiveData.observe(viewLifecycleOwner) {
             if (it != null) {
                 workspaceTitle = it.title
-            }
-            if (it != null) {
                 createdAt = it.createdAt!!
+                uids = it.uids
             }
             configureFragmentTitle(workspaceTitle)
         }
 
         workspaceViewModel.getUnDoneTasksFromWorkspace(workspaceId)
         workspaceViewModel.unDoneTaskLiveData.observe(viewLifecycleOwner) {
-            configureTaskRecyclerView(it)
+            if(it.isNotEmpty()){
+                binding.llNothing.gone()
+                configureTaskRecyclerView(it)
+            } else {
+                binding.llNothing.visible()
+                configureTaskRecyclerView(it)
+            }
+
         }
 
         workspaceViewModel.getDoneTasksFromWorkspace(workspaceId)
@@ -71,6 +84,9 @@ class WorkspaceFragment() : Fragment(R.layout.fragment_workspace) {
         }
 
         binding.ivDoneRVDrawer.setOnClickListener {
+            workspaceViewModel.changeIsDoneRVExpand()
+        }
+        binding.tvDone.setOnClickListener{
             workspaceViewModel.changeIsDoneRVExpand()
         }
 
@@ -100,6 +116,15 @@ class WorkspaceFragment() : Fragment(R.layout.fragment_workspace) {
                 )
         }
 
+        binding.llNothing.setOnClickListener(){
+            it.findNavController()
+                .navigate(
+                    WorkspaceFragmentDirections.actionWorkspaceFragmentToNewTaskFragment(
+                        workspaceId
+                    )
+                )
+        }
+
         binding.tvWorkspaceName.setOnLongClickListener {
             updateWorkspaceDialog()
             return@setOnLongClickListener true
@@ -109,7 +134,13 @@ class WorkspaceFragment() : Fragment(R.layout.fragment_workspace) {
             showMenu(it)
         }
 
-        return binding.root
+    }
+
+
+    private fun configureAdMob() {
+        MobileAds.initialize(requireContext()) {}
+        val adRequest = AdRequest.Builder().build()
+        binding.adView.loadAd(adRequest)
     }
 
     private fun showMenu(view: View) {
@@ -169,9 +200,9 @@ class WorkspaceFragment() : Fragment(R.layout.fragment_workspace) {
             layoutInflater,
             requireContext()
         ) { Title ->
-            if (Title.isNotBlank()) {
+            if (Title.isNotBlank()&&Title.length<= Constants.MAX_WORKSPACE_TITLE_LENGTH) {
                 val updatedWorkspace = WorkspaceModel(
-                    workspaceId = workspaceId, title = Title, createdAt = createdAt
+                    workspaceId = workspaceId, title = Title, createdAt = createdAt, uids = uids
                 )
                 workspaceViewModel.updateWorkspace(updatedWorkspace) { result ->
                     if (result) {
@@ -182,12 +213,11 @@ class WorkspaceFragment() : Fragment(R.layout.fragment_workspace) {
                         requireContext(), "Failed to update workspace.", Toast.LENGTH_SHORT
                     ).show()
                 }
-            } else Toast.makeText(
-                requireContext(),
-                "Workspace title cannot be empty!",
-                Toast.LENGTH_SHORT
-            )
-                .show()
+            } else if (Title.isBlank()){
+                Toast.makeText(requireContext(), "Workspace title cannot be empty!", Toast.LENGTH_SHORT).show()
+            } else if (Title.length> Constants.MAX_WORKSPACE_TITLE_LENGTH){
+                Toast.makeText(requireContext(), "Workspace title cannot be longer than ${Constants.MAX_WORKSPACE_TITLE_LENGTH} characters!", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 

@@ -67,5 +67,26 @@
         <action
             android:id="@+id/action_taskDetailFragment_to_newTaskFragment"
             app:destination="@id/newTaskFragment" />
+        <action
+            android:id="@+id/action_taskDetailFragment_to_updateTaskFragment"
+            app:destination="@id/updateTaskFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/updateTaskFragment"
+        android:name="com.yamanf.taskman.ui.updatetask.UpdateTaskFragment"
+        android:label="fragment_update_task"
+        tools:layout="@layout/fragment_update_task" >
+        <argument
+            android:name="taskId"
+            app:argType="string" />
+        <argument
+            android:name="workspaceId"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_updateTaskFragment_to_taskDetailFragment"
+            app:destination="@id/taskDetailFragment" />
+        <action
+            android:id="@+id/action_updateTaskFragment_to_workspaceFragment"
+            app:destination="@id/workspaceFragment" />
     </fragment>
 </navigation>

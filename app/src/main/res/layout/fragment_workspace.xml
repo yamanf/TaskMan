@@ -4,19 +4,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.workspace.WorkspaceFragment">
+    tools:context=".ui.workspace.WorkspaceFragment"
+    android:background="@color/cream">
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabCreateTask"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:background="@color/orange"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginVertical="8dp"
         android:contentDescription="@string/app_name"
         android:padding="4dp"
         android:src="@drawable/plus_icon"
-        app:backgroundTint="@color/orange"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:backgroundTint="@color/green"
+        app:layout_constraintBottom_toTopOf="@+id/adView"
         app:layout_constraintEnd_toEndOf="parent"
         app:tint="@color/white" />
 
@@ -55,69 +56,147 @@
             android:src="@drawable/ic_baseline_menu_24" />
     </LinearLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvUndoneTask"
-        android:layout_width="match_parent"
-        android:layout_height="420dp"
-        android:layout_gravity="center"
-        android:layout_marginTop="16dp"
-        android:paddingHorizontal="10dp"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/topBarWorkspace"
-        tools:listitem="@layout/rv_undone_task_item" />
-
-    <View
-        android:id="@+id/doneDivider"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:backgroundTint="@color/md_grey_400"
-        android:background="@color/md_grey_400"
-        android:layout_marginVertical="4dp"
-        android:layout_marginHorizontal="8dp"
-        app:layout_constraintTop_toBottomOf="@+id/rvUndoneTask"
-        />
-
-    <TextView
-        android:id="@+id/tvDone"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginVertical="4dp"
-        android:layout_marginStart="16dp"
-        android:fontFamily="@font/montserrat_semibold"
-        android:text="Done(0)"
-        android:textColor="@color/md_grey_800"
-        android:textSize="16sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/doneDivider" />
-
-    <ImageView
-        android:id="@+id/ivDoneRVDrawer"
-        android:paddingVertical="4dp"
-        android:paddingStart="4dp"
-        android:paddingEnd="12dp"
-        android:layout_marginEnd="18dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_baseline_arrow_drop_down_24"
-        app:layout_constraintTop_toTopOf="@+id/tvDone"
-        app:layout_constraintBottom_toBottomOf="@+id/tvDone"
-        app:layout_constraintStart_toEndOf="@id/tvDone"/>
 
 
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvDoneTask"
+    <LinearLayout
+        android:id="@+id/llRecyclers"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_gravity="center"
-        android:paddingHorizontal="10dp"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        android:layout_marginBottom="15dp"
+        app:layout_constraintTop_toBottomOf="@+id/topBarWorkspace"
+        app:layout_constraintEnd_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvDone"
-        tools:listitem="@layout/rv_done_task_item" />
+        app:layout_constraintBottom_toTopOf="@+id/adView"
+        android:orientation="vertical">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvUndoneTask"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="3"
+            android:layout_gravity="center"
+            android:layout_marginTop="16dp"
+            android:paddingHorizontal="10dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/topBarWorkspace"
+            tools:listitem="@layout/rv_undone_task_item" />
+        <View
+            android:id="@+id/doneDivider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/md_grey_400"
+            android:layout_marginVertical="4dp"
+            android:layout_marginHorizontal="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/rvUndoneTask"
+            />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/tvDone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="4dp"
+                android:layout_marginStart="16dp"
+                android:fontFamily="@font/montserrat_semibold"
+                android:text="@string/done_0"
+                android:textColor="@color/md_grey_800"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/doneDivider" />
+
+            <ImageView
+                android:id="@+id/ivDoneRVDrawer"
+                android:paddingVertical="4dp"
+                android:paddingStart="4dp"
+                android:paddingEnd="12dp"
+                android:layout_marginEnd="18dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_baseline_arrow_drop_down_24"
+                app:layout_constraintTop_toTopOf="@+id/tvDone"
+                app:layout_constraintBottom_toBottomOf="@+id/tvDone"
+                app:layout_constraintStart_toEndOf="@id/tvDone"/>
+        </LinearLayout>
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvDoneTask"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_gravity="center"
+            android:paddingHorizontal="10dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/adView"
+            app:layout_constraintTop_toBottomOf="@+id/tvDone"
+            tools:listitem="@layout/rv_done_task_item" />
+    </LinearLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/llNothing"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:gravity="center"
+        android:layout_marginTop="50dp"
+        android:layout_marginBottom="100dp"
+        app:layout_constraintTop_toBottomOf="@id/topBarWorkspace"
+        >
+
+        <TextView
+            android:id="@+id/tvNothingToSee"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:text="@string/there_is_nothing_to_see"
+            android:textSize="16sp"
+            android:fontFamily="@font/montserrat"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+        <TextView
+            android:id="@+id/tvCreateNewTask"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/create_a_new_task"
+            android:textColor="@color/black"
+            android:textSize="24sp"
+            android:fontFamily="@font/montserrat"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvNothingToSee"/>
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/ivNothing"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:lottie_rawRes="@raw/nothing"
+            app:lottie_loop="true"
+            app:lottie_autoPlay="true"
+            app:layout_constraintTop_toBottomOf="@+id/tvCreateNewTask"
+            app:layout_constraintBottom_toBottomOf="parent"
+            />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+
+    <com.google.android.gms.ads.AdView
+        android:id="@+id/adView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        app:adSize="BANNER"
+        app:adUnitId="@string/workspace_fragment_admob_id"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.494"
+        app:layout_constraintStart_toStartOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.SEND_SMS" />
 
     <application
         android:allowBackup="true"
@@ -12,6 +14,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TaskMan"
         tools:targetApi="31">
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-9880735483105969~7754604034"/>
         <activity
             android:name=".ui.onboarding.OnboardingActivity"
             android:exported="false">
@@ -28,7 +33,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".ui.SplashScreen"
+            android:name=".ui.splash.SplashScreen"
             android:exported="true"
             android:screenOrientation="fullSensor"
             android:theme="@style/Theme.TaskMan">
@@ -47,11 +52,6 @@
             android:exported="true"
             android:screenOrientation="fullSensor"
             android:theme="@style/Theme.TaskMan">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
 
             <meta-data
                 android:name="android.app.lib_name"

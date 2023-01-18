@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginHorizontal="8dp"
+    android:layout_marginTop="32dp"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tvUsername"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:fontFamily="@font/montserrat"
+        android:text="Username"
+        android:textColor="@color/black"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/tvEmail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:fontFamily="@font/montserrat"
+        android:text="example@example.com"
+        android:textSize="12sp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginHorizontal="2dp"
+        android:layout_marginTop="16dp"
+        android:background="@color/md_grey_400" />
+
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnCreateWorkspace"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/create_new_workspace"
+        android:textAlignment="textStart"
+        android:textColor="@color/black"
+        android:textSize="13sp"
+        app:icon="@drawable/ic_baseline_edit_24"
+        app:iconPadding="10dp"
+        app:iconSize="20dp"
+        app:iconTint="@color/black" />
+
+
+
+    <TextView
+        android:layout_marginTop="25dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:fontFamily="@font/montserrat"
+        android:text="@string/contact_us"
+        android:textSize="16sp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginHorizontal="2dp"
+        android:background="@color/md_grey_400" />
+
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnBuyMeCoffee"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/buy_me_a_coffee"
+        android:textAlignment="textStart"
+        android:textColor="@color/black"
+        android:textSize="13sp"
+        app:icon="@drawable/ic_baseline_coffee_24"
+        app:iconPadding="10dp"
+        app:iconSize="20dp"
+        app:iconTint="@color/black" />
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnSendEmail"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/send_us_an_e_mail"
+        android:textAlignment="textStart"
+        android:textColor="@color/black"
+        android:textSize="13sp"
+        app:icon="@drawable/ic_baseline_email_24"
+        app:iconPadding="10dp"
+        app:iconSize="20dp"
+        app:iconTint="@color/black" />
+
+    <TextView
+        android:layout_marginTop="25dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:fontFamily="@font/montserrat"
+        android:text="@string/account"
+        android:textSize="16sp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginHorizontal="2dp"
+        android:background="@color/md_grey_400" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnChangeUsername"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/change_username"
+        android:textAlignment="textStart"
+        android:textColor="@color/black"
+        android:textSize="13sp"
+        app:icon="@drawable/ic_baseline_edit_24"
+        app:iconPadding="10dp"
+        app:iconSize="20dp"
+        app:iconTint="@color/black" />
+
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnLogOut"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/sign_out"
+        android:textAlignment="textStart"
+        android:textColor="@color/black"
+        app:icon="@drawable/ic_baseline_logout_24"
+        app:iconPadding="10dp"
+        app:iconSize="20dp"
+        app:iconTint="@color/black" />
+
+
+    <TextView
+        android:id="@+id/tvDeleteAccount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="9dp"
+        android:layout_marginTop="12dp"
+        android:text="@string/delete_account"
+        android:textColor="@color/red"
+        android:textSize="12sp" />
+
+</LinearLayout>

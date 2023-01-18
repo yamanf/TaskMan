@@ -9,7 +9,13 @@
     <color name="white">#FFFFFFFF</color>
 
     <color name="orange">#F0A500</color>
-
+    
+    <color name="cream">#E5D9B6</color>
+    <color name="light_green">#A4BE7B</color>
+    <color name="green">#5F8D4E</color>
+    <color name="dark_green">#285430</color>
+    <color name="red">#FF0000</color>
+    <color name="blue">#1F51FF</color>
     <!--grey-->
     <color name="md_grey_50">#FAFAFA</color>
     <color name="md_grey_100">#F5F5F5</color>

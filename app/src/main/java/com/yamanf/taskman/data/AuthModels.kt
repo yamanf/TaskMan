@@ -12,3 +12,8 @@ data class LoginModel(
     val password:String= "",
     val cbRemember: Boolean = false
 )
+
+data class UserModel(
+    val uid:String = "",
+    val eMail:String= ""
+)

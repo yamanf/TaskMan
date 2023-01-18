@@ -1,14 +1,145 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.updatetask.UpdateTaskFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.updatetask.UpdateTaskFragment"
+    android:background="@color/cream">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
+        android:id="@+id/topBarUpdateTask"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="16dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingHorizontal="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-</FrameLayout>
+        <ImageView
+            android:id="@+id/ivBackToTaskDetailButton"
+            android:padding="8dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_baseline_arrow_back_ios_24" />
+
+        <TextView
+            android:id="@+id/tvUpdateTask"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:fontFamily="@font/montserrat"
+            android:text="@string/update_task"
+            android:textAlignment="textStart"
+            android:textSize="24sp" />
+
+        <ImageView
+            android:padding="8dp"
+            android:id="@+id/ivDeleteButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_baseline_delete_24" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/llEditTexts"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toBottomOf="@id/topBarUpdateTask"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/title"
+            android:fontFamily="@font/montserrat"/>
+        <EditText
+            android:id="@+id/etTaskTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLines="5"
+            app:layout_constraintTop_toBottomOf="@id/topBarUpdateTask"
+            android:hint="@string/task_title"
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/description"
+            android:fontFamily="@font/montserrat"/>
+
+        <EditText
+            android:id="@+id/etTaskDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxHeight="350dp"
+            app:layout_constraintTop_toBottomOf="@id/etTaskTitle"
+            android:ems="10"
+            android:gravity="start|top"
+            android:inputType="textMultiLine"
+            android:hint="@string/task_description"/>
+
+    </LinearLayout>
+
+    <CheckBox
+        android:id="@+id/cbImportant"
+        android:button="@drawable/important_selector"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/llEditTexts"
+        app:layout_constraintStart_toStartOf="@+id/llEditTexts"
+        />
+
+    <ImageView
+        android:id="@+id/btnCalendar"
+        android:src="@drawable/ic_baseline_edit_calendar_24"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingVertical="12dp"
+        android:paddingStart="12dp"
+        android:paddingEnd="6dp"
+        app:layout_constraintTop_toBottomOf="@+id/llEditTexts"
+        app:layout_constraintStart_toEndOf="@+id/cbImportant"/>
+
+    <TextView
+        android:id="@+id/tvTaskTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="@+id/btnCalendar"
+        app:layout_constraintBottom_toBottomOf="@id/btnCalendar"
+        app:layout_constraintStart_toEndOf="@+id/btnCalendar" />
+
+    <Button
+        android:id="@+id/btnUpdateTask"
+        android:backgroundTint="@color/green"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="@+id/btnCalendar"
+        app:layout_constraintBottom_toBottomOf="@id/btnCalendar"
+        app:layout_constraintEnd_toEndOf="@+id/llEditTexts"
+        android:layout_marginEnd="2dp"
+        android:fontFamily="@font/montserrat"
+        android:textSize="12sp"
+        android:text="@string/update"/>
+
+
+
+    <com.google.android.gms.ads.AdView
+        android:id="@+id/adView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        app:adSize="LARGE_BANNER"
+        app:adUnitId="@string/task_detail_admob_id"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.494"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

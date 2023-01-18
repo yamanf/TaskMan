@@ -15,4 +15,65 @@
     <string name="lorem_ipsum_5words">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas fringilla ligula lorem, id aliquam lorem lacinia nec. Curabitur ullamcorper risus.</string>
     <string name="update">Update</string>
     <string name="delete">Delete</string>
+    <string name="new_task">New Task</string>
+    <string name="task_title">Task Title</string>
+    <string name="task_description">Task Description</string>
+    <string name="select_date">Select date</string>
+    <string name="create">Create</string>
+    <string name="update_task">Update Task</string>
+    <string name="home">Home</string>
+    <string name="search_task">Search task</string>
+
+    <string name="change_title">Change title</string>
+    <string name="delete_workspace">Delete workspace</string>
+    <string name="log_out">Log out</string>
+    <string name="create_workspace">Create workspace</string>
+    <string name="there_is_nothing_to_see">There is nothing to see.</string>
+    <string name="create_a_new_workspace">Create a new workspace.</string>
+    <string name="create_a_new_task">Create a new task</string>
+    <string name="description">Description:</string>
+    <string name="title">Title:</string>
+    <string name="password">Password</string>
+    <string name="open">Open</string>
+    <string name="close">Close</string>
+    <string name="delete_account">Delete account</string>
+    <string name="create_task">Create task</string>
+
+
+    <string name="auth_client_id">835884800119-i9e49gerb5bsen7n40c6i3b13h7ckos6.apps.googleusercontent.com</string>
+    <string name="create_new_workspace">Create new workspace</string>
+    <string name="change_display_name">Change display name</string>
+
+    <string name="test_admob_id">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="home_admob_id">ca-app-pub-9880735483105969/3864843370</string>
+    <string name="task_detail_admob_id">ca-app-pub-9880735483105969/8423035482</string>
+    <string name="workspace_fragment_admob_id">ca-app-pub-9880735483105969/8385460742</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="account">Account</string>
+    <string name="change_username">Change username</string>
+
+    <string name="term_link">https://doc-hosting.flycricket.io/taskman-terms-of-use/7a44b8d1-988d-484b-a214-62674347abc5/terms</string>
+    <string name="privacy_link">https://doc-hosting.flycricket.io/taskman-terms-of-use/7a44b8d1-988d-484b-a214-62674347abc5/terms</string>
+    <string name="app_email">app.taskman@gmail.com</string>
+    <string name="contact_us">Contact us</string>
+    <string name="buy_me_a_coffee">Buy me a coffee</string>
+    <string name="terms_of_service">Terms of Service</string>
+    <string name="and"> and </string>
+    <string name="privacy_policy">Privacy Policy.</string>
+    <string name="by_continuing_you_are_indicating_that_you_accept_our">By continuing, you are indicating that you accept our</string>
+    <string name="workspace_name">Workspace Name</string>
+    <string name="hello">Hello!</string>
+    <string name="welcome_to_the_taskman">Welcome to the TaskMan.</string>
+    <string name="hello_again_you_ve_been_missed">Hello again, You’ve been missed!</string>
+    <string name="or_login_with">Or login with</string>
+    <string name="login_with_google">Login with Google!</string>
+    <string name="hi_welcome_to">Hi! Welcome to</string>
+    <string name="taskman">TaskMan</string>
+    <string name="explore_the_app_let_s_manage_your_tasks_with_taskman">Explore the app, Let\'s manage your tasks with TaskMan.</string>
+    <string name="get_started">GET STARTED</string>
+    <string name="what_are_what_we_do">What are what we do</string>
+    <string name="we_increase_your_productivity_while_protecting_you_from_forgetfulness_at_work_and_in_daily_life">We increase your productivity while protecting you from forgetfulness at work and in daily life.</string>
+    <string name="start">Start</string>
+    <string name="done_0">Done(0)</string>
+    <string name="send_us_an_e_mail">Send us an e-mail</string>
 </resources>

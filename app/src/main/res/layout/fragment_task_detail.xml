@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/cream"
     tools:context=".ui.taskdetail.TaskDetailFragment">
 
     <LinearLayout
@@ -20,9 +21,9 @@
 
         <ImageView
             android:id="@+id/ivBackToWorkspaceButton"
-            android:padding="8dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:padding="8dp"
             android:src="@drawable/ic_baseline_arrow_back_ios_24" />
 
         <TextView
@@ -31,75 +32,94 @@
             android:layout_height="wrap_content"
             android:layout_weight="3"
             android:fontFamily="@font/montserrat"
-            android:text="Workspace"
             android:textAlignment="textStart"
             android:textSize="24sp" />
 
         <ImageView
-            android:id="@+id/ivEditButton"
-            android:padding="8dp"
+            android:id="@+id/ivUpdateButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:padding="8dp"
             android:src="@drawable/ic_baseline_edit_24" />
 
         <ImageView
-            android:padding="8dp"
             android:id="@+id/ivDeleteButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:padding="8dp"
             android:src="@drawable/ic_baseline_delete_24" />
 
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/tvTaskTitle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="24dp"
-        android:layout_marginTop="16dp"
-        android:fontFamily="@font/montserrat"
-        android:text="Task Title"
-        android:textColor="@color/black"
-        android:textSize="22sp"
-        app:layout_constraintTop_toBottomOf="@+id/topBarTaskDetail"
-        tools:layout_editor_absoluteX="24dp" />
 
-    <TextView
-        android:id="@+id/tvTaskTime"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingHorizontal="24dp"
-        android:textColor="@color/md_grey_700"
-        android:text="Today | 20:59"
-        app:layout_constraintStart_toStartOf="@+id/tvTaskTitle"
-        app:layout_constraintTop_toBottomOf="@+id/tvTaskTitle" />
+        android:layout_height="0dp"
+        android:layout_marginBottom="16dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@id/adView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/topBarTaskDetail">
 
-    <TextView
-        android:id="@+id/tvTaskDescription"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingHorizontal="24dp"
-        android:layout_marginTop="8dp"
-        android:fontFamily="@font/montserrat"
-        android:textAlignment="textStart"
-        android:text="@string/lorem_ipsum_5words"
-        android:textColor="@color/md_grey_700"
-        android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="@+id/tvTaskTitle"
-        app:layout_constraintTop_toBottomOf="@+id/tvTaskTime" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/tvTaskCreatedTime"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingHorizontal="24dp"
-        android:textColor="@color/md_grey_500"
-        android:textStyle="italic"
-        android:textSize="12sp"
-        android:text="created at Today | 20:59"
-        app:layout_constraintStart_toStartOf="@+id/tvTaskTitle"
-        app:layout_constraintTop_toBottomOf="@+id/tvTaskDescription" />
+            <TextView
+                android:id="@+id/tvTaskTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="24dp"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/montserrat"
+                android:textColor="@color/black"
+                android:textSize="22sp" />
 
+            <TextView
+                android:id="@+id/tvTaskTime"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="24dp"
+                android:textColor="@color/md_grey_700" />
+
+            <TextView
+                android:id="@+id/tvTaskDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/montserrat"
+                android:paddingHorizontal="24dp"
+                android:textAlignment="textStart"
+                android:textColor="@color/md_grey_700"
+                android:textSize="18sp" />
+
+            <TextView
+
+                android:id="@+id/tvTaskCreatedTime"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="24dp"
+                android:textColor="@color/md_grey_500"
+                android:textSize="12sp"
+                android:textStyle="italic" />
+        </LinearLayout>
+    </ScrollView>
+
+
+    <com.google.android.gms.ads.AdView
+        android:id="@+id/adView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        app:adSize="LARGE_BANNER"
+        app:adUnitId="@string/task_detail_admob_id"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.494"
+        app:layout_constraintStart_toStartOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

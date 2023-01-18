@@ -4,6 +4,8 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.yamanf.taskman.data.TaskModel
@@ -97,5 +99,25 @@ class HomeViewModel(private val firebaseRepository: FirebaseRepository) : ViewMo
                 println(taskList)
                 _searchTaskLiveData.value = taskList
             }
+    }
+
+    fun getCurrentUser(): FirebaseUser? {
+        return firebaseRepository.getCurrentUser()
+    }
+
+    fun updateUsername(username: String, result: (Boolean) -> Unit) {
+        firebaseRepository.updateDisplayName(username) {
+            result(it)
+        }
+    }
+
+    fun logOut() {
+        firebaseRepository.logOut()
+    }
+
+    fun deleteUser(result: (Boolean) -> Unit) {
+        firebaseRepository.deleteUser {
+            return@deleteUser result(it)
+        }
     }
 }

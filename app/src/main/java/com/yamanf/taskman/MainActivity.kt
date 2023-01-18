@@ -3,6 +3,7 @@ package com.yamanf.taskman
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatDelegate
+import com.google.android.gms.ads.MobileAds
 import com.yamanf.taskman.utils.Utils
 
 class MainActivity : AppCompatActivity() {
@@ -10,5 +11,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+
     }
 }

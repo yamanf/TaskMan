@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.onboarding.OnboardingFinishFragment">
+    tools:context=".ui.onboarding.OnboardingFinishFragment"
+    android:background="@color/cream">
 
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/artist"
@@ -24,7 +25,7 @@
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="What are what we do"
+        android:text="@string/what_are_what_we_do"
         android:fontFamily="@font/poppins_medium"
         android:textSize="22sp"
         app:layout_constraintStart_toStartOf="parent"
@@ -35,7 +36,7 @@
         android:id="@+id/textView2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="We increase your productivity while protecting you from forgetfulness at work and in daily life."
+        android:text="@string/we_increase_your_productivity_while_protecting_you_from_forgetfulness_at_work_and_in_daily_life"
         android:textAlignment="center"
         android:fontFamily="@font/poppins"
         android:textSize="16sp"
@@ -54,10 +55,10 @@
         android:layout_height="60dp"
         android:textSize="16sp"
         android:layout_marginHorizontal="35dp"
-        android:text="Log In"
+        android:text="@string/start"
         android:fontFamily="@font/poppins"
         app:cornerRadius="35dp"
-        android:backgroundTint="@color/orange"
+        android:backgroundTint="@color/green"
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginTop="25dp"

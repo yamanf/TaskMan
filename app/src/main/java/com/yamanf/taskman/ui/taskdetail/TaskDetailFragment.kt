@@ -11,6 +11,8 @@ import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.MobileAds
 import com.yamanf.taskman.R
 import com.yamanf.taskman.data.TaskModel
 import com.yamanf.taskman.databinding.FragmentTaskDetailBinding
@@ -53,7 +55,15 @@ class TaskDetailFragment : Fragment() {
             }
         }
 
+        configureAdMob()
+
         return binding.root
+    }
+
+    private fun configureAdMob() {
+        MobileAds.initialize(requireContext()) {}
+        val adRequest = AdRequest.Builder().build()
+        binding.adView.loadAd(adRequest)
     }
 
     @SuppressLint("SetTextI18n")
@@ -73,7 +83,9 @@ class TaskDetailFragment : Fragment() {
             binding.tvTaskTime.text = taskModel.taskTime?.dateFormatter()
         }else binding.tvTaskTime.gone()
 
-
+        binding.ivUpdateButton.setOnClickListener {
+            it.findNavController().navigate(TaskDetailFragmentDirections.actionTaskDetailFragmentToUpdateTaskFragment(taskModel.taskId,taskModel.workspaceId))
+        }
 
         binding.tvTaskCreatedTime.text ="Created at " + taskModel.createdAt?.dateFormatter()
     }

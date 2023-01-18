@@ -10,8 +10,6 @@ import com.google.firebase.Timestamp
 import java.text.SimpleDateFormat
 import java.util.Date
 
-
-
 @SuppressLint("SimpleDateFormat")
 fun Timestamp?.dateFormatter(): String {
     val date = Date(this!!.seconds * 1000)
@@ -20,12 +18,6 @@ fun Timestamp?.dateFormatter(): String {
     val inputDateString = inputFormat.format(date)
     val outputDate = inputFormat.parse(inputDateString)
     return outputFormat.format(outputDate)
-}
-
-fun ImageView.loadImage(url: String) {
-    Glide.with(this)
-        .load(url)
-        .into(this)
 }
 
 fun View.visible() {

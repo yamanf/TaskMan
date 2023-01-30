@@ -2,6 +2,9 @@
 
 TaskMan is the ultimate solution for you to manage your daily tasks and stay organized. Our app makes it easy to create workspaces for different projects or areas of your life and then add and manage tasks in those workspaces.
 
+<a href="https://play.google.com/store/apps/details?id=com.yamanf.taskman"><img src="https://github.com/yamanf/TaskMan/blob/main/sc/google.png" width="100"></a>
+
+
 ## App Screenshoots
 
 Onboarding|SignInPage|HomePage|SearchPage|WorkspacePage|UpdatePage

@@ -25,6 +25,7 @@ class OnboardingFinishFragment : Fragment() {
         _binding = FragmentOnboardingFinishBinding.inflate(inflater,container,false)
         binding.btnLogin.setOnClickListener(){
             startActivity(Intent(requireContext(), AuthActivity::class.java))
+            requireActivity().finish()
         }
 
         return binding.root

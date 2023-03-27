@@ -3,6 +3,7 @@ package com.yamanf.taskman.ui.home
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Intent
+import android.media.Image
 import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
@@ -11,6 +12,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
@@ -21,6 +23,7 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.MobileAds
 import com.google.firebase.Timestamp
@@ -129,7 +132,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             startActivity(
                 Intent(
                     Intent.ACTION_VIEW,
-                    Uri.parse("https://www.buymeacoffee.com/furkanyaaman")
+                    Uri.parse(getString(R.string._buy_me_coffee_link))
                 )
             )
         }
@@ -148,11 +151,16 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         val tvEmail = binding.navView.rootView.findViewById<TextView>(R.id.tvEmail)
         val btnChangeUsername =
             binding.navView.rootView.findViewById<Button>(R.id.btnChangeUsername)
+        val ivProfile = binding.navView.rootView.findViewById<ImageView>(R.id.ivProfile)
         homeViewModel.getCurrentUser()?.let { user ->
             if (user.displayName.isNullOrBlank()) {
                 tvUsername.text = user.email!!.split("@")[0]
             } else tvUsername.text = user.displayName
             tvEmail.text = user.email
+            Glide.with(requireParentFragment())
+                .load(user.photoUrl)
+                .into(ivProfile)
+            println(user.photoUrl.toString())
         }
         btnChangeUsername.setOnClickListener {
             changeUsernameDialog {
@@ -184,12 +192,13 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     private fun deleteAccount() {
         val builder = AlertDialog.Builder(requireContext())
         with(builder) {
-            setTitle("Delete user")
-            setMessage("Are you sure you want to delete your account?")
-            setNegativeButton("Cancel") { _, _ ->
-                Toast.makeText(context, "You cancelled.", Toast.LENGTH_SHORT).show()
+            setTitle(getString(R.string.delete_account))
+            setMessage(getString(R.string.are_you_sure_you_want_to_delete_your_account))
+            setNegativeButton(getString(R.string.cancel)) { _, _ ->
+                Toast.makeText(context, getString(R.string.you_cancelled), Toast.LENGTH_SHORT)
+                    .show()
             }
-            setPositiveButton("OK") { dialog, which ->
+            setPositiveButton(getString(R.string.ok)) { dialog, which ->
                 deleteUser()
             }
         }
@@ -197,29 +206,30 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         dialog.show()
     }
 
-    private fun deleteUser(){
+    private fun deleteUser() {
         homeViewModel.deleteUser {
             if (it) {
                 Toast.makeText(
                     requireContext(),
-                    "Account deleted successfully!",
+                    getString(R.string.account_deleted_successfully),
                     Toast.LENGTH_SHORT
                 ).show()
                 startActivity(Intent(requireContext(), AuthActivity::class.java))
             } else {
                 Toast.makeText(
                     requireContext(),
-                    "Account couldn't deleted!",
+                    getString(R.string.account_could_not_deleted),
                     Toast.LENGTH_SHORT
                 ).show()
             }
         }
     }
+
     private fun changeUsernameDialog(result: (Boolean) -> Unit) {
         Utils.showEditTextDialog(
-            "Change username",
-            "Enter a new username",
-            "Change",
+            getString(R.string.change_username),
+            getString(R.string.enter_new_username),
+            getString(R.string.change),
             layoutInflater,
             requireContext()
         ) { username ->
@@ -228,12 +238,16 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                     return@updateUsername result(it)
                 }
             } else if (username.isBlank()) {
-                Toast.makeText(requireContext(), "Username cannot be empty!", Toast.LENGTH_SHORT)
+                Toast.makeText(
+                    requireContext(),
+                    getString(R.string.username_cannot_be_empty),
+                    Toast.LENGTH_SHORT
+                )
                     .show()
             } else if (username.length > Constants.MAX_WORKSPACE_TITLE_LENGTH) {
                 Toast.makeText(
                     requireContext(),
-                    "Username cannot be longer than ${Constants.MAX_WORKSPACE_TITLE_LENGTH} characters!",
+                    getString(R.string.username_cannot_be_longer),
                     Toast.LENGTH_SHORT
                 ).show()
             }
@@ -244,8 +258,8 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     private fun sendEmail() {
         val emailIntent = Intent(Intent.ACTION_SEND)
         emailIntent.type = "text/plain"
-        emailIntent.putExtra(Intent.EXTRA_EMAIL,  arrayOf("app.taskman@gmail.com"))
-        emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Contact Us")
+        emailIntent.putExtra(Intent.EXTRA_EMAIL, arrayOf("app.taskman@gmail.com"))
+        emailIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.contact_us))
         startActivity(Intent.createChooser(emailIntent, "Send email..."))
 
     }
@@ -310,9 +324,9 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     @SuppressLint("NotifyDataSetChanged")
     private fun createNewWorkspace() {
         Utils.showEditTextDialog(
-            "Create a new workspace",
-            "Enter a workspace title",
-            "Create",
+            getString(R.string.create_a_new_workspace),
+            getString(R.string.enter_workspace_title),
+            getString(R.string.create),
             layoutInflater,
             requireContext()
         ) { Title ->
@@ -325,27 +339,27 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                     if (result) {
                         Toast.makeText(
                             requireContext(),
-                            "Workspace created successfully.",
+                            getString(R.string.workspace_created_successfully),
                             Toast.LENGTH_SHORT
                         ).show()
                         observeWorkspaceListAndFillWorkspaceRV()
                         binding.rvMain.adapter?.notifyDataSetChanged()
                     } else Toast.makeText(
                         requireContext(),
-                        "Workspace cannot created.",
+                        getString(R.string.workspace_could_not_created),
                         Toast.LENGTH_SHORT
                     ).show()
                 }
             } else if (Title.isBlank()) {
                 Toast.makeText(
                     requireContext(),
-                    "Workspace title cannot be empty!",
+                    getString(R.string.workspace_title_cannot_be_empty),
                     Toast.LENGTH_SHORT
                 ).show()
             } else if (Title.length > Constants.MAX_WORKSPACE_TITLE_LENGTH) {
                 Toast.makeText(
                     requireContext(),
-                    "Workspace title cannot be longer than ${Constants.MAX_WORKSPACE_TITLE_LENGTH} characters!",
+                    getString(R.string.workspace_title_cannot_be_longer),
                     Toast.LENGTH_SHORT
                 ).show()
             }

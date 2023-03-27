@@ -128,7 +128,7 @@ class NewTaskFragment : Fragment(R.layout.fragment_new_task), DatePickerDialog.O
                 )
             }
             return newTaskModel(newTaskModel)
-        } else Toast.makeText(requireContext(), "Task title cannot be empty!", Toast.LENGTH_SHORT)
+        } else Toast.makeText(requireContext(), getString(R.string.task_title_cannot_be_empty), Toast.LENGTH_SHORT)
             .show()
 
     }
@@ -137,7 +137,7 @@ class NewTaskFragment : Fragment(R.layout.fragment_new_task), DatePickerDialog.O
         newTaskViewModel.addTaskToWorkspace(newTaskModel) { result ->
             if (result) {
                 Toast.makeText(
-                    requireContext(), "Task created successfully.", Toast.LENGTH_SHORT
+                    requireContext(), getString(R.string.task_created_successfully), Toast.LENGTH_SHORT
                 ).show()
                 view.findNavController().navigate(
                     NewTaskFragmentDirections.actionNewTaskFragmentToWorkspaceFragment(
@@ -145,7 +145,7 @@ class NewTaskFragment : Fragment(R.layout.fragment_new_task), DatePickerDialog.O
                     )
                 )
             } else Toast.makeText(
-                requireContext(), "Task cannot created.", Toast.LENGTH_SHORT
+                requireContext(), getString(R.string.task_cannot_created), Toast.LENGTH_SHORT
             ).show()
         }
     }

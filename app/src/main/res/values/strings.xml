@@ -1,18 +1,18 @@
 <resources>
     <string name="app_name">TaskMan</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="e_mail_address">E-mail address</string>
-    <string name="login">Login</string>
+    <string name="log_in">Log in</string>
+    <string name="sign_out">Sign Out</string>
     <string name="forgot_password">Forgot Password?</string>
     <string name="remember_me">Remember me</string>
-    <string name="hello_welcome_back">Hello! Welcome back!</string>
     <string name="create_account">Create Account</string>
-    <string name="i_agree_to_the_terms_and_conditions">I agree to the terms and conditions</string>
     <string name="register">Register</string>
     <string name="already_have_an_account">Already have an account?</string>
-    <string name="log_in">Log In</string>
     <string name="don_t_have_an_account">Don’t have an account?</string>
-    <string name="lorem_ipsum_5words">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas fringilla ligula lorem, id aliquam lorem lacinia nec. Curabitur ullamcorper risus.</string>
+    <string name="hello_welcome_back">Hello! Welcome back!</string>
+    <string name="i_agree_to_the_terms_and_conditions">I agree to the terms and conditions</string>
+    <string name="login_with_google">Login with Google!</string>
+    <string name="welcome_to_the_taskman">Welcome to the TaskMan.</string>
     <string name="update">Update</string>
     <string name="delete">Delete</string>
     <string name="new_task">New Task</string>
@@ -23,10 +23,8 @@
     <string name="update_task">Update Task</string>
     <string name="home">Home</string>
     <string name="search_task">Search task</string>
-
     <string name="change_title">Change title</string>
     <string name="delete_workspace">Delete workspace</string>
-    <string name="log_out">Log out</string>
     <string name="create_workspace">Create workspace</string>
     <string name="there_is_nothing_to_see">There is nothing to see.</string>
     <string name="create_a_new_workspace">Create a new workspace.</string>
@@ -38,42 +36,76 @@
     <string name="close">Close</string>
     <string name="delete_account">Delete account</string>
     <string name="create_task">Create task</string>
-
-
-    <string name="auth_client_id">835884800119-i9e49gerb5bsen7n40c6i3b13h7ckos6.apps.googleusercontent.com</string>
-    <string name="create_new_workspace">Create new workspace</string>
-    <string name="change_display_name">Change display name</string>
-
-    <string name="test_admob_id">ca-app-pub-3940256099942544/6300978111</string>
-    <string name="home_admob_id">ca-app-pub-9880735483105969/3864843370</string>
-    <string name="task_detail_admob_id">ca-app-pub-9880735483105969/8423035482</string>
-    <string name="workspace_fragment_admob_id">ca-app-pub-9880735483105969/8385460742</string>
-    <string name="sign_out">Sign Out</string>
     <string name="account">Account</string>
     <string name="change_username">Change username</string>
-
-    <string name="term_link">https://doc-hosting.flycricket.io/taskman-terms-of-use/7a44b8d1-988d-484b-a214-62674347abc5/terms</string>
-    <string name="privacy_link">https://doc-hosting.flycricket.io/taskman-terms-of-use/7a44b8d1-988d-484b-a214-62674347abc5/terms</string>
-    <string name="app_email">app.taskman@gmail.com</string>
     <string name="contact_us">Contact us</string>
     <string name="buy_me_a_coffee">Buy me a coffee</string>
-    <string name="terms_of_service">Terms of Service</string>
-    <string name="and"> and </string>
-    <string name="privacy_policy">Privacy Policy.</string>
-    <string name="by_continuing_you_are_indicating_that_you_accept_our">By continuing, you are indicating that you accept our</string>
     <string name="workspace_name">Workspace Name</string>
     <string name="hello">Hello!</string>
-    <string name="welcome_to_the_taskman">Welcome to the TaskMan.</string>
     <string name="hello_again_you_ve_been_missed">Hello again, You’ve been missed!</string>
-    <string name="or_login_with">Or login with</string>
-    <string name="login_with_google">Login with Google!</string>
-    <string name="hi_welcome_to">Hi! Welcome to</string>
-    <string name="taskman">TaskMan</string>
     <string name="explore_the_app_let_s_manage_your_tasks_with_taskman">Explore the app, Let\'s manage your tasks with TaskMan.</string>
-    <string name="get_started">GET STARTED</string>
+    <string name="get_started">Get started</string>
     <string name="what_are_what_we_do">What are what we do</string>
     <string name="we_increase_your_productivity_while_protecting_you_from_forgetfulness_at_work_and_in_daily_life">We increase your productivity while protecting you from forgetfulness at work and in daily life.</string>
     <string name="start">Start</string>
     <string name="done_0">Done(0)</string>
+    <string name="done">Done</string>
     <string name="send_us_an_e_mail">Send us an e-mail</string>
+    <string name="create_new_workspace">Create new workspace</string>
+    <string name="change_display_name">Change display name</string>
+    <string name="change">Change</string>
+    <string name="add_description">Add description</string>
+    <string name="created_at">Created at</string>
+
+    <!-- Toast Messages -->
+    <string name="workspace_title_cannot_be_empty">Workspace title cannot be empty!</string>
+    <string name="workspace_created_successfully">Workspace created successfully!</string>
+    <string name="workspace_could_not_created">Workspace could not created!</string>
+    <string name="enter_workspace_title">Enter a workspace title</string>
+    <string name="workspace_deleted_successfully">Workspace deleted successfully!</string>
+    <string name="failed_to_update_workspace">Failed to update workspace.</string>
+    <string name="update_workspace_title">Update workspace title</string>
+    <string name="enter_new_workspace_title">Enter a new workspace title</string>
+    <string name="workspace_updated_successfully">Workspace updated successfully.</string>
+    <string name="failed_to_delete_workspace">Failed to delete workspace.</string>
+    <string name="are_you_sure_you_want_to_delete_the_workspace">Are you sure you want to delete the workspace?</string>
+    <string name="delete_task">Delete Task</string>
+    <string name="are_you_sure_you_want_to_delete_the_task">Are you sure you want to delete the task?</string>
+    <string name="failed_to_delete_task">Failed to delete task.</string>
+    <string name="task_deleted_successfully">Task deleted successfully!</string>
+    <string name="task_created_successfully">Task created successfully!</string>
+    <string name="task_cannot_created">Task cannot created!</string>
+    <string name="failed_to_update_task">Failed to update task.</string>
+    <string name="task_title_cannot_be_empty">Task title cannot be empty!</string>
+
+    <string name="are_you_sure_you_want_to_delete_your_account">Are you sure you want to delete your account?</string>
+    <string name="workspace_title_cannot_be_longer">Workspace title cannot be longer than 20 characters!</string>
+    <string name="cancel">Cancel</string>
+    <string name="ok">Ok</string>
+    <string name="you_cancelled">You cancelled!</string>
+    <string name="account_deleted_successfully">Account deleted successfully!</string>
+    <string name="account_could_not_deleted">Account could not deleted!</string>
+    <string name="enter_new_username">Enter a new username</string>
+    <string name="username_cannot_be_empty">Username cannot be empty!</string>
+    <string name="username_cannot_be_longer">Username cannot be longer than 20 characters!</string>
+
+    <!-- Utils -->
+    <string name="terms_of_service">Terms of Service</string>
+    <string name="and"> and </string>
+    <string name="privacy_policy">Privacy Policy.</string>
+    <string name="by_continuing_you_are_indicating_that_you_accept_our">By continuing, you are indicating that you accept our</string>
+    <string name="lorem_ipsum_5words">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas fringilla ligula lorem, id aliquam lorem lacinia nec. Curabitur ullamcorper risus.</string>
+    <string name="auth_client_id">835884800119-i9e49gerb5bsen7n40c6i3b13h7ckos6.apps.googleusercontent.com</string>
+    <string name="test_admob_id">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="home_admob_id">ca-app-pub-9880735483105969/3864843370</string>
+    <string name="task_detail_admob_id">ca-app-pub-9880735483105969/8423035482</string>
+    <string name="workspace_fragment_admob_id">ca-app-pub-9880735483105969/8385460742</string>
+    <string name="term_link">https://doc-hosting.flycricket.io/taskman-terms-of-use/7a44b8d1-988d-484b-a214-62674347abc5/terms</string>
+    <string name="privacy_link">https://doc-hosting.flycricket.io/taskman-terms-of-use/7a44b8d1-988d-484b-a214-62674347abc5/terms</string>
+    <string name="app_email">app.taskman@gmail.com</string>
+    <string name="username">Username</string>
+    <string name="example_example_com">example@example.com</string>
+    <string name="_buy_me_coffee_link">https://www.buymeacoffee.com/furkanyaaman</string>
+
+
 </resources>

@@ -86,6 +86,8 @@ class AuthActivity : AppCompatActivity() {
         if (result.resultCode == Activity.RESULT_OK){
             val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
             handleResults(task)
+        } else if (result.resultCode == Activity.RESULT_CANCELED){
+            Toast.makeText(this, "Failed!" , Toast.LENGTH_SHORT).show()
         }
     }
 

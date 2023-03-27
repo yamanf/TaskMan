@@ -7,13 +7,27 @@
     android:layout_marginTop="32dp"
     android:orientation="vertical">
 
+    <androidx.cardview.widget.CardView
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:elevation="12dp"
+        android:id="@+id/view2"
+        app:cardCornerRadius="40dp"
+        android:layout_marginStart="12dp">
+        <ImageView
+            android:layout_height="80dp"
+            android:layout_width="match_parent"
+            android:id="@+id/ivProfile"
+            android:scaleType="centerCrop"/>
+    </androidx.cardview.widget.CardView>
+
     <TextView
         android:id="@+id/tvUsername"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:fontFamily="@font/montserrat"
-        android:text="Username"
+        android:text="@string/username"
         android:textColor="@color/black"
         android:textSize="18sp" />
 
@@ -23,7 +37,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:fontFamily="@font/montserrat"
-        android:text="example@example.com"
+        android:text="@string/example_example_com"
         android:textSize="12sp" />
 
     <View

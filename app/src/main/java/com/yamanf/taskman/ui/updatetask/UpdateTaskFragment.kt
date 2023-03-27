@@ -82,7 +82,7 @@ class UpdateTaskFragment : Fragment(R.layout.fragment_update_task), DatePickerDi
             binding.etTaskTitle.setText(taskModel.title)
             if (taskModel.description.isNotBlank()) {
                 binding.etTaskDescription.setText(taskModel.description)
-            } else binding.etTaskDescription.hint = "Add description"
+            } else binding.etTaskDescription.hint = getString(R.string.add_description)
             binding.cbImportant.isChecked = taskModel.isDone
             if(taskModel.taskTime?.dateFormatter().isNullOrBlank()){
                 binding.tvTaskTime.setText(R.string.select_date)
@@ -104,7 +104,7 @@ class UpdateTaskFragment : Fragment(R.layout.fragment_update_task), DatePickerDi
                             ?.navigate(UpdateTaskFragmentDirections.actionUpdateTaskFragmentToTaskDetailFragment(taskId,workspaceId))
                     }else{
                         Toast.makeText(
-                            requireContext(), "Failed to delete task.", Toast.LENGTH_SHORT
+                            requireContext(), getString(R.string.failed_to_delete_task), Toast.LENGTH_SHORT
                         ).show()
                     }
                 }
@@ -123,22 +123,22 @@ class UpdateTaskFragment : Fragment(R.layout.fragment_update_task), DatePickerDi
     private fun deleteTaskDialog() {
         val builder = AlertDialog.Builder(requireContext())
         with(builder) {
-            setTitle("Delete task")
-            setMessage("Are you sure you want to delete the task?")
-            setNegativeButton("Cancel") { _, _ ->
-                Toast.makeText(context, "You cancelled.", Toast.LENGTH_SHORT).show()
+            setTitle(getString(R.string.delete_task))
+            setMessage(getString(R.string.are_you_sure_you_want_to_delete_the_task))
+            setNegativeButton(getString(R.string.cancel)) { _, _ ->
+                Toast.makeText(context, getString(R.string.you_cancelled), Toast.LENGTH_SHORT).show()
             }
-            setPositiveButton("OK") { dialog, which ->
+            setPositiveButton(getString(R.string.ok)) { dialog, which ->
                 updateTaskViewModel.deleteTask(taskId) {
                     if (it) {
                         Toast.makeText(
-                            requireContext(), "Workspace deleted successfully.", Toast.LENGTH_SHORT
+                            requireContext(), getString(R.string.task_deleted_successfully), Toast.LENGTH_SHORT
                         ).show()
                         view?.findNavController()
                             ?.navigate(UpdateTaskFragmentDirections.actionUpdateTaskFragmentToWorkspaceFragment(workspaceId))
                     } else {
                         Toast.makeText(
-                            requireContext(), "Failed to delete task.", Toast.LENGTH_SHORT
+                            requireContext(), getString(R.string.failed_to_delete_task), Toast.LENGTH_SHORT
                         ).show()
                     }
 
@@ -183,7 +183,7 @@ class UpdateTaskFragment : Fragment(R.layout.fragment_update_task), DatePickerDi
                 )
             }
             return newTaskModel(newTaskModel)
-        } else Toast.makeText(requireContext(), "Task title cannot be empty!", Toast.LENGTH_SHORT)
+        } else Toast.makeText(requireContext(), getString(R.string.task_title_cannot_be_empty), Toast.LENGTH_SHORT)
             .show()
 
     }

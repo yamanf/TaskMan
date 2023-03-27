@@ -182,7 +182,7 @@ class WorkspaceFragment() : Fragment(R.layout.fragment_workspace) {
     private fun configureDoneTaskRecyclerView(doneTaskList: ArrayList<TaskModel>) {
         binding.rvDoneTask.apply {
             val doneListSize = doneTaskList.size
-            binding.tvDone.text = "Done ($doneListSize)"
+            binding.tvDone.text = getString(R.string.done) + " ($doneListSize)"
             adapter = DoneTaskRVAdapter(doneTaskList)
             layoutManager = LinearLayoutManager(context)
         }
@@ -194,9 +194,9 @@ class WorkspaceFragment() : Fragment(R.layout.fragment_workspace) {
 
     private fun updateWorkspaceDialog() {
         Utils.showEditTextDialog(
-            "Update workspace title",
-            "Enter a new workspace title",
-            "Update",
+            getString(R.string.update_workspace_title),
+            getString(R.string.enter_new_workspace_title),
+            getString(R.string.update),
             layoutInflater,
             requireContext()
         ) { Title ->
@@ -207,16 +207,16 @@ class WorkspaceFragment() : Fragment(R.layout.fragment_workspace) {
                 workspaceViewModel.updateWorkspace(updatedWorkspace) { result ->
                     if (result) {
                         Toast.makeText(
-                            requireContext(), "Workspace updated successfully.", Toast.LENGTH_SHORT
+                            requireContext(), getString(R.string.workspace_updated_successfully), Toast.LENGTH_SHORT
                         ).show()
                     } else Toast.makeText(
-                        requireContext(), "Failed to update workspace.", Toast.LENGTH_SHORT
+                        requireContext(), getString(R.string.failed_to_update_workspace), Toast.LENGTH_SHORT
                     ).show()
                 }
             } else if (Title.isBlank()){
-                Toast.makeText(requireContext(), "Workspace title cannot be empty!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), getString(R.string.workspace_title_cannot_be_empty), Toast.LENGTH_SHORT).show()
             } else if (Title.length> Constants.MAX_WORKSPACE_TITLE_LENGTH){
-                Toast.makeText(requireContext(), "Workspace title cannot be longer than ${Constants.MAX_WORKSPACE_TITLE_LENGTH} characters!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), getString(R.string.workspace_title_cannot_be_longer), Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -224,22 +224,22 @@ class WorkspaceFragment() : Fragment(R.layout.fragment_workspace) {
     private fun deleteWorkspaceDialog() {
         val builder = AlertDialog.Builder(requireContext())
         with(builder) {
-            setTitle("Delete workspace")
-            setMessage("Are you sure you want to delete the workspace?")
-            setNegativeButton("Cancel") { _, _ ->
-                Toast.makeText(context, "You cancelled.", Toast.LENGTH_SHORT).show()
+            setTitle(getString(R.string.delete_workspace))
+            setMessage(getString(R.string.are_you_sure_you_want_to_delete_the_workspace))
+            setNegativeButton(getString(R.string.cancel)) { _, _ ->
+                Toast.makeText(context, getString(R.string.you_cancelled), Toast.LENGTH_SHORT).show()
             }
-            setPositiveButton("OK") { dialog, which ->
+            setPositiveButton(getString(R.string.ok)) { dialog, which ->
                 workspaceViewModel.deleteWorkspace(workspaceId) {
                     if (it) {
                         Toast.makeText(
-                            requireContext(), "Workspace deleted successfully.", Toast.LENGTH_SHORT
+                            requireContext(), getString(R.string.workspace_deleted_successfully), Toast.LENGTH_SHORT
                         ).show()
                         view?.findNavController()
                             ?.navigate(WorkspaceFragmentDirections.actionWorkspaceFragmentToHomeFragment())
                     } else {
                         Toast.makeText(
-                            requireContext(), "Failed to delete workspace.", Toast.LENGTH_SHORT
+                            requireContext(), getString(R.string.failed_to_delete_workspace), Toast.LENGTH_SHORT
                         ).show()
                     }
 

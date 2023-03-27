@@ -13,7 +13,8 @@
         android:elevation="12dp"
         android:id="@+id/view2"
         app:cardCornerRadius="40dp"
-        android:layout_marginStart="12dp">
+        android:layout_marginStart="12dp"
+        android:layout_marginBottom="8dp">
         <ImageView
             android:layout_height="80dp"
             android:layout_width="match_parent"

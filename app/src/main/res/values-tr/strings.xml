@@ -89,7 +89,7 @@
     <string name="username_cannot_be_longer">Kullanıcı adı 20 karakterden uzun olamaz.</string>
 
 
-    <!-- Utils -->
+    <!-- Utils(Do not translate here) -->
     <string name="terms_of_service">Terms of Service</string>
     <string name="and"> and </string>
     <string name="privacy_policy">Privacy Policy.</string>

@@ -3,7 +3,6 @@ package com.yamanf.taskman.ui.home
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Intent
-import android.media.Image
 import android.net.Uri
 import android.os.Bundle
 import android.text.Editable

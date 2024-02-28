@@ -106,6 +106,12 @@
     <string name="username">Username</string>
     <string name="example_example_com">example@example.com</string>
     <string name="_buy_me_coffee_link">https://www.buymeacoffee.com/furkanyaaman</string>
+    <string name="enable_dark_mode">Enable Dark Mode</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="settings">Settings</string>
+    <string name="general">General</string>
+    <string name="profile">Profile</string>
 
 
 </resources>

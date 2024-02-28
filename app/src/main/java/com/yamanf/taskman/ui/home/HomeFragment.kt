@@ -1,28 +1,20 @@
 package com.yamanf.taskman.ui.home
 
 import android.annotation.SuppressLint
-import android.app.AlertDialog
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.content.res.AppCompatResources
-import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.bumptech.glide.Glide
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.MobileAds
 import com.google.firebase.Timestamp
@@ -33,7 +25,6 @@ import com.yamanf.taskman.databinding.FragmentHomeBinding
 import com.yamanf.taskman.firebase.FirebaseRepositoryImpl
 import com.yamanf.taskman.ui.adapters.MainRVAdapter
 import com.yamanf.taskman.ui.adapters.SearchRVAdapter
-import com.yamanf.taskman.ui.auth.AuthActivity
 import com.yamanf.taskman.utils.*
 import java.util.*
 
@@ -63,8 +54,8 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         binding.llNothing.gone()
         binding.searchEditText.addTextChangedListener(textWatcher)
 
-        binding.ivMenuButton.setOnClickListener {
-            showMenu(it)
+        binding.ivProfileButton.setOnClickListener {
+            it.findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToProfileFragment())
         }
 
         homeViewModel.isSearchActiveLiveData.observe(viewLifecycleOwner) {
@@ -103,165 +94,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         binding.adView.loadAd(adRequest)
     }
 
-    private fun showMenu(view: View) {
-        val toggle = ActionBarDrawerToggle(
-            requireActivity(),
-            binding.homeDrawer,
-            R.string.open,
-            R.string.close
-        )
-        binding.homeDrawer.addDrawerListener(toggle)
-        toggle.syncState()
-        binding.homeDrawer.openDrawer(GravityCompat.START)
-        val btnCreateWorkspace =
-            binding.navView.rootView.findViewById<Button>(R.id.btnCreateWorkspace)
-        val btnLogout = binding.navView.rootView.findViewById<Button>(R.id.btnLogOut)
-        val btnBuyMeCoffee = binding.navView.rootView.findViewById<Button>(R.id.btnBuyMeCoffee)
-        val btnSendEmail = binding.navView.rootView.findViewById<Button>(R.id.btnSendEmail)
-        val tvDeleteAccount = binding.navView.rootView.findViewById<TextView>(R.id.tvDeleteAccount)
-        btnCreateWorkspace.setOnClickListener {
-            createNewWorkspace()
-        }
-        btnLogout.setOnClickListener {
-            homeViewModel.logOut()
-            startActivity(Intent(requireContext(), AuthActivity::class.java))
-            activity?.finish()
-        }
-        btnBuyMeCoffee.setOnClickListener {
-            startActivity(
-                Intent(
-                    Intent.ACTION_VIEW,
-                    Uri.parse(getString(R.string._buy_me_coffee_link))
-                )
-            )
-        }
-        btnSendEmail.setOnClickListener {
-            sendEmail()
-        }
-        updateUserdata()
 
-        tvDeleteAccount.setOnClickListener {
-            deleteAccount()
-        }
-    }
-
-    private fun updateUserdata() {
-        val tvUsername = binding.navView.rootView.findViewById<TextView>(R.id.tvUsername)
-        val tvEmail = binding.navView.rootView.findViewById<TextView>(R.id.tvEmail)
-        val btnChangeUsername =
-            binding.navView.rootView.findViewById<Button>(R.id.btnChangeUsername)
-        val ivProfile = binding.navView.rootView.findViewById<ImageView>(R.id.ivProfile)
-        homeViewModel.getCurrentUser()?.let { user ->
-            if (user.displayName.isNullOrBlank()) {
-                tvUsername.text = user.email!!.split("@")[0]
-            } else tvUsername.text = user.displayName
-            tvEmail.text = user.email
-            Glide.with(requireParentFragment())
-                .load(user.photoUrl)
-                .into(ivProfile)
-            println(user.photoUrl.toString())
-        }
-        btnChangeUsername.setOnClickListener {
-            changeUsernameDialog {
-                if (it) {
-                    homeViewModel.getCurrentUser()?.let { user ->
-                        if (user.displayName.isNullOrBlank()) {
-                            tvUsername.text = user.email!!.split("@")[0]
-                        } else tvUsername.text = user.displayName
-                        tvEmail.text = user.email
-                    }
-                }
-            }
-        }
-        tvUsername.setOnLongClickListener {
-            changeUsernameDialog {
-                if (it) {
-                    homeViewModel.getCurrentUser()?.let { user ->
-                        if (user.displayName.isNullOrBlank()) {
-                            tvUsername.text = user.email!!.split("@")[0]
-                        } else tvUsername.text = user.displayName
-                        tvEmail.text = user.email
-                    }
-                }
-            }
-            return@setOnLongClickListener true
-        }
-    }
-
-    private fun deleteAccount() {
-        val builder = AlertDialog.Builder(requireContext())
-        with(builder) {
-            setTitle(getString(R.string.delete_account))
-            setMessage(getString(R.string.are_you_sure_you_want_to_delete_your_account))
-            setNegativeButton(getString(R.string.cancel)) { _, _ ->
-                Toast.makeText(context, getString(R.string.you_cancelled), Toast.LENGTH_SHORT)
-                    .show()
-            }
-            setPositiveButton(getString(R.string.ok)) { dialog, which ->
-                deleteUser()
-            }
-        }
-        val dialog: AlertDialog = builder.create()
-        dialog.show()
-    }
-
-    private fun deleteUser() {
-        homeViewModel.deleteUser {
-            if (it) {
-                Toast.makeText(
-                    requireContext(),
-                    getString(R.string.account_deleted_successfully),
-                    Toast.LENGTH_SHORT
-                ).show()
-                startActivity(Intent(requireContext(), AuthActivity::class.java))
-            } else {
-                Toast.makeText(
-                    requireContext(),
-                    getString(R.string.account_could_not_deleted),
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
-        }
-    }
-
-    private fun changeUsernameDialog(result: (Boolean) -> Unit) {
-        Utils.showEditTextDialog(
-            getString(R.string.change_username),
-            getString(R.string.enter_new_username),
-            getString(R.string.change),
-            layoutInflater,
-            requireContext()
-        ) { username ->
-            if (username.isNotBlank() && username.length <= Constants.MAX_USERNAME_LENGTH) {
-                homeViewModel.updateUsername(username) {
-                    return@updateUsername result(it)
-                }
-            } else if (username.isBlank()) {
-                Toast.makeText(
-                    requireContext(),
-                    getString(R.string.username_cannot_be_empty),
-                    Toast.LENGTH_SHORT
-                )
-                    .show()
-            } else if (username.length > Constants.MAX_WORKSPACE_TITLE_LENGTH) {
-                Toast.makeText(
-                    requireContext(),
-                    getString(R.string.username_cannot_be_longer),
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
-        }
-    }
-
-    @SuppressLint("IntentReset")
-    private fun sendEmail() {
-        val emailIntent = Intent(Intent.ACTION_SEND)
-        emailIntent.type = "text/plain"
-        emailIntent.putExtra(Intent.EXTRA_EMAIL, arrayOf("app.taskman@gmail.com"))
-        emailIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.contact_us))
-        startActivity(Intent.createChooser(emailIntent, "Send email..."))
-
-    }
 
 
     private val textWatcher: TextWatcher = object : TextWatcher {

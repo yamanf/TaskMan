@@ -101,23 +101,4 @@ class HomeViewModel(private val firebaseRepository: FirebaseRepository) : ViewMo
             }
     }
 
-    fun getCurrentUser(): FirebaseUser? {
-        return firebaseRepository.getCurrentUser()
-    }
-
-    fun updateUsername(username: String, result: (Boolean) -> Unit) {
-        firebaseRepository.updateDisplayName(username) {
-            result(it)
-        }
-    }
-
-    fun logOut() {
-        firebaseRepository.logOut()
-    }
-
-    fun deleteUser(result: (Boolean) -> Unit) {
-        firebaseRepository.deleteUser {
-            return@deleteUser result(it)
-        }
-    }
 }

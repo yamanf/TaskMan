@@ -35,11 +35,11 @@
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/searchBox"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
         android:layout_marginHorizontal="16dp"
         android:layout_marginTop="16dp"
         android:theme="@style/Theme.MaterialComponents.DayNight"
-        app:cardCornerRadius="12dp"
+        app:cardCornerRadius="24dp"
         app:cardElevation="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -69,9 +69,9 @@
                 android:fontFamily="@font/montserrat"
                 android:hint="@string/search_task"
                 android:inputType="text"
-                android:paddingTop="8dp"
                 android:textAppearance="?attr/textAppearanceHeadline6"
                 app:layout_constraintBottom_toBottomOf="@id/search_image_view"
+                app:layout_constraintTop_toTopOf="@id/search_image_view"
                 app:layout_constraintStart_toEndOf="@id/search_image_view" />
             <ImageView
                 android:id="@+id/search_cancel"

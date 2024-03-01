@@ -119,20 +119,32 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         homeViewModel.getSearchTasks()
         homeViewModel.searchTaskLiveData.observe(viewLifecycleOwner) { searchList ->
             val queryLower = query.lowercase()
-            filteredList.clear()
-            if (searchList != null) {
-                for (currentItem in searchList) {
-                    if (currentItem.title?.lowercase(Locale.getDefault())!!.contains(queryLower)) {
-                        filteredList.add(currentItem)
-                    }
+            when (searchList){
+                is Resource.Error -> TODO("Should build error view")
+                is Resource.Loading -> {
+                    binding.ivSearchLoading.visible()
+                    binding.rvSearch.gone()
                 }
-                if (filteredList.isNotEmpty()) {
-                    configureSearchRecyclerView(filteredList)
-                    binding.llNothing.gone()
-                } else {
-                    configureSearchRecyclerView(filteredList)
-                    binding.llNothing.visible()
-                    binding.tvCreateNewWorkspace.gone()
+                is Resource.Success -> {
+                    binding.ivSearchLoading.gone()
+                    binding.rvSearch.visible()
+                    filteredList.clear()
+                    if (searchList != null) {
+                        for (currentItem in searchList.data!!) {
+                            if (currentItem.title?.lowercase(Locale.getDefault())!!.contains(queryLower)) {
+                                filteredList.add(currentItem)
+                            }
+                        }
+                        if (filteredList.isNotEmpty()) {
+                            configureSearchRecyclerView(filteredList)
+                            binding.llNothing.gone()
+                        } else {
+                            configureSearchRecyclerView(filteredList)
+                            binding.llNothing.visible()
+                            binding.tvCreateNewWorkspace.gone()
+                        }
+                    }
+
                 }
             }
         }
@@ -141,13 +153,24 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     private fun observeWorkspaceListAndFillWorkspaceRV() {
         homeViewModel.getUserWorkspaces()
         homeViewModel.workspaceListLiveData.observe(viewLifecycleOwner) { workspaceList ->
-            if (workspaceList != null) {
-                if (workspaceList.isNotEmpty()) {
-                    binding.llNothing.gone()
-                    configureWorkspaceRecyclerView(workspaceList as ArrayList<WorkspaceModel>)
-                } else {
-                    binding.llNothing.visible()
-                    binding.tvCreateNewWorkspace.visible()
+            when (workspaceList){
+                is Resource.Error -> {
+                    TODO( "Should build error view")
+                }
+                is Resource.Loading -> {
+                    binding.shimmerRvMain.startShimmer()
+                    binding.rvMain.gone()
+                }
+                is Resource.Success -> {
+                    binding.shimmerRvMain.gone()
+                    binding.rvMain.visible()
+                    if (workspaceList.data?.isNotEmpty() == true) {
+                        binding.llNothing.gone()
+                        configureWorkspaceRecyclerView(workspaceList.data as ArrayList<WorkspaceModel>)
+                    } else {
+                        binding.llNothing.visible()
+                        binding.tvCreateNewWorkspace.visible()
+                    }
                 }
             }
         }
@@ -201,7 +224,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
     private fun configureWorkspaceRecyclerView(workspaceList: ArrayList<WorkspaceModel>) {
         binding.rvMain.apply {
-            layoutManager = GridLayoutManager(context, 2)
+            layoutManager = LinearLayoutManager(context)
             adapter = MainRVAdapter(workspaceList)
         }
     }

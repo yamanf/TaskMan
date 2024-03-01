@@ -67,15 +67,24 @@ class WorkspaceFragment() : Fragment(R.layout.fragment_workspace) {
         }
 
         workspaceViewModel.getUnDoneTasksFromWorkspace(workspaceId)
-        workspaceViewModel.unDoneTaskLiveData.observe(viewLifecycleOwner) {
-            if(it.isNotEmpty()){
-                binding.llNothing.gone()
-                configureTaskRecyclerView(it)
-            } else {
-                binding.llNothing.visible()
-                configureTaskRecyclerView(it)
-            }
+        workspaceViewModel.unDoneTaskLiveData.observe(viewLifecycleOwner) { taskList->
+            when(taskList){
+                is Resource.Error -> TODO("Should implement error view")
+                is Resource.Loading -> {
+                    binding.ivWorkspaceLoading.visible()
+                }
+                is Resource.Success -> {
+                    binding.ivWorkspaceLoading.gone()
+                    if (taskList.data.isNullOrEmpty().not()){
+                        binding.llNothing.gone()
+                        taskList.data?.let { configureTaskRecyclerView(it) }
+                    } else {
+                        binding.llNothing.visible()
+                        taskList.data?.let { configureTaskRecyclerView(it) }
+                    }
 
+                }
+            }
         }
 
         workspaceViewModel.getDoneTasksFromWorkspace(workspaceId)

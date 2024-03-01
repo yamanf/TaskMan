@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.TaskMan.Starting" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/light_green</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/logo_tt</item>
+        <item name="postSplashScreenTheme">@style/Theme.TaskMan</item>
+    </style>
+</resources>

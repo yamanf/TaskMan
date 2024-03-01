@@ -181,8 +181,16 @@
             />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-
-
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/ivWorkspaceLoading"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="64dp"
+        app:lottie_rawRes="@raw/loading_circle"
+        app:lottie_loop="true"
+        app:lottie_autoPlay="true"
+        android:visibility="gone"
+        />
 
 
     <com.google.android.gms.ads.AdView

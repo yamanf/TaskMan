@@ -110,13 +110,40 @@
         android:layout_gravity="center"
         android:layout_marginTop="1dp"
         android:paddingHorizontal="10dp"
+        android:paddingTop="16dp"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/searchBox"
         app:layout_constraintBottom_toTopOf="@id/adView"
-        app:spanCount="2"
         tools:listitem="@layout/rv_main_item" />
+
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:id="@+id/shimmerRvMain"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="1dp"
+        android:paddingTop="16dp"
+        android:paddingHorizontal="10dp"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/searchBox"
+        app:layout_constraintBottom_toTopOf="@id/adView">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <include layout="@layout/rv_main_item" />
+            <include layout="@layout/rv_main_item" />
+            <include layout="@layout/rv_main_item" />
+            <include layout="@layout/rv_main_item" />
+            <include layout="@layout/rv_main_item" />
+        </LinearLayout>
+
+    </com.facebook.shimmer.ShimmerFrameLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvSearch"
@@ -175,6 +202,16 @@
             app:layout_constraintBottom_toBottomOf="parent"
             />
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/ivSearchLoading"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:lottie_rawRes="@raw/loading_circle"
+        app:lottie_loop="true"
+        app:lottie_autoPlay="true"
+        android:visibility="gone"
+        />
 
     <com.google.android.gms.ads.AdView
         android:id="@+id/adView"

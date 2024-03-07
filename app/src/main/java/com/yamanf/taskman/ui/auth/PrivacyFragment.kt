@@ -10,6 +10,8 @@ import android.webkit.WebViewClient
 import androidx.fragment.app.DialogFragment
 import com.yamanf.taskman.R
 import com.yamanf.taskman.databinding.FragmentPrivacyBinding
+import com.yamanf.taskman.utils.Constants.Companion.PRIVACY_URL
+import com.yamanf.taskman.utils.Constants.Companion.TERMS_URL
 
 
 class PrivacyFragment : DialogFragment() {
@@ -40,8 +42,8 @@ class PrivacyFragment : DialogFragment() {
         super.onActivityCreated(savedInstanceState)
         val webView = view?.findViewById<WebView>(R.id.web_view)
         if (tag=="Terms"){
-            webView?.loadUrl("https://doc-hosting.flycricket.io/taskman-terms-of-use/7a44b8d1-988d-484b-a214-62674347abc5/terms")
-        }else if(tag=="Privacy") webView?.loadUrl("https://doc-hosting.flycricket.io/taskman-privacy-policy/364822f1-3d8b-45da-882b-406ff834e311/privacy")
+            webView?.loadUrl(TERMS_URL)
+        }else if(tag=="Privacy") webView?.loadUrl(PRIVACY_URL)
 
     }
 

@@ -24,5 +24,9 @@ class Constants {
         const val MAX_USERNAME_LENGTH = 10
 
         const val BANNER_TEST_ID = "ca-app-pub-3940256099942544/6300978111"
+
+        const val TERMS_URL = "https://taskman.yamanf.com/taskman_terms.html"
+        const val PRIVACY_URL = "https://taskman.yamanf.com/taskman_privacy.html"
+
     }
 }

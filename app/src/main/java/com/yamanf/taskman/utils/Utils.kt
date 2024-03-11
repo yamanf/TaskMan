@@ -27,8 +27,8 @@ class Utils {
                     val etContent = editText.text.toString()
                     return@setPositiveButton etContent("$etContent")
                 }
-                setNegativeButton("Cancel"){ _, _ ->
-                    Toast.makeText(context,"You cancelled.",Toast.LENGTH_SHORT).show()
+                setNegativeButton(R.string.cancel,){ _, _ ->
+                    Toast.makeText(context,R.string.you_cancelled,Toast.LENGTH_SHORT).show()
                 }
                 setView(dialogLayout)
                 show()

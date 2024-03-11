@@ -11,6 +11,7 @@ import com.yamanf.taskman.data.TaskModel
 import com.yamanf.taskman.data.WorkspaceModel
 import com.yamanf.taskman.firebase.FirebaseRepository
 import com.yamanf.taskman.utils.Constants
+import com.yamanf.taskman.utils.Resource
 
 
 class WorkspaceViewModel(private val firebaseRepository: FirebaseRepository) : ViewModel() {
@@ -19,8 +20,8 @@ class WorkspaceViewModel(private val firebaseRepository: FirebaseRepository) : V
     val workspaceDetailsLiveData: MutableLiveData<WorkspaceModel?>
         get() = _workspaceDetailsLiveData
 
-    private var _unDoneTaskLiveData = MutableLiveData<ArrayList<TaskModel>>()
-    val unDoneTaskLiveData: MutableLiveData<ArrayList<TaskModel>>
+    private var _unDoneTaskLiveData = MutableLiveData<Resource<ArrayList<TaskModel>>>()
+    val unDoneTaskLiveData: MutableLiveData<Resource<ArrayList<TaskModel>>>
         get() = _unDoneTaskLiveData
 
     private var _doneTaskLiveData = MutableLiveData<ArrayList<TaskModel>>()
@@ -40,6 +41,7 @@ class WorkspaceViewModel(private val firebaseRepository: FirebaseRepository) : V
     }
 
     fun getUnDoneTasksFromWorkspace(workspaceId:String) {
+        _unDoneTaskLiveData.value = Resource.Loading()
         firebaseRepository.getAllTasks()
             .whereEqualTo(Constants.WORKSPACE_ID,workspaceId)
             .whereEqualTo(Constants.IS_DONE,false)
@@ -54,7 +56,7 @@ class WorkspaceViewModel(private val firebaseRepository: FirebaseRepository) : V
                         val undoneTask =  it.toObject(TaskModel::class.java)
                         unDoneTaskList.add(undoneTask!!)
                     }
-                    _unDoneTaskLiveData.value = unDoneTaskList
+                    _unDoneTaskLiveData.value = Resource.Success(unDoneTaskList)
                 }
             }
     }

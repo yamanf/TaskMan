@@ -87,28 +87,28 @@ class TaskDetailFragment : Fragment() {
             it.findNavController().navigate(TaskDetailFragmentDirections.actionTaskDetailFragmentToUpdateTaskFragment(taskModel.taskId,taskModel.workspaceId))
         }
 
-        binding.tvTaskCreatedTime.text ="Created at " + taskModel.createdAt?.dateFormatter()
+        binding.tvTaskCreatedTime.text =getString(R.string.created_at) + " " +taskModel.createdAt?.dateFormatter()
     }
 
     private fun deleteTaskDialog() {
         val builder = AlertDialog.Builder(requireContext())
         with(builder) {
-            setTitle("Delete task")
-            setMessage("Are you sure you want to delete the task?")
-            setNegativeButton("Cancel") { _, _ ->
-                Toast.makeText(context, "You cancelled.", Toast.LENGTH_SHORT).show()
+            setTitle(getString(R.string.delete_task))
+            setMessage(getString(R.string.are_you_sure_you_want_to_delete_the_task))
+            setNegativeButton(getString(R.string.cancel)) { _, _ ->
+                Toast.makeText(context, getString(R.string.you_cancelled), Toast.LENGTH_SHORT).show()
             }
-            setPositiveButton("OK") { dialog, which ->
+            setPositiveButton(getString(R.string.ok)) { dialog, which ->
                 taskDetailViewModel.deleteTask(taskId) {
                     if (it) {
                         Toast.makeText(
-                            requireContext(), "Workspace deleted successfully.", Toast.LENGTH_SHORT
+                            requireContext(), getString(R.string.task_deleted_successfully), Toast.LENGTH_SHORT
                         ).show()
                         view?.findNavController()
                             ?.navigate(TaskDetailFragmentDirections.actionTaskDetailFragmentToWorkspaceFragment(workspaceId))
                     } else {
                         Toast.makeText(
-                            requireContext(), "Failed to delete task.", Toast.LENGTH_SHORT
+                            requireContext(), getString(R.string.failed_to_delete_task), Toast.LENGTH_SHORT
                         ).show()
                     }
 

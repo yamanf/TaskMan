@@ -12,6 +12,7 @@ import com.yamanf.taskman.data.TaskModel
 import com.yamanf.taskman.data.WorkspaceModel
 import com.yamanf.taskman.firebase.FirebaseRepository
 import com.yamanf.taskman.utils.Constants
+import com.yamanf.taskman.utils.Resource
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -21,16 +22,16 @@ class HomeViewModel(private val firebaseRepository: FirebaseRepository) : ViewMo
 
     private lateinit var userUid: String
 
-    private var _workspaceListLiveData = MutableLiveData<List<WorkspaceModel>?>()
-    val workspaceListLiveData: LiveData<List<WorkspaceModel>?>
+    private var _workspaceListLiveData = MutableLiveData<Resource<List<WorkspaceModel>?>>()
+    val workspaceListLiveData: LiveData<Resource<List<WorkspaceModel>?>>
         get() = _workspaceListLiveData
 
     private var _isSearchActiveLiveData = MutableLiveData<Boolean>()
     val isSearchActiveLiveData: MutableLiveData<Boolean>
         get() = _isSearchActiveLiveData
 
-    private var _searchTaskLiveData = MutableLiveData<ArrayList<TaskModel>>()
-    val searchTaskLiveData: MutableLiveData<ArrayList<TaskModel>>
+    private var _searchTaskLiveData = MutableLiveData<Resource<ArrayList<TaskModel>>>()
+    val searchTaskLiveData: MutableLiveData<Resource<ArrayList<TaskModel>>>
         get() = _searchTaskLiveData
 
     init {
@@ -52,6 +53,7 @@ class HomeViewModel(private val firebaseRepository: FirebaseRepository) : ViewMo
     }
 
     fun getUserWorkspaces() {
+        _workspaceListLiveData.value = Resource.Loading()
         val workspaceList = ArrayList<WorkspaceModel>()
         firebaseRepository.getAllWorkspaces()
             .whereArrayContains("uids", userUid)
@@ -61,10 +63,11 @@ class HomeViewModel(private val firebaseRepository: FirebaseRepository) : ViewMo
                     val workspace = document.toObject(WorkspaceModel::class.java)
                     workspaceList.add(workspace)
                 }
-                _workspaceListLiveData.value = workspaceList
+                _workspaceListLiveData.value = Resource.Success(workspaceList)
                 Log.d(TAG, "getUserWorkspaces: success")
             }.addOnFailureListener {
                 Log.d(TAG, "getUserWorkspaces: failed")
+                _workspaceListLiveData.value = Resource.Error(it.localizedMessage)
             }
     }
 
@@ -81,12 +84,14 @@ class HomeViewModel(private val firebaseRepository: FirebaseRepository) : ViewMo
     }
 
     fun getSearchTasks() {
+        _searchTaskLiveData.value = Resource.Loading()
         val taskList = ArrayList<TaskModel>()
         firebaseRepository.getAllTasks()
             .whereArrayContains("uids", userUid)
             .addSnapshotListener { snapshot, e ->
                 if (e != null) {
                     Log.w(TAG, "Listen failed", e)
+                    _searchTaskLiveData.value = Resource.Error(e.localizedMessage)
                     return@addSnapshotListener
                 }
                 if (snapshot != null) {
@@ -96,28 +101,8 @@ class HomeViewModel(private val firebaseRepository: FirebaseRepository) : ViewMo
                         taskList.add(searchTask!!)
                     }
                 }
-                println(taskList)
-                _searchTaskLiveData.value = taskList
+                _searchTaskLiveData.value = Resource.Success(taskList)
             }
     }
 
-    fun getCurrentUser(): FirebaseUser? {
-        return firebaseRepository.getCurrentUser()
-    }
-
-    fun updateUsername(username: String, result: (Boolean) -> Unit) {
-        firebaseRepository.updateDisplayName(username) {
-            result(it)
-        }
-    }
-
-    fun logOut() {
-        firebaseRepository.logOut()
-    }
-
-    fun deleteUser(result: (Boolean) -> Unit) {
-        firebaseRepository.deleteUser {
-            return@deleteUser result(it)
-        }
-    }
 }
